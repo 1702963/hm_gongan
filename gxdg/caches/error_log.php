@@ -5713,3 +5713,18 @@
 <?php exit;?>12-13 16:04:21 | 2 | date() expects parameter 2 to be long, string given | phpcms/modules/renshi/renshi.php | 23
 <?php exit;?>12-13 16:04:21 | 2 | date() expects parameter 2 to be long, string given | phpcms/modules/renshi/renshi.php | 23
 <?php exit;?>12-13 16:04:09 | 2 | date() expects parameter 2 to be long, string given | phpcms/modules/renshi/renshi.php | 23
+<?php exit;?>12-13 16:04:02 | 2 | mysqli::mysqli(): MySQL server has gone away | phpcms/libs/classes/db_mysqli.class.php | 57
+<?php exit;?>12-13 16:04:02 | 2 | mysqli::mysqli(): (HY000/2006): MySQL server has gone away | phpcms/libs/classes/db_mysqli.class.php | 57
+<?php exit;?>12-13 16:04:02 | 2 | db_mysqli::error(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 393
+<?php exit;?>12-13 16:04:02 | 2 | db_mysqli::errno(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 397
+<?php exit;?>12-13 16:04:02 | 2 | db_mysqli::errno(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 397
+<?php exit;?>12-13 16:04:02 | 2 | db_mysqli::error(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 393
+<?php exit;?>12-13 16:04:02 | 2 | mysqli::query(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 81
+<?php exit;?>12-13 16:04:02 | 2 | mysqli_error() expects exactly 1 parameter, 0 given | phpcms/libs/classes/db_mysqli.class.php | 81
+<?php exit;?>12-13 16:04:02 | 2 | db_mysqli::error(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 393
+<?php exit;?>12-13 16:04:02 | 2 | db_mysqli::errno(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 397
+<?php exit;?>12-13 16:04:02 | 2 | db_mysqli::errno(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 397
+<?php exit;?>12-13 16:04:02 | 2 | db_mysqli::error(): Couldn't fetch mysqli | phpcms/libs/classes/db_mysqli.class.php | 393
+<?php exit;?>12-13 16:04:21 | 2 | date() expects parameter 2 to be long, string given | phpcms/modules/renshi/renshi.php | 23
+<?php exit;?>12-13 16:04:09 | 2 | mysqli_error() expects exactly 1 parameter, 0 given | phpcms/libs/classes/db_mysqli.class.php | 81
+<?php exit;?>12-13 16:04:09 | 2 | mysqli_error() expects exactly 1 parameter, 0 given | phpcms/libs/classes/db_mysqli.class.php | 81
