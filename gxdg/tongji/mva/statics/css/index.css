@@ -1,0 +1,141 @@
+
+* {  -webkit-user-select: none; outline: none }
+html {height:100%;}
+body {margin:0;padding:0;background:#0b1722;overflow-x:hidden; display:flex; justify-content:center}
+p {margin:0;padding:0}
+a {background:transparent;text-decoration:none}
+a:active, a:hover {outline:0}
+img {border:0}
+em {font-style:normal}
+ul {margin:0;padding:0}
+li {list-style:none}
+table {border-spacing:0;border-collapse:collapse}
+td,th {padding:0}
+.clear {clear:both;font-size:0;height:0;overflow:hidden}
+div { border:0 solid #333; -webkit-box-sizing: border-box; box-sizing: border-box;}
+#main {width:1900px; min-width:1900px;height:1080px; border:0 solid #ddd}
+
+#myClock {margin-left:10px;letter-spacing:1px;font-weight:500;margin-top:2px}
+#thisTime {width:1800px;height:50px;position:absolute;left:50%;margin-left:-900px;line-height:50px;color:#7bd2ff;font-size:14px;font-weight:500;top:20px;text-align:left;display:flex;align-items:center}
+#thisTime img {margin-right:6px}
+#thisTime a {color:#7bd2ff;margin-right:15px}
+#thisTime a:hover {color:#fff}
+.video-background {
+	max-width: none !important; border: none; object-fit: cover;   background-size: cover;
+	opacity: 1; width: 100%;  height: 100%; position: absolute; left: 0px; top: 0%; display: block;
+	object-position: center bottom !important; z-index:-1; opacity:0.9
+}
+.cCenter {width:100%;float:left;}
+
+
+#header {width:100%;height:80px;text-align:center;color:#fff;font-size:32px}
+.container {width:100%;}
+#top {height:200px;display:flex;justify-content: space-between;}
+#center {height:500px;}
+#bottom {height:300px;justify-content: space-between;}
+.topCon {width:33%; height:190px;}
+
+.conTitle {width:100%;margin-left:0%;color:#fff;height:32px;line-height:24px;text-indent:50px}
+.conTitle span {font-size:16px}
+.conTitle em {font-size:14px;font-weight:500}
+
+
+
+.topitem {width:49%;height:70px;padding:0 2%;background:#333;border-radius:5px;color:#fff;margin:1% 1% 0 0;float:left}
+.topitem {width:47%;height:65px;padding:0 2%;background:#031d31;margin:2% 0 0 2%;float:left; border-radius:0 0 10px 0;border:1px solid #174551;color:#fff;box-shadow:0 0 8px rgba(0,100,250,0.5)}
+#partyCon {width:100%;height:190px;float:left;margin-right:1%}
+.partyitem {width:49%;height:50px;padding:0 2%;background:#333;border-radius:5px;color:#fff;margin:1% 1% 0 0;float:left}
+
+.drumpie {width:49%;height:100px;padding:0 2%;background:#333;border-radius:5px;color:#fff;margin:1% 1% 0 0;float:left}
+#partyPie , #lifePie {width:50%;height:160px;float:left;}
+.duesitem {width:32%;height:55px;padding:0 2%;background:#333;border-radius:5px;color:#fff;margin:1% 1% 0 0;float:left}
+#partyDues {width:100%;height:100px;float:left}
+
+.itemTitle {width:100%;font-size:14px}
+.itemNumX {width:60%;font-size:20px;font-weight:900;float:left}
+.itemFd {width:40%;font-size:16px;justify-content: center;float:left}
+.red {color:#f00}
+.green {color:#3F6}
+.keyRed {background:#c00;}
+.keyDef {background:none; color:#fff}
+#topTable {width:99%;height:90px;float:left}
+
+.zCon {width:100%;}
+.zConTitle {width:8%;padding:1% 1%;color:#fff;font-size:14px;font-weight:600;float:left;text-align:center;margin-right:1%}
+.zCon .topitem {width:29%;height:60px;padding:0 2%;background:#333;border-radius:5px;color:#fff;margin:1% 0 2% 1%;float:left}
+.itemTitle {width:100%;font-size:14px}
+.itemNum {width:50%;font-size:24px;font-weight:900;float:left;margin-top:10px}
+.itemFd {width:50%;font-size:14px;justify-content: center;float:left}
+
+#sx .topitem {width:49%;height:70px;padding:0 2%;background:#333;border-radius:5px;color:#fff;margin:1% 1% 0 0;float:left}
+#sx .itemNum {width:96%;font-size:26px;font-weight:900;float:left;text-align:right}
+#lineC .topitem {width:30%;height:70px;padding:0 2%;background:#1d1e72;border-radius:5px;color:#fff;margin:2% 0 0 2%;float:left}
+
+#pieCon {width:30%;height:500px;float:left}
+#tempPieCon {width:100%;height:500px;position:relative}
+.pieWin {width:70%;height:200px;background:rgba(0,0,0,0.9);position:absolute;left:15%;top:30px;z-index:999;display:none}
+.winItem {width:100%;height:200px;flex-wrap:wrap}
+.winTitle {width:100%;height:36px;line-height:36px;color:#fff;text-indent:6px;position:relative;font-size:14px}
+.winTitle em {position:absolute;right:10px;top:0;font-size:12px;cursor:pointer}
+.winCon {width:96%;height:125px;margin-left:2%;}
+.winConList {width:100%;height:40px;border-bototm:1px dashed #ddd;margin-top:5px}
+.winConListNum {width:24px;height:24px;border-radius:24px;background:#06c;font-size:12px;line-height:24px;color:#fff;margin-left:10px;float:left;text-align:center}
+.winConListName {width:calc( 100% - 120px);color:#fff;margin-left:10px;float:left}
+.winConListcode {width:50px;height:24px;color:#eee;font-size:12px;float:left}
+.LableContent {width:100px;height:60px;backgrond:rgba(0,0,0,0.5)}
+.lineBox {width:35%;height:500px;margin-left:1%;float:left}
+.lineCon {width:100%;height:200px;}
+.highrisk {width:33%;height:500px;float:left;margin-left:1%}
+.highCon {width:100%;height:260px}
+.highKen {width:100%;height:260px;position:relative}
+.highDon {width:100%;height:220px;flex-wrap:wrap;justify-content: space-between;}
+.hditem {width:32%;height:180px;padding:1% 2%;background:#040e4e;border-radius:5px;color:#fff;display:block;margin:1% 1% 0 0;float:left}
+.hdTitle {width:100%;font-size:14px;margin-bottom:4px;margin-top:5px}
+#xDon {width:100%;height:220px}
+
+.bLeft {width:40%;height:280px;float:left;margin-right:1%}
+.fjList  {color:#ccc;font-size:12px;margin-left:1%}
+.fjList {}
+.fjList th {line-height:33px;background:rgba(0,100,250,0.3);text-indent:20px}
+.fjList td {line-height:32px;text-indent:20px;border-bottom:1px solid #333}
+.fjList td a {color:#fff}
+.fjList tbody tr:hover {background:#242562}
+
+.bRight {width:59%;height:300px;float:left}
+.bRcon {width:100%;height:250px;float:left;color:#eee}
+
+.drawLine {flex-wrap:wrap;margin:12px 0 0 12px}
+
+.superslider , .picList {width:100%;height:200px;overflow:hidden;float:left}
+.picList li {width:160px;height:200px;float:left;margin-left:3px;background:#0b163a;padding:10px}
+.picList table td { font-size:14px; padding:0 0;color:#eee}
+.picList table tr {border-bottom:1px dashed #222}
+.picList table td em {padding:2px 8px;border-radius:2px;color:#fff;font-size:12px}
+
+.picList table td { font-size:14px; padding:5px 0}
+.picList table tr {border-bottom:1px dashed #222}
+
+.sxBlue {padding:2px 10px;background:#06c;color:#fff}
+.sxGreen {padding:2px 10px;background:#0C3;color:#fff}
+.sxRed  {padding:2px 10px;background:#c00;color:#fff}
+
+#familyPie , #familyBar {width:100%;height:240px}
+#dataCardCon {width:270px;float:left}
+.itemCard {width:250px;height:80px;padding:0 2%;background:#333;border-radius:5px;color:#fff;margin:20px 0 0 10px;float:left}
+.itemNumS {width:50%;font-size:22px;font-weight:900;float:left;margin-top:10px}
+.itemFdS {width:50%;font-size:14px;justify-content: center;float:left;margin-top:15px}
+#eduPie {width:480px;height:220px;float:left}
+#sdPie {width:47%;height:280px;float:left;margin-left:2%;background:rgba(0,100,250,0.2);	border:1px solid #213556}
+#sdBar {width:278px;height:240px;float:left}
+
+.yichang {width:51%;height:280px;float:left;background:rgba(0,100,250,0.2);	border:1px solid #213556}
+
+.huiList li {width:100%;padding:10px 0 0 0;float:left;border-bottom:1px dashed #555;font-size:12px}
+.huiList li span {font-size:12px;color:#fc0;margin-right:10px}
+.huiList p {margin-bottom:10px;color:#ccc}
+.huiList p b {font-size:16px;color:#80FFFF;margin-right:10px}
+.personImg {width:100px;}
+.peList {margin:1% 0 0 1%;color:#eee;font-size:12px}
+.peList p {padding:5px 0}
+.yugao {font-size:12px;color:#ccc;width:98%;margin-left:1%;margin-top:10px}
+

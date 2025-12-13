@@ -1,0 +1,122 @@
+<script>
+
+var rPChart = echarts.init(document.getElementById('rPie'));
+// 全局队伍政治面貌占比数据
+var globalRatios = {
+    '材料不全': 65,
+    '事迹不达标': 20,
+    '信息填写错误': 10,
+    '重复上报': 5
+};
+// 找出数据中数量最多的项
+var dataRc = [
+    { value: 65, name: '材料不全' },
+    { value: 40, name: '事迹不达标' },
+    { value: 25, name: '信息填写错误' },
+    { value: 12, name: '重复上报' }
+];
+var totalRc = 0;
+for (var i = 0; i < dataRc.length; i++) {
+    totalRc += dataRc[i].value;
+};
+console.log('totalRc:',totalRc)
+// 找出最大值项
+var maxItem = dataRc[0];
+for (var i = 1; i < dataRc.length; i++) {
+    if (dataRc[i].value > maxItem.value) {
+        maxItem = dataRc[i];
+    }
+}
+console.log('maxItem:',maxItem);
+// 计算最大项的百分比
+var maxPercentage = Math.round((maxItem.value / totalRc) * 100);
+console.log('maxPercentage:',maxPercentage);
+
+var optionR = {
+	title:{
+		text:'',
+		textStyle:{
+			color:'#ffffff'
+		},
+		top: 10
+	},
+	// 添加Top1标注
+	graphic: {
+		type: 'text',
+		left: 100,  // 水平居中
+		top: 10,         // 位于饼图上方
+		style: {
+			text: 'Top1 原因：' + maxItem.name + '（' + maxPercentage + '%）',
+			textAlign: 'left',
+			fill: '#ffffff',
+			fontSize: 14,
+			fontWeight: 'bold'
+		}
+	},
+	tooltip: {
+	},
+	legend: {
+		orient: 'vertical',
+		right: 30,           
+		top: 'center', 
+		padding:[50,0,30,0],
+		textStyle: {
+			fontSize: 12,
+			color: '#ffffff'
+		},
+		itemWidth: 12,
+		itemHeight: 12,
+		itemGap:20
+	},
+	series: [
+		{
+			name: '驳回原因分析',
+			type: 'pie',
+			radius: ['40%', '60%'],  // 环形图内外半径
+			center: ['40%', '55%'],  // 图表中心位置
+			avoidLabelOverlap: false,
+			itemStyle: {
+				borderRadius: 8,
+			},
+			// 扇区上显示百分比
+			label: {
+				show: true,
+				position: 'outside',  // 显示在扇区内部
+				formatter: '{b}\n{d}%',   // 显示百分比
+				fontSize: 12,
+				fontWeight: '500',
+				color:'#ffffff'
+			},
+			// 隐藏标签连接线
+			labelLine: {
+				show: true,
+				length: 10,
+				length2: 10,
+				lineStyle: {
+					width: 1
+				}
+			},
+			emphasis: {
+				label: {
+					show: true,
+					fontSize: 12,
+					fontWeight: 'bold'
+				}
+			},
+			data: [
+				{ value: 65, name: '材料不全' },
+				{ value: 40, name: '事迹不达标' },
+				{ value: 25, name: '信息填写错误' },
+				{ value: 12, name: '重复上报' }
+			]
+		}
+	],
+	color: [
+		'#f5222d',  // 党员 - 红色
+		'#52c41a',  // 团员 - 绿色
+		'#faad14',  // 群众 - 黄色
+		'#1890ff'   // 其他 - 蓝色
+	]
+};
+rPChart.setOption(optionR);
+</script>

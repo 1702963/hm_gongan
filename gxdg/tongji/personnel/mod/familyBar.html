@@ -1,0 +1,112 @@
+<script>
+//队伍特长资源分布
+var myChart = echarts.init(document.getElementById('familyBar'));
+var colors=['#005ab6','#6696c8','#cc0000','#ff6600','#953cd4','#4CAF50'];
+
+// 各专业有证书的人数数据
+var certifiedData = [12, 18, 7, 5, 2, 4]; 
+
+// 对应的证书名称
+var certificateNames = [
+    '律师证', 
+    '刑侦鉴定师证', 
+    '专业八级证书', 
+    '网络安全工程师证', 
+    '急救资格证', 
+    '无人机驾驶证'
+];
+
+var option = {
+	width:'96%',
+	tooltip: {
+		trigger: 'item',
+		backgroundColor: 'rgba(15, 20, 45, 0.9)',
+		borderColor: '#263465',
+		borderWidth: 1,
+		padding: 10,
+		textStyle: {
+			color: '#ffffff',
+			fontSize: 13
+		},
+		// 自定义tooltip内容，包含标注信息
+		formatter: function(params) {
+			var index = params.dataIndex;
+			return `<div style="font-weight:bold;">${params.name}</div>
+					<div>总人数：${params.value}人</div>
+					<div>有证书人数：${certifiedData[index]}人</div>
+					<div>证书类型：${certificateNames[index]}</div>`;
+		}
+	},
+	grid: {
+		left: '0%',
+		right: '15%',
+		bottom: '0%',
+		top:'10%',
+		containLabel: true
+	},
+	xAxis: {
+		type: 'value',
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#263465',
+                width:1
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#263465",
+             }
+        }
+	},
+	yAxis: {
+		type: 'category',
+		data: ['法律专业', '刑侦技术', '外语', '网络安全', '紧急救援', '无人机驾驶'],
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc'
+            },
+            margin: 10
+        },
+        axisLine:{
+            lineStyle:{
+                color:'#263465',
+                width:1
+            }
+        }
+	},
+	series: [{
+		type: 'bar',
+		data: [15, 21, 9, 8, 3, 6],
+		barWidth: '40%',
+		barCategoryGap: '10%',
+		// 右侧显示总人数
+		label: {
+			show: true,
+			position: 'right',
+			formatter: '{c}人',
+			textStyle: {
+				color: '#ffffff',
+				fontSize: 12
+			}
+		},
+		itemStyle: {
+			color: function(p){
+				return colors[p.dataIndex]
+			}
+		}
+	}],
+
+};
+
+myChart.setOption(option);
+// 监听窗口大小变化，重绘图表
+window.addEventListener('resize', function() {
+  myChart.resize();
+});
+</script>

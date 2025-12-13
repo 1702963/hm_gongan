@@ -1,0 +1,155 @@
+<script>
+// 初始化图表
+const ageGroupAbnormalChartDom = document.getElementById('lineB');
+const ageGroupAbnormalChart = echarts.init(ageGroupAbnormalChartDom);
+let ageGroupAbnormalOption;
+
+// 年龄段体检数据
+const AGE_GROUP_MEDICAL_DATA = [
+    { ageRange: '25岁及以下', abnormalCount: 18, totalCheckupCount: 150 },
+    { ageRange: '26-35岁', abnormalCount: 65, totalCheckupCount: 320 },
+    { ageRange: '36-45岁', abnormalCount: 98, totalCheckupCount: 280 },
+    { ageRange: '46岁及以上', abnormalCount: 135, totalCheckupCount: 300 }
+];
+const MAX_ABNORMAL_RATE_MARKER = '46岁及以上';
+
+// 数据处理函数
+function processAgeGroupAbnormalData(rawData) {
+    return rawData.map(item => {
+        const abnormalRate = (item.abnormalCount / item.totalCheckupCount * 100).toFixed(1);
+        return {
+            ageRange: item.ageRange,
+            abnormalRate: parseFloat(abnormalRate),
+            abnormalRateLabel: `${abnormalRate}%`,
+            raw: {
+                abnormalCount: item.abnormalCount,
+                totalCheckupCount: item.totalCheckupCount
+            }
+        };
+    }).sort((a, b) => a.abnormalRate - b.abnormalRate);
+}
+
+// 处理后的数据
+const ageGroupProcessedData = processAgeGroupAbnormalData(AGE_GROUP_MEDICAL_DATA);
+const ageGroupLabels = ageGroupProcessedData.map(item => item.ageRange);
+const ageGroupAbnormalRates = ageGroupProcessedData.map(item => item.abnormalRate);
+const ageGroupAbnormalRateLabels = ageGroupProcessedData.map(item => item.abnormalRateLabel);
+
+// 配置图表选项 - 优化右侧显示
+ageGroupAbnormalOption = {
+    title: {
+        text: '',
+        left: 'left',
+        textStyle: { 
+			fontSize: 16,
+			color:'#ddd'
+		}
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' },
+        formatter: function(params) {
+            const index = params[0].dataIndex;
+            const item = ageGroupProcessedData[index];
+            return `${item.ageRange}<br/>` +
+                   `异常人数: ${item.raw.abnormalCount}人<br/>` +
+                   `体检总人数: ${item.raw.totalCheckupCount}人<br/>` +
+                   `异常率: ${item.abnormalRateLabel}`;
+        }
+    },
+    grid: {
+        left: '5%',      // 减少左侧空间
+        right: '10%',     // 增加右侧空间，确保标注显示完整
+        bottom: '10%',
+        top: '15%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'value',
+            name: '异常率 %',
+            nameLocation: 'middle',
+            nameGap: 30,
+            min: 0,
+            max: 50,
+            axisLabel: {
+                formatter: '{value}%',  // 右侧X轴百分比显示
+				textStyle: {
+					fontSize: 12,
+					color:'#888'
+				}
+            },
+			axisLine:{
+					lineStyle:{
+					color:'#263465',
+					width:1
+				}
+			},
+			splitLine: {
+					show:true,
+					lineStyle: {
+						color: "#263465",
+				 }
+			}
+        }
+    ],
+    yAxis: [
+        {
+            type: 'category',
+            data: ageGroupLabels,
+            axisLabel: { 
+                fontSize: 12,
+                align: 'right',  // Y轴文本右对齐，贴近柱子
+                padding: [0, 10, 0, 0],  // 调整内边距
+				textStyle: {
+					fontSize: 12,
+					color:'#888'
+				}
+            },
+			axisLine:{
+					lineStyle:{
+					color:'#263465',
+					width:1
+				}
+			},
+			splitLine: {
+					show:true,
+					lineStyle: {
+						color: "#263465",
+				 }
+			}
+        }
+    ],
+    series: [
+        {
+            name: '异常率',
+            type: 'bar',
+            data: ageGroupAbnormalRates,
+            itemStyle: {
+                color: function(params) {
+                    const currentAgeRange = ageGroupLabels[params.dataIndex];
+                    return currentAgeRange === MAX_ABNORMAL_RATE_MARKER ? '#F5222D' : '#165DFF';
+                },
+                borderRadius: [0, 4, 4, 0]
+            },
+            label: {
+                show: true,
+                position: 'right',  // 数值显示在柱子右侧
+                offset: [10, 0],    // 向右偏移10px，避免紧贴柱子
+                formatter: function(params) {
+                    return ageGroupAbnormalRateLabels[params.dataIndex];
+                },
+                textStyle: { 
+                    fontWeight: '300',
+                    color: '#ddd'
+                }
+            },
+ 
+            barWidth: 16
+        }
+    ]
+};
+
+// 渲染图表
+ageGroupAbnormalChart.setOption(ageGroupAbnormalOption);
+</script>

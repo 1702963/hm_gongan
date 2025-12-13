@@ -1,0 +1,175 @@
+<script>
+var EChart = echarts.init(document.getElementById('level'));
+
+// 提取数据
+var dataBase = [
+    ['基层民警/网格员', 193],
+    ['科员', 83],
+    ['科级', 32],
+    ['处级及以上', 14]
+];
+
+// 计算总人数
+var total = 0;
+for (var i = 0; i < dataBase.length; i++) {
+    total += dataBase[i][1];
+}
+// 计算基层人员占比
+var grassrootValue = dataBase[0][1];
+var grassrootRatio = Math.round((grassrootValue / total) * 100);
+
+// 构建数据源
+var sourceData = [['product']];
+for (var i = 0; i < dataBase.length; i++) {
+    sourceData.push(dataBase[i]);
+}
+
+// 为每个职级定义不同的颜色
+var colors = {
+    '基层民警/网格员': '#238bff',  // 蓝色
+    '科员': '#52c41a',            // 绿色
+    '科级': '#faad14',            // 橙色
+    '处级及以上': '#f5222d'       // 红色
+};
+
+var optionE = {
+	title:{
+		text:'',
+		textStyle:{
+			color:'#ffffff'
+		},
+	},
+	// 添加Top1标注
+	graphic: {
+		type: 'text',
+		left: 6,  // 水平居中
+		top: 10,         // 位于饼图上方
+		style: {
+			text: '基层人员表彰占比：' + '（' + grassrootRatio + '%）',
+			textAlign: 'left',
+			fill: '#ffffff',
+			fontSize: 14,
+			fontWeight: 'bold'
+		}
+	},
+    legend: {
+         textStyle:{
+            fontSize: 14,
+            color: '#eeeeee',
+        },
+        padding:[40,0,0,0],
+    },
+    grid: {
+        left: '3%',
+        right: '3%',
+        bottom: '3%',
+		top:'20%',
+        containLabel: true,
+        
+    },
+    tooltip: {
+		trigger: 'axis',	
+	},
+    dataset: {
+        source: sourceData
+    },
+    xAxis: {
+        type: 'category',
+		barCategoryGap:10,
+        axisLabel:{
+        
+        	interval:0,
+			formatter:function(value) {
+							var ret = "";
+							var maxLength = 4;
+							var valLength = value.length;
+							var rowN = Math.ceil(valLength / maxLength); 
+							if (rowN > 1) {
+								for (var i = 0; i < rowN; i++) {
+									var temp = "";
+									var start = i * maxLength;
+									var end = start + maxLength;
+									temp = value.substring(start, end) + "\n";
+									ret += temp;
+								}
+								return ret;
+							} else {
+								return value;
+							}
+				},
+            
+            textStyle:{
+                color:'#ddd',
+				fontSize: 12,
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    yAxis: {
+        axisLabel:{
+            textStyle:{
+                color:'#ddd'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    series: [
+        {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+			    normal:{
+					// 根据职级名称设置不同颜色
+					color: function(params) {
+						return colors[params.name];
+					},
+					label:{
+						show:true,
+						position:'top',
+						rich: {
+							value: {
+								// 标签颜色与柱子颜色一致
+								color: function(params) {
+									return colors[params.name];
+								},
+								fontSize: 12,
+								fontWeight: 'normal'
+							},
+							ratio: {
+								color: '#ffffff',
+								fontSize: 12,
+								lineHeight: 16
+							}
+						}
+					},
+				},
+			}
+        }
+
+    ]
+};
+EChart.setOption(optionE);
+</script>
+

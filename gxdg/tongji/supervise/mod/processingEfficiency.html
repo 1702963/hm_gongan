@@ -1,0 +1,152 @@
+<script>
+//基于准备好的dom，初始化echarts实例
+var daChart = echarts.init(document.getElementById('daChart'));
+
+// 基础数据
+var units = ['政治处', '警务督察大队', '治安大队', '网安大队', '指挥中心'];
+var lawData = [10, 13, 16, 14, 18]; // 执法办案天数
+var opinionData = [5, 8, 6, 9, 3]; // 舆情处理天数
+
+// 低版本ECharts不支持箭头函数，使用function语法
+var isOverLawLimit = [];
+var isOverOpinionLimit = [];
+for (var i = 0; i < units.length; i++) {
+    isOverLawLimit.push(lawData[i] > 15);
+    isOverOpinionLimit.push(opinionData[i] > 7);
+}
+
+// 低版本配置（不使用zlevel、shadow等高级属性）
+var optionda = {
+    title: {
+        text: '',
+        textStyle: {
+            color: '#ffffff'
+        }
+    },
+    legend: {
+        left: 'right',
+        top: 'top',
+        padding: [5, 0, 50, 0],
+        textStyle: {
+            fontSize: 12,
+            color: '#ffffff'
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 20
+    },
+    grid: {
+        left: '2%',
+        right: '5%',
+        bottom: '5%',
+        top: '20%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'value',
+        max: 24,
+        min: 0,
+        interval: 4,
+        axisLabel: {
+            textStyle: {
+                color: '#cccccc',
+				fontSize:10
+            },
+            formatter: '{value} 天'
+        },
+        axisLine: {
+            lineStyle: {
+                color: '#3f5291',
+                width: 1
+            }
+        },
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: "#3f5291"
+            }
+        }
+    },
+    yAxis: {
+        type: 'category',
+        data: units,
+        axisLabel: {
+            // 低版本使用function回调而非箭头函数
+            textStyle: {
+                color: function(params, index) {
+                    if (isOverLawLimit[index] || isOverOpinionLimit[index]) {
+                        return '#ffff00'; // 超线单位标黄色
+                    }
+                    return '#cccccc';
+                },
+                fontWeight: function(params, index) {
+                    return (isOverLawLimit[index] || isOverOpinionLimit[index]) ? 'bold' : 'normal';
+                }
+            }
+        }
+    },
+    series: [
+        {
+            name: '执法办案平均处理天数',
+            type: 'bar',
+            barWidth: '20%',
+            data: lawData,
+            itemStyle: {
+                // 低版本颜色回调使用function
+                color: function(params) {
+                    return isOverLawLimit[params.dataIndex] ? '#005ab6' : '#005ab6';
+                }
+            },
+            // 低版本markLine必须放在series内部
+            markLine: {
+                z: 5, // 用z代替zlevel
+                symbol: 'none', // 隐藏箭头
+                lineStyle: {
+                    width: 2,
+                    type: 'dashed',
+                    color: '#ff0000'
+                },
+                label: {
+                    show: true,
+                    color: '#ffffff',
+                    formatter: '执法办案标准(15天)'
+                },
+                data: [
+                    {xAxis: 15} // 参考线位置
+                ]
+            }
+        },
+        {
+            name: '舆情平均处理天数',
+            type: 'bar',
+            barWidth: '20%',
+            data: opinionData,
+            itemStyle: {
+                color: function(params) {
+                    return isOverOpinionLimit[params.dataIndex] ? '#6696c8' : '#6696c8';
+                }
+            },
+            markLine: {
+                z: 5,
+                symbol: 'none',
+                lineStyle: {
+                    width: 2,
+                    type: 'dashed',
+                    color: '#00ffcc'
+                },
+                label: {
+                    show: true,
+                    color: '#ffffff',
+                    formatter: '舆情处理标准(7天)'
+                },
+                data: [
+                    {xAxis: 7}
+                ]
+            }
+        }
+    ]
+};
+
+// 低版本设置图表配置
+daChart.setOption(optionda);
+</script>

@@ -1,0 +1,87 @@
+<script>
+//材料缺失统计
+var cMChart = echarts.init(document.getElementById('cMiss'));
+// 定义每个缺失类型对应的涉及单位数量
+var unitCounts = [3, 5, 2]; // 分别对应：证明材料缺失、相关附件缺失、事迹描述不全
+var colors=['#0066cc','#00ffff','#ffcc00','#00cc33'];
+var optionM = {
+	grid: {
+		left: '3%',
+		right: '5%',
+		bottom: '5%',
+		top:'5%',
+		containLabel: true
+	},
+	xAxis: {
+		type: 'value',
+		min:0,
+		max: function(value){
+			return Math.floor(value.max+10)
+		},
+		splitNumber:2,
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc',
+				fontSize:12
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:1
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+	},
+	yAxis: {
+		type: 'category',
+		data: ['证明材料\n缺失', '相关附件\n缺失', '事迹描述\n不全'],
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+	},
+	series: [{
+		type: 'bar',
+		data: [15, 10, 13],
+		barWidth: '20%', // 可以调整条形的宽度
+		label: {
+			show: true,
+			position: 'right', // 标签显示在右侧
+			// 格式化标签内容，显示数值和涉及单位数量
+			formatter: function(params) {
+				// params.dataIndex 对应当前数据的索引
+				return params.value + '\n涉及单位：' + unitCounts[params.dataIndex] + ' 个';
+			},
+			// 设置标签样式
+			textStyle: {
+				color: '#ffffff',
+				fontSize: 12,
+				lineHeight: 16 // 调整行高，使两行文字间距合适
+			}
+		},
+      itemStyle: {
+        // 柱子的颜色设置不同颜色
+        color: function(p){
+          return colors[p.dataIndex]
+        }
+      }
+
+	}],
+
+};
+
+cMChart.setOption(optionM);
+</script>

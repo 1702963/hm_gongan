@@ -1,0 +1,72 @@
+<script>
+//监督类型分布
+var myChart = echarts.init(document.getElementById('partyDues'));
+var colors=['#005ab6','#6696c8','#cc0000','#ff6600','#953cd4'];
+var option = {
+	title:{
+		text:'TOP3 发表媒体频次',
+		textStyle:{
+			color:'#ffffff',
+			fontSize:14
+		},
+	},
+	width:'96%',
+	height:'80px',
+	grid: {
+		left: '0%',
+		right: '15%',
+		bottom: '10%',
+		top:'20%',
+		containLabel: true
+	},
+	xAxis: {
+		type: 'value',
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#263465',
+                width:1
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#263465",
+             }
+        }
+	},
+	yAxis: {
+		type: 'category',
+		data: ['人民网', '人民日报', '党报'],
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc'
+            }
+        }
+	},
+	series: [{
+		type: 'bar',
+		data: [3, 10, 8],
+		barWidth: '40%', // 可以调整条形的宽度
+		label: {
+			show: true,
+			position: 'right' // 标签显示在右侧
+		},
+      itemStyle: {
+        // color: "#EE6666" // 这是设置所有柱子为同一个颜色
+        // 柱子的颜色设置不同颜色
+        color: function(p){
+          return colors[p.dataIndex]
+        }
+      }
+
+	}],
+
+};
+
+myChart.setOption(option);
+</script>

@@ -1,0 +1,120 @@
+<script>
+//近6个月监督事件趋
+var smLine = echarts.init(document.getElementById('sixMonthLife'));
+optionsm = {
+	title:{
+		text:'',
+		textStyle:{
+			color:'#ffffff'
+		},
+	},
+    tooltip: {
+        trigger: 'axis'
+    },
+	calculable:true,
+    legend: {
+		padding:[15,0,0,0],
+		icon: 'rectangle',
+        data: ['全局组织生活次数', '"党支部\'三会一课\'次数"'],
+        textStyle:{
+             fontSize: 12,
+             color: '#eeeeee'
+        }
+    },
+
+    grid: {
+        left: '3%',
+        right: '3%',
+        bottom: '10%',
+        containLabel: true,
+        
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['4月', '5月', '6月', '7月', '8月', '9月'],
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc',
+				fontSize:10
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#263465',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#263465",
+             }
+        }
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc',
+				fontSize:10
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#263465',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#263465",
+             }
+        }
+    },
+    series: [
+        {
+            name: '全局组织生活次数',
+            type: 'line',
+            smooth: true,
+            symbolSize:8,
+            stack: '',
+            data: [120, 132, 101, 134, 190, 170],
+            color:'#ff0000', 
+            areaStyle:{
+				color: 'rgba(0,0,0,0)' 
+			},
+            itemStyle:{
+                normal:{
+                    lineStyle:{
+                        width:2
+                    }
+                }
+            }
+        },
+        {
+            name: '"党支部\'三会一课\'次数"',
+            type: 'line',
+            smooth: true,
+            symbolSize:8,
+            stack: '',
+            data: [34, 60, 11, 44, 120, 50],
+			color:'#0066cc',
+            areaStyle:{
+				color: 'rgba(0,0,0,0)' 
+			},
+            itemStyle:{
+                normal:{
+                    lineStyle:{
+						type:'dashed',
+                        width:2
+                    }
+                }
+            }
+        }
+    ]
+	
+};
+smLine.setOption(optionsm);
+</script>

@@ -1,0 +1,213 @@
+<script>
+// 初始化图表 - 使用更具体的ID选择器
+const healthAbnormalChartDom = document.getElementById('lineT');
+const healthAbnormalChart = echarts.init(healthAbnormalChartDom);
+let healthAbnormalOption;
+
+// 常量定义 - 添加业务前缀
+const TOTAL_MEDICAL_CHECKUP_PEOPLE = 1200; // 总体检人数
+const TOTAL_MEDICAL_CHECKUP_PEOPLE_LAST_YEAR = 1100; // 去年总体检人数
+const HEALTH_ABNORMAL_THRESHOLD_RATE = 20; // 异常预警阈值百分比
+
+// 健康异常项数据 - 包含今年和去年数据
+const healthAbnormalRawData = {
+    abnormalTypes: ['血压偏高', '血脂异常', '血糖偏高', '尿酸偏高', '囊肿结节'],
+    thisYearCounts: [220, 336, 180, 156, 96],  // 今年异常人数
+    lastYearCounts: [190, 300, 160, 130, 110]  // 去年异常人数
+};
+
+// 处理数据 - 带业务前缀的处理函数和变量
+function processHealthAbnormalData(rawData) {
+    return rawData.abnormalTypes
+        .map((type, index) => {
+            const thisYearCount = rawData.thisYearCounts[index];
+            const lastYearCount = rawData.lastYearCounts[index];
+            const thisYearPercentage = (thisYearCount / TOTAL_MEDICAL_CHECKUP_PEOPLE * 100).toFixed(1);
+            const lastYearPercentage = (lastYearCount / TOTAL_MEDICAL_CHECKUP_PEOPLE_LAST_YEAR * 100).toFixed(1);
+            const changeRate = ((thisYearCount - lastYearCount) / lastYearCount * 100).toFixed(1);
+            
+            return {
+                type,
+                thisYear: {
+                    count: thisYearCount,
+                    percentage: thisYearPercentage,
+                    isHighRisk: thisYearPercentage >= HEALTH_ABNORMAL_THRESHOLD_RATE
+                },
+                lastYear: {
+                    count: lastYearCount,
+                    percentage: lastYearPercentage,
+                    isHighRisk: lastYearPercentage >= HEALTH_ABNORMAL_THRESHOLD_RATE
+                },
+                changeRate: changeRate // 与去年相比变化率
+            };
+        })
+        .sort((a, b) => b.thisYear.count - a.thisYear.count);
+}
+
+// 处理后的数据 - 更具体的变量名
+const healthAbnormalProcessedData = processHealthAbnormalData(healthAbnormalRawData);
+
+// 提取展示数据 - 带业务标识的数组名
+const healthAbnormalTypeLabels = healthAbnormalProcessedData.map(item => item.type);
+const thisYearPersonNumbers = healthAbnormalProcessedData.map(item => item.thisYear.count);
+const lastYearPersonNumbers = healthAbnormalProcessedData.map(item => item.lastYear.count);
+const thisYearRiskFlags = healthAbnormalProcessedData.map(item => item.thisYear.isHighRisk);
+const lastYearRiskFlags = healthAbnormalProcessedData.map(item => item.lastYear.isHighRisk);
+
+// 配置图表选项 - 唯一的选项变量名
+healthAbnormalOption = {
+    title: {
+        text: '',
+        left: 'left',
+        textStyle: {
+            fontSize: 16,
+            color: '#ddd'
+        }
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        },
+        formatter: function(params) {
+            const index = params[0].dataIndex;
+            const item = healthAbnormalProcessedData[index];
+            let changeDesc = '';
+            
+            // 处理变化率显示
+            if (parseFloat(item.changeRate) > 0) {
+                changeDesc = `<span style="color:#F5222D;">↑${item.changeRate}%</span>`;
+            } else if (parseFloat(item.changeRate) < 0) {
+                changeDesc = `<span style="color:#52C41A;">↓${Math.abs(item.changeRate)}%</span>`;
+            } else {
+                changeDesc = '持平';
+            }
+            
+            let tip = `${item.type}<br/>` +
+                      `今年: ${item.thisYear.count}人 (${item.thisYear.percentage}%)<br/>` +
+                      `去年: ${item.lastYear.count}人 (${item.lastYear.percentage}%)<br/>` +
+                      `变化率: ${changeDesc}<br/>`;
+            
+            // 风险提示
+            if (item.thisYear.isHighRisk) {
+                tip += '<span style="color:#F5222D;">需重点健康干预</span>';
+            }
+            return tip;
+        }
+    },
+    legend: {
+        data: ['2025', '2024'],
+        textStyle: {
+            color: '#ddd'
+        },
+        top: 10
+    },
+    grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        top: '20%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: healthAbnormalTypeLabels,
+            axisLabel: {
+                rotate: 0,
+                interval: 0,
+                textStyle: {
+                    fontSize: 12,
+                    color: '#ddd'
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#263465',
+                    width: 1
+                }
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: "#263465",
+                }
+            }
+
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            name: '异常人数',
+            nameLocation: 'middle',
+            nameGap: 40,
+            axisLabel: {
+                textStyle: {
+                    fontSize: 12,
+                    color: '#888'
+                }
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#263465',
+                    width: 1
+                }
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: "#263465",
+                }
+            }
+        }
+    ],
+    series: [
+        {
+            name: '2024',
+            type: 'bar',
+            data: thisYearPersonNumbers,
+            itemStyle: {
+                color: function(params) {
+                    return thisYearRiskFlags[params.dataIndex] ? '#F5222D' : '#165DFF';
+                },
+                borderRadius: [4, 4, 0, 0]
+            },
+            label: {
+                show: true,
+                position: 'top',
+                formatter: '{c}人',
+                textStyle: {
+                    color: '#ddd'
+                }
+            },
+            barWidth: 15
+        },
+        {
+            name: '2024',
+            type: 'bar',
+            data: lastYearPersonNumbers,
+            itemStyle: {
+                color: function(params) {
+                    return lastYearRiskFlags[params.dataIndex] ? '#FA8C16' : '#40A9FF';
+                },
+                borderRadius: [4, 4, 0, 0]
+            },
+            label: {
+                show: true,
+                position: 'top',
+                formatter: '{c}人',
+                textStyle: {
+                    color: '#ddd'
+                }
+            },
+            barWidth: 15
+        }
+    ]
+};
+
+// 设置图表选项
+healthAbnormalChart.setOption(healthAbnormalOption);
+
+
+</script>

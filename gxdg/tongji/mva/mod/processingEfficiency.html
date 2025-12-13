@@ -1,0 +1,163 @@
+<script>
+// 初始化图表
+const chartDom = document.getElementById('daChart');
+const myChartDa = echarts.init(chartDom);
+let optionDa;
+
+// 模拟数据
+const data = {
+    // 申报类型
+    categories: ['节日慰问', '大病互助', '生日福利', '文体活动补贴', '困难补助', '其他补贴'],
+    // 批复金额（元）
+    amounts: [16000, 12000, 5000, 23000, 25000, 30000],
+    // 申请数与通过数
+    applications: [
+        { apply: 280, pass: 275 },  // 节日慰问
+        { apply: 120, pass: 110 },  // 大病互助
+        { apply: 350, pass: 350 },  // 生日福利
+        { apply: 95, pass: 90 },    // 文体活动补贴
+        { apply: 86, pass: 72 },    // 困难补助
+        { apply: 45, pass: 38 }     // 其他补贴
+    ]
+};
+
+// 准备数据 - 按金额降序排列
+const sortedData = data.categories
+    .map((category, index) => ({
+        category,
+        amount: data.amounts[index],
+        apply: data.applications[index].apply,
+        pass: data.applications[index].pass
+    }))
+    .sort((a, b) => a.amount - b.amount);
+
+// 提取排序后的数据
+const categories = sortedData.map(item => item.category);
+const amounts = sortedData.map(item => item.amount);
+const applicationInfo = sortedData.map(item => 
+    `申请 ${item.apply} 件 / 通过 ${item.pass} 件`
+);
+
+// 配置图表选项
+optionDa = {
+    title: {
+        text: '',
+        left: 'left',
+        textStyle: {
+            fontSize: 16,
+			color:'#dddddd'
+        }
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        },
+        formatter: function(params) {
+            const index = params[0].dataIndex;
+            return `${categories[index]}<br/>` +
+                   `批复金额: ${amounts[index].toLocaleString()} 元<br/>` +
+                   `申请数: ${sortedData[index].apply} 件<br/>` +
+                   `通过数: ${sortedData[index].pass} 件<br/>` +
+                   `通过率: ${((sortedData[index].pass / sortedData[index].apply) * 100).toFixed(1)}%`;
+        }
+    },
+    grid: {
+        left: '5%',
+        right: '25%',
+        bottom: '5%',  // 增加底部空间容纳标注
+        top: '5%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'value',
+            name: '批复金额 (元)',
+            nameLocation: 'middle',
+            nameGap: 30,
+            axisLabel: {
+                formatter: function(value) {
+                    // 格式化金额显示
+                    if (value >= 10000) {
+                        return (value / 10000).toFixed(1) + '万';
+                    }
+                    return value;
+                },
+				color:'#ddd'
+            }
+        }
+    ],
+    yAxis: [
+        {
+            type: 'category',
+            data: categories,
+            axisLabel: {
+                // 只显示申报类型名称
+                formatter: function(value) {
+                    return value;
+                },
+                fontSize: 12,
+				color:'#ddd',
+                fontWeight: 'bold'
+            }
+        }
+    ],
+    series: [
+        {
+            name: '批复金额',
+            type: 'bar',
+            data: amounts,
+            itemStyle: {
+                color: function(params) {
+                    // 为不同类型设置不同颜色
+                    const colors = ['#165DFF', '#36CFC9', '#722ED1', '#FAAD14', '#F5222D', '#8C8C8C'];
+                    return colors[params.dataIndex % colors.length];
+                },
+                borderRadius: [0, 4, 4, 0]
+            },
+            label: {
+                show: true,
+                position: 'right',  // 金额显示在柱子右侧
+                formatter: function(params) {
+                    // 在柱状图右侧显示金额
+                    if (params.value >= 10000) {
+                        return (params.value / 10000).toFixed(1) + '万';
+                    }
+                    return params.value;
+                },
+                textStyle: {
+                    fontWeight: '500'
+                }
+            },
+            // 添加标注在柱子下方
+            emphasis: {
+                focus: 'series'
+            },
+            // 新增：在柱子下方显示申请数/通过数
+            markLine: {
+                symbol: 'none',
+                label: {
+                    show: true,
+                    position: 'end',
+                    formatter: function(params) {
+                        return applicationInfo[params.dataIndex];
+                    },
+                    color: '#ddd',
+                    fontSize: 11,
+                    offset: [0, 20]  // 位置调整，确保在柱子下方
+                },
+                data: sortedData.map((item, index) => ({
+                    yAxis: index,
+                    lineStyle: {
+                        opacity: 0  // 隐藏标线，只显示文字
+                    }
+                }))
+            },
+            barWidth: 8
+        }
+    ]
+};
+
+// 设置图表选项
+myChartDa.setOption(optionDa);
+</script>

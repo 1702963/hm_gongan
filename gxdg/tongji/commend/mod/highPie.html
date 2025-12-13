@@ -1,0 +1,116 @@
+<script>
+
+var DChart = echarts.init(document.getElementById('hDon'));
+// 全局队伍政治面貌占比数据
+var globalRatios = {
+    '党员': 65,
+    '团员': 20,
+    '群众': 10,
+    '其他': 5
+};
+
+var optionD = {
+	title:{
+		text:'',
+		textStyle:{
+			color:'#ffffff'
+		},
+		top: 10
+	},
+	tooltip: {
+		trigger: 'item',
+		// 自定义tooltip内容，包含全局占比与表彰占比的对比
+		formatter: function(params) {
+			// 计算表彰人员中当前类别的占比
+			var total = optionD.series[0].data.reduce((sum, item) => sum + item.value, 0);
+			var awardRatio = Math.round((params.value / total) * 100);
+			
+			// 获取全局占比
+			var globalRatio = globalRatios[params.name] || 0;
+			
+			// 构建tooltip内容
+			return `
+				${params.name}<br/>
+				表彰人数: ${params.value}<br/>
+				表彰占比: ${awardRatio}%<br/>
+				全局占比: ${globalRatio}%<br/>
+				差异: ${awardRatio - globalRatio >= 0 ? '+' : ''}${awardRatio - globalRatio}%
+			`;
+		}
+	},
+	legend: {
+		orient: 'vertical',
+		right: 50,           
+		top: 'center', 
+		padding:[50,0,30,0],
+		textStyle: {
+			fontSize: 12,
+			color: '#ffffff'
+		},
+		itemWidth: 12,
+		itemHeight: 12,
+		itemGap:20
+	},
+	series: [
+		{
+			name: '表彰人员政治面貌分布',
+			type: 'pie',
+			radius: ['40%', '70%'],  // 环形图内外半径
+			center: ['35%', '50%'],  // 图表中心位置
+			avoidLabelOverlap: false,
+			itemStyle: {
+				borderRadius: 8,
+			},
+			// 扇区上显示百分比
+			label: {
+				show: true,
+				position: 'inside',  // 显示在扇区内部
+				formatter: '{b}占比\n{d}%',   // 显示百分比
+				fontSize: 12,
+				fontWeight: '500',
+				color:'#ffffff'
+			},
+			// 隐藏标签连接线
+			labelLine: {
+				show: false,
+				length: 15,
+				length2: 10,
+				lineStyle: {
+					width: 1
+				}
+			},
+			emphasis: {
+				label: {
+					show: true,
+					fontSize: 12,
+					fontWeight: 'bold'
+				}
+			},
+			data: [
+				{ value: 65, name: '党员' },
+				{ value: 40, name: '团员' },
+				{ value: 25, name: '群众' },
+				{ value: 12, name: '其他' }
+			]
+		}
+	],
+	graphic:{
+		type:'text',
+		left:125,
+		top:140,
+		style:{
+			text:'',
+			textAlign:'center',
+			fill:'#ffffff',
+			fontSize:16
+		}
+	},
+	color: [
+		'#f5222d',  // 党员 - 红色
+		'#52c41a',  // 团员 - 绿色
+		'#faad14',  // 群众 - 黄色
+		'#1890ff'   // 其他 - 蓝色
+	]
+};
+DChart.setOption(optionD);
+</script>

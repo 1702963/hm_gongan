@@ -1,0 +1,166 @@
+<script>
+var EChart = echarts.init(document.getElementById('xDon'));
+var optionE = {
+	title:{
+		text:'',
+		textStyle:{
+			color:'#ffffff'
+		},
+	},
+    legend: {
+         textStyle:{
+            fontSize: 14,
+            color: '#eeeeee',
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        padding:[10,0,0,0],
+    },
+    grid: {
+        left: '3%',
+        right: '3%',
+        bottom: '15%',
+		top:'15%',
+        containLabel: true,
+        
+    },
+    tooltip: {
+		trigger: 'axis',	
+	},
+    dataset: {
+        source: [
+            ['product', '待审核', '已通过' , '已驳回'],
+            ['网安大队', 85,55,10],
+            ['治安大队', 73,46,15],
+            ['警务督察大队', 65,42,12],
+            ['政治处', 75,50,16],
+        ]
+    },
+    xAxis: {
+        type: 'category',
+		barCategoryGap:10,
+        axisLabel:{
+        
+        	interval:0,
+			formatter:function(value) {
+							var ret = "";
+							var maxLength = 4;
+							var valLength = value.length;
+							var rowN = Math.ceil(valLength / maxLength); 
+							if (rowN > 1) {
+								for (var i = 0; i < rowN; i++) {
+									var temp = "";
+									var start = i * maxLength;
+									var end = start + maxLength;
+									temp = value.substring(start, end) + "\n";
+									ret += temp;
+								}
+								return ret;
+							} else {
+								return value;
+							}
+				},
+            
+            textStyle:{
+                color:'#ddd',
+				fontSize: 12,
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    yAxis: {
+        axisLabel:{
+            textStyle:{
+                color:'#ddd'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#v',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+        {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+			    normal:{
+					color:'#238bff',
+					label:{
+						show:true,
+						position:'top',
+						textStyle:{
+							color:'#238bff',
+							fontSize:12,
+							fontWeight:'normal'
+						}
+					},
+				},
+			}
+        },
+        {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+			    normal:{
+					color:'#4ae299',
+					label:{
+						show:true,
+						position:'top',
+						textStyle:{
+							color:'#4ae299',
+							fontSize:12,
+							fontWeight:'normal'
+						}
+					}
+				},
+			}
+        },
+        {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+			    normal:{
+					color:'#ff6600',
+					label:{
+						show:true,
+						position:'top',
+						textStyle:{
+							color:'#ff6600',
+							fontSize:12,
+							fontWeight:'normal'
+						}
+					}
+				},
+			}
+        }
+
+    ]
+};
+EChart.setOption(optionE);
+// 监听窗口大小变化，重绘图表
+window.addEventListener('resize', function() {
+  EChart.resize();
+});
+</script>

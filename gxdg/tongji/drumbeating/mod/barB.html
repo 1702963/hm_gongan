@@ -1,0 +1,144 @@
+<script>
+// 初始化图表容器（低版本ECharts基础DOM获取）
+var chartDom = document.getElementById('lineB');
+var myChart = echarts.init(chartDom);
+var option = {};
+
+// 1. 基础数据：各审核时长区间的审核件数 + 超期单位信息
+var durationData = {
+    // X轴：审核时长区间（固定顺序）
+    intervals: ['≤1 天', '1-3 天', '3-7 天', '>7 天'],
+    // Y轴：对应区间的审核件数
+    count: [128, 95, 42, 18],
+    // 超期审核关联信息（>3天的区间需标注）
+    overdueInfo: {
+        '3-7 天': '超期审核主要集中在网安支队',
+        '>7 天': '超期审核主要集中在指挥中心'
+    }
+};
+
+// 2. 自定义颜色函数（实现预警逻辑：>3天黄、>7天红）
+function getBarColor(interval) {
+    switch (interval) {
+        case '3-7 天':
+            return '#faad14'; // 超3天：黄色预警
+        case '>7 天':
+            return '#f5222d'; // 超7天：红色预警
+        default:
+            return '#165DFF'; // 正常时长（≤3天）：蓝色
+    }
+}
+
+// 3. 重组数据（适配低版本series格式，关联区间与颜色）
+var seriesData = durationData.intervals.map((interval, index) => ({
+    name: interval, // 时长区间名称（用于匹配颜色和预警信息）
+    value: durationData.count[index], // 审核件数
+    itemStyle: {
+        color: getBarColor(interval) // 提前绑定颜色，低版本渲染更稳定
+    }
+}));
+
+// 4. 低版本ECharts配置（避免高版本API，保证兼容性）
+option = {
+    title: {
+        text: '',
+        textStyle: {
+            color: '#ccc',
+            fontSize: 16,
+            fontWeight: 'bold'
+        },
+        left: 'left',
+        top: 10
+    },
+    tooltip: {
+        trigger: 'item', // 按单个柱子触发，精准显示区间信息
+        axisPointer: {
+            type: 'shadow' // 竖向柱状图用阴影指针，低版本响应更稳定
+        },
+        backgroundColor: 'rgba(255,255,255,0.9)',
+        borderColor: '#ddd',
+        borderWidth: 1,
+        textStyle: { color: '#333' },
+        // 显示审核件数 + 超期标注（仅超3天区间显示）
+        formatter: function(params) {
+            var baseInfo = `${params.name}<br/>审核件数：${params.value} 件`;
+            // 若当前区间有超期信息，追加红色标注
+            if (durationData.overdueInfo[params.name]) {
+                return `${baseInfo}<br/><span style="color:#f5222d;">${durationData.overdueInfo[params.name]}</span>`;
+            }
+            return baseInfo;
+        }
+    },
+    legend: {
+        show: false // 无需图例，区间信息直接通过X轴和颜色区分
+    },
+    grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%', // 底部预留X轴文字空间（避免区间名称被截断）
+        top: '20%',
+        containLabel: true // 低版本必须开启，保证标签不溢出容器
+    },
+    // X轴：审核时长区间（竖向柱状图的"分类轴"）
+    xAxis: [
+        {
+            type: 'category',
+            data: durationData.intervals,
+            axisLabel: {
+                color: '#ccc',
+                fontSize: 12,
+                rotate: 0, // 区间名称简短，无需旋转
+                width: 80,
+                overflow: 'ellipsis'
+            },
+            axisLine: {
+                lineStyle: { color: '#666' } // 低版本需显式设置轴线颜色
+            },
+            splitLine: {
+                show: false // 隐藏X轴网格线，避免与柱子重叠
+            }
+        }
+    ],
+    // Y轴：审核件数（竖向柱状图的"数值轴"）
+    yAxis: [
+        {
+            type: 'value',
+            axisLabel: {
+                color: '#ccc',
+                fontSize: 11,
+                formatter: '{value}' // 显式标注"件"，避免歧义
+            },
+            axisLine: {
+                lineStyle: { color: '#666' }
+            },
+            splitLine: {
+                lineStyle: { color: '#666' } // 浅灰色网格线，辅助读数
+            },
+            min: 0 // Y轴从0开始，保证件数对比的真实性
+        }
+    ],
+    series: [
+        // 核心系列：审核时长区间件数（含预警颜色）
+        {
+            name: '审核件数',
+            type: 'bar',
+            barWidth: 20, // 柱子宽度，保证区间区分清晰
+            data: seriesData, // 已关联颜色的数据集
+            // 柱子顶部显示件数（低版本直接用label，不依赖高级属性）
+            label: {
+                show: true,
+                position: 'top', // 数值在柱子顶部，便于读取
+                textStyle: {
+                    color: '#ddd',
+                    fontSize: 12,
+                    fontWeight: '500'
+                },
+                formatter: '{c} 篇' // 显示"XX 件"格式
+            }
+        }
+    ]
+};
+
+// 5. 渲染图表（低版本基础用法，无额外参数）
+myChart.setOption(option);
+</script>

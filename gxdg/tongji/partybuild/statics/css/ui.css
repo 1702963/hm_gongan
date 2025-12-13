@@ -1,0 +1,146 @@
+@charset "utf-8";
+/* ui补丁 */
+html {
+	/*渐变开始*/
+	--linear-begin:#ffffff;
+	--linear-end:#83efff;
+	/*模块容器边框色*/
+	--mod-border:#213556;
+	/*模块容器背景色*/
+	--mod-bgcolor:rgba(0,100,250,0.1);
+}
+:root {
+	/*渐变开始*/
+	--linear-begin:#ffffff;
+	--linear-end:#83efff;
+	/*模块容器边框色*/
+	--mod-border:#213556;
+	/*模块容器背景色*/
+	--mod-bgcolor:rgba(0,100,250,0.1);
+}
+
+body { 
+    /*background:url(../images/bg.gif) repeat;*/
+	background-image:linear-gradient(rgba(30, 41, 59, 0.3) 1px, transparent 1px),
+					 linear-gradient(90deg, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
+	background-size:20px 20px
+}
+
+/*顶部标题背景*/
+#header {
+	width:100%;
+	height:100px;
+	background:url(../images/head.png) center 0 no-repeat;
+	text-align:center;
+	color:#fff;
+	font-size:30px;
+	font-weight:900;
+	line-height:80px;
+	position:relative
+}
+/*顶部标题文字*/
+#header span {
+	background: linear-gradient(to bottom, var(--linear-begin), var(--linear-end)); 
+	-webkit-background-clip: text; 
+	color: transparent;  
+	background-clip: text;
+	letter-spacing:3px
+}
+/*模块标题*/
+.conTitle {
+	background:url(../images/title.png) no-repeat;
+}
+.conTitle span {
+	font-size:16px;  
+	background: linear-gradient(to bottom, var(--linear-begin), var(--linear-end)); 
+	-webkit-background-clip: text; 
+    color: transparent;  
+	background-clip: text; 
+	font-weight:bold 
+}
+
+.topCon , .cCenter , .highKen , .bLeft , #xDcon  {
+	background:rgba(0,100,250,0.2);
+	border:1px solid #213556
+}
+.video-background {
+     max-width: none !important;
+     border: none; 
+	 object-fit: cover;
+	 background-size: cover; 
+	 opacity: 1; 
+	 width: 100%;
+	 height: 100%;
+     position: absolute; 
+	 left: 0px; 
+	 top: 0%; 
+	 display: block; 
+	 object-position: center bottom !important;
+     z-index:0; 
+	 opacity:0.1;
+	 filter: brightness(150%)
+}
+/* 全局滚动条样式 - 暗色调灰蓝色主题 */
+/* 适配 WebKit 内核浏览器 (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 5px; /* 垂直滚动条宽度 */
+  height: 5px; /* 水平滚动条高度 */
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+  background: #1e293b; /* 暗色调轨道背景 */
+  border-radius: 4px; /* 轨道圆角 */
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  background: #475569; /* 灰蓝色滑块基础色 */
+  border-radius: 4px; /* 滑块圆角 */
+  transition: background 0.3s ease; /* 过渡动画 */
+}
+
+/* 滑块悬停状态 */
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b; /* 浅化灰蓝色 */
+}
+
+/* 滑块激活状态（点击拖动时） */
+::-webkit-scrollbar-thumb:active {
+  background: #94a3b8; /* 高亮灰蓝色 */
+}
+
+/* 滚动条角落（水平和垂直滚动条交汇处） */
+::-webkit-scrollbar-corner {
+  background: #1e293b; /* 与轨道同色 */
+}
+
+/* 适配 Firefox 浏览器 */
+* {
+  scrollbar-width: thin; /* 滚动条宽度：thin/none/auto */
+  scrollbar-color: #475569 #1e293b; /* 滑块颜色 轨道颜色 */
+}
+
+/* 可选：为特定容器定制滚动条（如需局部使用） */
+.custom-scrollbar {
+  overflow-y: auto;
+  max-height: 400px; /* 示例高度 */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #27374d; /* 稍浅的暗色调轨道 */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #536989;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #748da6;
+}

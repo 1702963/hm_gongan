@@ -1,0 +1,109 @@
+<script>
+var DeChart = echarts.init(document.getElementById('eduPie'));
+
+// 为每个数据项添加参与率和未参与人数信息
+var pieData = [
+    { value: 15, name: '红色教育', participation: 95, notParticipated: 8 },
+    { value: 40, name: '志愿服务', participation: 88, notParticipated: 23 },
+    { value: 25, name: '警示教育', participation: 92, notParticipated: 12 }
+];
+
+// 自定义图例格式化函数
+function legendFormatter(name) {
+    const item = pieData.find(item => item.name === name);
+    if (!item) return name;
+    return `{a|${name}}\n{b|未参与人数 ${item.notParticipated} 人}`;
+}
+
+var optionDe = {
+    title:{
+        text:'',
+        textStyle:{
+            color:'#ffffff',
+			fontSize:16
+        },
+    },
+    tooltip: {
+        trigger: 'item',
+        // 修改formatter为函数形式，正确获取自定义数据
+        formatter: function(params) {
+            return `${params.seriesName} <br/>${params.name}: ${params.value} (${params.percent}%)<br/>参与率: ${params.data.participation}%<br/>未参与: ${params.data.notParticipated}人`;
+        }
+    },
+    legend: {
+        orient: 'vertical',
+        right: 30,           
+        top: 'top', 
+        padding:[20,0,30,0],
+        textStyle: {
+            fontSize: 12,
+            rich: {
+                a: {
+                    color: function(params) {
+                        const item = pieData.find(item => item.name === params.name);
+                        return item && item.participation < 90 ? '#faad14' : '#ffffff';
+                    },
+                    lineHeight: 20
+                },
+                b: {
+                    color: '#cccccc',
+                    fontSize: 10,
+                    lineHeight: 16
+                }
+            }
+        },
+        formatter: legendFormatter,
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 20
+    },
+    series: [
+        {
+            name: '活动类型',
+            type: 'pie',
+            radius: ['40%', '60%'],
+            center: ['25%', '45%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 8,
+            },
+            label: {
+                show: false,
+                position: 'inside',
+                formatter: '{b}\n{c}件({d}%)',
+                fontSize: 14,
+                fontWeight: '500',
+                color:'#ffffff'
+            },
+            labelLine: {
+                show: false
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                }
+            },
+            data: pieData
+        }
+    ],
+    graphic:{
+        type:'text',
+        left:125,
+        top:140,
+        style:{
+            text:'',
+            textAlign:'center',
+            fill:'#ffffff',
+            fontSize:16
+        }
+    },
+    color: [
+        '#f5222d', '#faad14','#52c41a', '#8884d8', 
+    ]
+};
+
+DeChart.setOption(optionDe);
+
+</script>

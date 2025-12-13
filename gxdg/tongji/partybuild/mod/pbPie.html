@@ -1,0 +1,98 @@
+<script>
+
+var pbChart = echarts.init(document.getElementById('pbPie'));
+
+// 数据处理：计算党员总人数及比例
+var data = [
+    { value: 2, name: '5年以下' },
+    { value: 10, name: '5-10年' },
+    { value: 15, name: '10-20年' },
+    { value: 8, name: '20年以上' }
+];
+
+
+var optionpb = {
+    title: {
+        text: '',
+        textStyle: {
+            color: '#ffffff'
+        },
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        right: 30,           
+        top: 'center', 
+        padding: [50, 0, 30, 0],
+        textStyle: {
+            fontSize: 12,
+            color: '#ffffff'
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 20
+    },
+    series: [
+        {
+            name: '党龄结构',
+            type: 'pie',
+            radius: ['40%', '60%'],  // 环形图内外半径
+            center: ['25%', '45%'],  // 图表中心位置
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 8,
+            },
+            label: {
+                show: false,
+                position: 'inside',
+                formatter: '{b}\n{c}件({d}%)',
+                fontSize: 14,
+                fontWeight: '500',
+                color: '#ffffff'
+            },
+            labelLine: {
+                show: false,
+                length: 15,
+                length2: 10,
+                lineStyle: {
+                    width: 1
+                }
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                }
+            },
+            data: data
+        }
+    ],
+    // 添加党员比例标注
+    graphic: {
+        type: 'text',
+        left:0,
+        top: 5,
+        style: {
+            text: '2025/10月全局共有'+15+'名党员迎来政治生日', // 显示党员比例
+            textAlign: 'center',
+            fill: '#ffffff',
+            fontSize: 14,
+            fontWeight: 'bold' // 加粗突出显示
+        }
+    },
+    color: [
+        '#f5222d',
+        '#1890ff',
+        '#52c41a',
+        '#8884d8',
+        '#faad14',
+    ]
+};
+
+pbChart.setOption(optionpb);
+
+</script>

@@ -1,0 +1,198 @@
+<script>
+//近6个月监督事件趋
+var myLine = echarts.init(document.getElementById('lineP'));
+option = {
+	title:{
+		text:'',
+		textStyle:{
+			color:'#ffffff'
+		},
+	},
+    tooltip: {
+        trigger: 'axis'
+    },
+	calculable:true,
+    legend: {
+		padding:[30,0,0,0],
+		icon: 'rectangle',
+        data: ['民警奖励', '文明标兵', '微笑之星', '优秀网格员'],
+        textStyle:{
+             fontSize: 12,
+             color: '#eeeeee'
+        }
+    },
+
+    grid: {
+        left: '3%',
+        right: '3%',
+        bottom: '3%',
+        containLabel: true,
+        
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['5月', '6月', '7月', '8月', '9月', '10月'],
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc',
+				fontSize:10
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc',
+				fontSize:10
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    series: [
+        {
+            name: '民警奖励',
+            type: 'line',
+            smooth: true,
+            symbolSize:8,
+            stack: '',
+            data: [120, 132, 191, 134, 140, 170],
+			markPoint:{
+				data:[
+					{
+						type:'max',
+						symbolSize:30,
+						label:{
+							show:true,
+							formatter:function(param){
+								 return '9月民警奖励激增\n因窗口服务评比';
+							},
+							position:'bottom',
+							textStyle:{
+								color:'#333333',
+								backgroundColor:'rgba(255,255,255,0.5)',
+								padding:[5,5,5,5]
+							}
+						}
+					}
+				]
+			},
+            color:'#52c41a', 
+            areaStyle:{
+				color: 'rgba(0,0,0,0)' 
+			},
+            itemStyle:{
+                normal:{
+                    lineStyle:{
+                        width:2
+                    }
+                }
+            }
+        },
+        {
+            name: '文明标兵',
+            type: 'line',
+            smooth: true,
+            symbolSize:8,
+            stack: '',
+            data: [34, 60, 11, 44, 120, 50],
+			markPoint:{
+				data:[
+					{
+						type:'max',
+						symbolSize:30,
+						label:{
+							show:true,
+							formatter:function(param){
+								 return '9月文明标兵激增\n因窗口服务评比';
+							},
+							position:'bottom',
+							textStyle:{
+								color:'#333333',
+								backgroundColor:'rgba(255,255,255,0.5)',
+								padding:[5,5,5,5]
+							}
+						}
+					}
+				]
+			},
+			color:'#faad14',
+            areaStyle:{
+				color: 'rgba(0,0,0,0)' 
+			},
+            itemStyle:{
+                normal:{
+                    lineStyle:{
+						type:'dashed',
+                        width:2
+                    }
+                }
+            }
+        },
+        {
+            name: '微笑之星',
+            type: 'line',
+            smooth: true,
+            symbolSize:8,
+            stack: '',
+            data: [180, 162, 131, 132, 150, 170],
+            color:'#f5222d', 
+            areaStyle:{
+				color: 'rgba(0,0,0,0)' 
+			},
+            itemStyle:{
+                normal:{
+                    lineStyle:{
+                        width:2
+                    }
+                }
+            }
+        },
+        {
+            name: '优秀网格员',
+            type: 'line',
+            smooth: true,
+            symbolSize:8,
+            stack: '',
+            data: [140, 122, 131, 111, 130, 160],
+            color:'#1890ff', 
+            areaStyle:{
+				color: 'rgba(0,0,0,0)' 
+			},
+            itemStyle:{
+                normal:{
+                    lineStyle:{
+                        width:2
+                    }
+                }
+            }
+        }
+    ]
+	
+};
+myLine.setOption(option);
+</script>

@@ -1,0 +1,410 @@
+<?php
+defined('IN_ADMIN') or exit('No permission resources.');
+include $this->admin_tpl('header_new', 'admin');
+
+$sxty[1]="护照";
+$sxty[2]="边境通行证";
+$sxty[3]="本人参与盈利情况";
+$sxty[4]="经商办企";
+$sxty[5]="家庭成员";
+$sxty[6]="犯罪违法情况";
+$sxty[7]="工资";
+$sxty[8]="房产";
+$sxty[9]="机动车";
+$sxty[10]="股票";
+$sxty[11]="证券基金";
+$sxty[12]="投资型保险";
+$sxty[13]="投资情况";
+
+
+		$page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+		$this->db->table_name = 'v9_renshi_sx';
+		$where=" isok=1 and spid=0 ";
+		
+if(intval($_GET['dwid'])>0){
+	 $where.=" and dwid=".intval($_GET['dwid']);
+	}	
+		
+		$orders=" id desc ";
+		$sxlist = $this->db->listinfo($where,$order = $orders,$page, $pages = '12');
+		$pages = $this->db->pages;
+?>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+	//if(window.top.$("#current_pos").data('clicknum')==1 || window.top.$("#current_pos").data('clicknum')==null) {
+	parent.document.getElementById('display_center_id').style.display='';
+	parent.document.getElementById('center_frame').src = '?m=admin&c=bumen&a=bumen_tree&pc_hash=<?php echo $_SESSION['pc_hash'];?>&mm=renshi&cc=geren&aa=init&status=<?php echo $status;?>';
+	//window.top.$("#current_pos").data('clicknum',0);
+//}
+//-->
+</SCRIPT>
+
+<style type="text/css">
+	html{_overflow-y:scroll}
+</style><style>
+
+.Bar ,.Bars { position: relative; width: 100px; border: 1px solid #B1D632; padding: 1px; } 
+.Bar div,.Bars div { display: block; position: relative;background:#00F; color: #333; height: 20px;line-height: 20px;} 
+.Bars div{ background:#090} 
+.Bar div span,.Bars div span { position: absolute; width: 100px; text-align: center; font-weight: bold; } 
+.cent{ margin:0 auto; width:150px; overflow:hidden} 
+input.button {padding:0 15px;background:#498cd0}
+.explain-col {
+    border: 1px solid #3132a4;
+    zoom: 1;
+    background: #252682;
+    padding: 8px 10px;
+    line-height: 20px;
+	color:#bbd8f1
+}
+/*
+.input-text , select {border:0}
+input[type=submit] {border-radius:3px;transition: all .2s ease-in-out}
+input[type=submit]:hover {background:#06c}
+.input-text , select {border-radius:3px;background:#0e0957;color:#fff}
+input[type=text]:focus {outline:none}
+*/
+</style>
+<link href="statics/css/modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+
+<div class="tableContent">
+
+<div class="pad-lr-10">
+<?php if($_SESSION['roleid']<2){?>
+<form name="searchform" action="" method="post" >
+<input type="hidden" value="renshi" name="m">
+<input type="hidden" value="geren" name="c">
+<input type="hidden" value="init" name="a">
+<input type="hidden" value="<?php echo $status;?>" name="status">
+<div class="explain-col"> 
+  快速工具:                 
+<a href="?m=renshi&c=geren&a=addmenu"><input type="button" value="填报" style="margin-left:10px" class="button" name="dook"></a>  
+		</div>
+</form>
+
+<form name="searchform" method="get" id="daoxls" >
+<input type="hidden" value="renshi" name="m">
+<input type="hidden" value="geren" name="c">
+<input type="hidden" value="init" name="a">
+<input type="hidden" value="<?php echo $status;?>" name="status">
+<div class="explain-col"> 
+<table width="100%" border="0">
+  <tr>
+    <td height="30">
+    	<table width="995" border="0">
+        	<tr>
+            	<td width="120">姓名：
+					<input type="text" value="<?php echo $xingming?>" class="input-text" size="6" name="xingming">
+                </td>
+                <td width="272">单位：
+                    <select name="dwid">
+						<option value="">不限</option> 
+						<?php ksort($bms);foreach($bms as $k=>$v){?>
+						<option value="<?php echo $k?>" <?php if($k==$dwid){?>selected="selected"<?php }?> ><?php echo $v?></option>
+						<?php }?>
+					</select>
+                </td>
+                <td width="246">事项类别：
+					<select name="sex">
+						<option value="">不限</option>
+                      <?php 
+					    foreach($sxty as $k=>$v){
+					  ?>  
+						<option value="<?php echo $k?>"><?php echo $v?></option>
+                      <?php }?>  
+					</select>
+                </td>
+                <td width="339">
+  					<input type="submit" value="查询" class="button" name="dotongji">
+                    <a href="index.php?m=renshi&c=renshi&a=dao2xls&status=<?php echo $status?>&xingming=<?php echo $xingming?>&dwid=<?php echo $dwid?>&sex=<?php echo $sex?>&agetj=<?php echo $_GET['agetj']?>&age1=<?php echo $age1?>&age2=<?php echo $age2?>&xueli=<?php echo $xuelis?>&rjtj=<?php echo $_GET['rjtj']?>&rjtime=<?php echo date("Y-m-d",$rjtimes)?>&rjtime2=<?php echo date("Y-m-d",$rjtimes2)?>&gangwei=<?php echo $gangweis?>&gangweifz=<?php echo $gangweifzs?>&zhiwu=<?php echo $zhiwus?>&cengji=<?php echo $cengjis?>&zzmm=<?php echo $zzmms?>&tuiwu=<?php echo $tuiwus?>&gzz=<?php echo $_GET['gzz']?>&pc_hash=<?php echo $_SESSION['pc_hash']?>" target="_blank"><input type="button" value="导出" class="button" id="daochu" > </a>
+                    <input type="button" value="展《" class="button" id="mianban" onclick="showkuozhan()" style="width:40px; display:none">
+                </td>
+            </tr>
+        </table>
+    
+    </td>
+    </tr>
+  <tr id="kuozhan1" style="display:none">
+    <td height="30">
+    <div style="width:100%;height:15px"></div>
+  政治面貌：<select name="zzmm" style="margin-right:10px">
+         <option value="">不限</option>
+         <?php foreach($zzmm as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$zzmms){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>
+       
+  退役军人：<select name="tuiwu" style="margin-right:10px">
+         <option value="">不限</option>
+         <?php foreach($tuiyi as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$tuiwus){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>  
+           
+  岗位类别：<select name="gangwei" style="margin-right:10px">
+         <option value="">不限</option>
+         <?php foreach($gangwei as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$gangweis){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>
+  辅助岗位：<select name="gangweifz" style="margin-right:10px">
+         <option value="">不限</option>
+         <?php foreach($gangweifz as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$gangweifzs){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>
+  职务：<select name="zhiwu" style="margin-right:10px">
+         <option value="">不限</option>
+         <?php foreach($zhiwu as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$zhiwus){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>
+  层级：<select name="cengji" style="margin-right:10px">
+         <option value="">不限</option>
+         <?php foreach($cengji as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$cengjis){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>
+   电话：<input type="text" value="<?php echo $tel?>" class="input-text" size="12" name="tel" style="margin-right:10px">
+   身高：<select name="shengaotj" style="margin-right:5px">
+            <option value="">不限</option> 
+            <option value="=" <?php if($_GET['shengaotj']=="="){?>selected="selected"<?php }?>>等于</option>
+            <option value="<" <?php if($_GET['shengaotj']=="<"){?>selected="selected"<?php }?>>小于</option>
+            <option value=">" <?php if($_GET['shengaotj']==">"){?>selected="selected"<?php }?>>大于</option>
+           </select><input type="text" value="<?php echo $shengao?>" class="input-text" size="6" name="shengao" style="margin-right:10px"><br><br>
+   体重：<select name="tizhongtj" style="margin-right:5px">
+            <option value="">不限</option> 
+            <option value="=" <?php if($_GET['tizhongtj']=="="){?>selected="selected"<?php }?>>等于</option>
+            <option value="<" <?php if($_GET['tizhongtj']=="<"){?>selected="selected"<?php }?>>小于</option>
+            <option value=">" <?php if($_GET['tizhongtj']==">"){?>selected="selected"<?php }?>>大于</option>
+           </select><input type="text" value="<?php echo $tizhong?>" class="input-text" style="margin-right:10px" size="6" name="tizhong">
+   辅警号：<input type="text" name="gzz" class="input-text" value="<?php echo $_GET['gzz']?>" size="10"/>     
+    </td>
+    </tr>    
+</table>
+	</div>
+</form>
+<?php }?>
+<?php if($_SESSION['roleid']==9){?>
+<form name="searchform" method="get" id="daoxls" >
+<input type="hidden" value="renshi" name="m">
+<input type="hidden" value="renshi" name="c">
+<input type="hidden" value="init" name="a">
+<input type="hidden" value="<?php echo $status;?>" name="status">
+<div class="explain-col"> 
+<table width="100%" border="0">
+  <tr>
+    <td height="30">
+	
+  姓名: <input type="text" value="<?php echo $xingming?>" class="input-text" size="6" name="xingming">&nbsp;&nbsp;
+  单位：<select name="dwid">
+                       
+                       
+                       <option value="<?php echo $_SESSION['bmid'];?>"  ><?php echo $bms[$_SESSION['bmid']]?></option>
+                       
+                      </select>&nbsp;&nbsp;
+  性别: <select name="sex">
+          <option value="">不限</option>
+          <option value="男" <?php if($sex=="男"){?>selected="selected"<?php }?>>男</option>
+          <option value="女" <?php if($sex=="女"){?>selected="selected"<?php }?>>女</option>
+       </select> &nbsp;&nbsp;
+  年龄: <select name="agetj">
+            <option value="">不限</option> 
+            <option value="=" <?php if($_GET['agetj']=="="){?>selected="selected"<?php }?>>等于</option>
+            <option value="<" <?php if($_GET['agetj']=="<"){?>selected="selected"<?php }?>>小于</option>
+            <option value=">" <?php if($_GET['agetj']==">"){?>selected="selected"<?php }?>>大于</option>
+           </select><input type="text" value="<?php echo $age ?>" class="input-text" size="3" name="age">&nbsp;&nbsp; 
+  学历: <select name="xueli">
+         <option value="">不限</option>
+         <?php foreach($xueli as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$xueli){?>selected="selected"<?php }?> ><?php echo $v?></option>
+         <?php }?>
+       </select>
+       &nbsp;&nbsp; 
+  入警时间: <select name="rjtj">
+            <option value="">不限</option>
+            <option value="=" <?php if($_GET['rjtj']=="="){?>selected="selected"<?php }?>>区间</option>
+           </select><?php if(!isset($rjtimes)){$rjtimes=time();} echo form::date('rjtime',date("Y-m-d",$rjtimes),0,0,'false');?>&nbsp;至&nbsp;
+           <?php if(!isset($rjtimes2)){$rjtimes2=time();} echo form::date('rjtime2',date("Y-m-d",$rjtimes2),0,0,'false');?>
+           &nbsp;&nbsp;
+  <input type="submit" value="查询" class="button" name="dotongji">  
+  <a href="index.php?m=renshi&c=renshi&a=dao2xls&status=<?php echo $status?>&xingming=<?php echo $xingming?>&dwid=<?php echo $dwid?>&sex=<?php echo $sex?>&agetj=<?php echo $_GET['agetj']?>&age=<?php echo $age?>&xueli=<?php echo $xuelis?>&rjtj=<?php echo $_GET['rjtj']?>&rjtime=<?php echo date("Y-m-d",$rjtimes)?>&rjtime2=<?php echo date("Y-m-d",$rjtimes2)?>&gangwei=<?php echo $gangweis?>&gangweifz=<?php echo $gangweifzs?>&zhiwu=<?php echo $zhiwus?>&cengji=<?php echo $cengjis?>&zzmm=<?php echo $zzmms?>&tuiwu=<?php echo $tuiwus?>&pc_hash=<?php echo $_SESSION['pc_hash']?>" target="_blank"><input type="button" value="导出" class="button" id="daochu" > </a>  
+  <input type="button" value="展《" class="button" id="mianban" onclick="showkuozhan()" style="width:40px">  
+    </td>
+    </tr>
+  <tr id="kuozhan1" style="display:none">
+    <td height="30">
+  政治面貌: <select name="zzmm">
+         <option value="">不限</option>
+         <?php foreach($zzmm as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$zzmms){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>&nbsp;&nbsp;
+       
+  退役军人: <select name="tuiwu">
+         <option value="">不限</option>
+         <?php foreach($tuiyi as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$tuiwus){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>&nbsp;&nbsp;       
+           
+  岗位类别: <select name="gangwei">
+         <option value="">不限</option>
+         <?php foreach($gangwei as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$gangweis){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>&nbsp;&nbsp;
+  辅助岗位: <select name="gangweifz">
+         <option value="">不限</option>
+         <?php foreach($gangweifz as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$gangweifzs){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select> &nbsp;&nbsp;
+  职务: <select name="zhiwu">
+         <option value="">不限</option>
+         <?php foreach($zhiwu as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$zhiwus){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>&nbsp;&nbsp; 
+  层级: <select name="cengji">
+         <option value="">不限</option>
+         <?php foreach($cengji as $k=>$v){?>
+         <option value="<?php echo $k?>" <?php if($k==$cengjis){?>selected="selected"<?php }?>><?php echo $v?></option>
+         <?php }?>
+       </select>
+       &nbsp;&nbsp; 
+   电话: <input type="text" value="<?php echo $tel?>" class="input-text" size="6" name="tel">&nbsp;&nbsp;
+   身高：<select name="shengaotj">
+            <option value="">不限</option> 
+            <option value="=" <?php if($_GET['shengaotj']=="="){?>selected="selected"<?php }?>>等于</option>
+            <option value="<" <?php if($_GET['shengaotj']=="<"){?>selected="selected"<?php }?>>小于</option>
+            <option value=">" <?php if($_GET['shengaotj']==">"){?>selected="selected"<?php }?>>大于</option>
+           </select><input type="text" value="<?php echo $shengao?>" class="input-text" size="6" name="shengao">&nbsp;&nbsp;
+   体重：<select name="tizhongtj">
+            <option value="">不限</option> 
+            <option value="=" <?php if($_GET['tizhongtj']=="="){?>selected="selected"<?php }?>>等于</option>
+            <option value="<" <?php if($_GET['tizhongtj']=="<"){?>selected="selected"<?php }?>>小于</option>
+            <option value=">" <?php if($_GET['tizhongtj']==">"){?>selected="selected"<?php }?>>大于</option>
+           </select><input type="text" value="<?php echo $tizhong?>" class="input-text" size="6" name="tizhong">&nbsp;&nbsp;         
+    </td>
+    </tr>    
+</table>
+	</div>
+</form>
+<?php }?>
+<div class="table-list">
+<form name="myform" id="myform" action="?m=shenpi&c=shenpi&a=listorder" method="POST">
+<script type="text/javascript" >  
+  $(document).ready(function() {  
+    $(".kotable tbody tr:odd").addClass("odd");//even 奇数行 gt(0)排除第一个
+    $(".kotable tbody tr").mouseover(function() {  
+      $(this).addClass("iover");  
+    }).mouseout(function() {  
+      $(this).removeClass("iover");  
+    });  
+  }  
+)  
+</script> 
+<style type="text/css">
+/*
+table {
+border-collapse:collapse;
+border-spacing:4px	
+}
+.table-list {color:#99d2f6}
+.kotable {font-family:microsoft yahei}
+.kotable {border-top:0 solid #ddd;border-left:0 solid #ddd;margin-top:10px;float:left}
+.kotable thead th {border-right:0 solid #ddd;border-bottom:0 solid #ddd;background:#2f4ca6;text-align:center;line-height:36px;font-size:14px}
+.kotable tbody td {border-right:0 solid #ddd;border-bottom:0 solid #ddd;text-align:center;line-height:1.5;font-size:12px;height:32px}
+
+.odd {	background:#28348e;	}
+.iover {background:#0e0957;color:#ffc;}
+.iover a {color:#ffc}
+
+.kotable tbody tr {transition: all .2s ease-in-out}
+
+#pages {width:100%;float:left;margin-top:5px}
+*/
+</style>
+<table width="100%" cellspacing="4" cellpadding="4" class="kotable">
+	<thead>
+	<tr>
+     
+      <th width='108'>序号</th>
+      
+      <th width="200">工作单位</th>
+	  <th width='173'>姓名</th>
+	   <th width="273">身份证号</th>
+	  <th width="199">事项类别</th>
+      <th width="201">职务</th>
+      <th width="204">上报时间</th>
+      <th width="123">审核</th>  
+      <th width="279">操作</th>
+	</tr>
+    </thead>
+    <tbody>
+  <?php
+  
+if(is_array($sxlist)){
+	
+	if(intval($_GET['page'])>1){
+	 $i=12*(intval($_GET['page'])-1)+1;
+	}else{
+	 $i=1;
+	}
+	
+	foreach($sxlist as $info){
+		?>
+	<tr>
+      
+      <td><?php echo $i?></td>
+      <td><?php echo $info['danwei'];?></td>
+      <td><?php echo $info['xingming']?></td>
+	  <td><?php echo $info['sfz']?></td>
+	  <td><?php echo $sxty[$info['sxty']]?></td>
+      <td><?php echo $info['zhiwu']?></td>
+      <td><?php if($info['indt']>0){echo date("Y-m-d",$info['indt']);}?></td>
+      <td><?php if($info['shdt']>0){
+	                                   if($info['shenhe']==1){
+										   echo "<a title='审核时间：".date("Y-m-d",$info['shdt'])."'><b>通过</b></a>";
+										   }else{
+											echo "<a title='审核时间：".date("Y-m-d",$info['shdt'])."'><b>拒绝</b></a>";   
+											   }
+	                                 }else{echo "待审";}?></td>
+      <td>
+        <a href="index.php?m=renshi&c=geren&a=show&id=<?php echo $info['id']?>&status=<?php echo $status;?>">查看</a>
+
+        &nbsp;<a href="index.php?m=renshi&c=geren&a=shenhe&id=<?php echo $info['id']?>&status=<?php echo $status;?>">审核</a>
+        &nbsp;<a href="index.php?m=renshi&c=geren&a=dels&id=<?php echo $info['id']?>&status=<?php echo $status;?>" onclick="javascript:var r = confirm('确认删除记录吗？');if(!r){return false;}">删除</a>
+        </td>
+	</tr>
+   <?php
+	$i++;}
+}
+?>
+</tbody>
+</table>
+
+<div id="pages"><?php echo $pages?></div>
+</form>
+</div>
+</div>
+</div>
+
+</div>
+
+<script language="javascript">
+function showkuozhan(){
+  if($("#mianban").val()=='展《'){
+	   $("#mianban").val('收》')
+	   $("#kuozhan1").css('display','') 
+	  }else{
+	   $("#mianban").val('展《')
+	   $("#kuozhan1").css('display','none')		  
+		  }	 
+}
+
+</script>
+</body>
+</html>

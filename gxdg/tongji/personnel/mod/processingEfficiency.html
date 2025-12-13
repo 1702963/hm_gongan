@@ -1,0 +1,173 @@
+<script>
+//基于准备好的dom，初始化echarts实例
+var daChart = echarts.init(document.getElementById('daChart'));
+
+// 基础数据
+var units = ['政治处', '警务督察大队', '治安大队', '网安大队', '指挥中心'];
+var lawData = [90, 93, 96, 94, 98]; // 民警达标率
+var opinionData = [85, 88, 86, 89, 93]; // 辅警达标率
+
+// 计算每个部门的平均达标率
+var averageRates = [];
+for (var i = 0; i < units.length; i++) {
+    averageRates.push((lawData[i] + opinionData[i]) / 2);
+}
+
+// 确定部门名称颜色（根据平均达标率）
+var unitColors = [];
+for (var i = 0; i < units.length; i++) {
+    if (averageRates[i] < 90) {
+        unitColors.push('#ff0000'); // <90% 红色
+    } else if (averageRates[i] <= 100) {
+        unitColors.push('#ffff00'); // 90%-100% 黄色
+    } else {
+        unitColors.push('#00ff00'); // 100%+ 绿色
+    }
+}
+
+// 固定的柱状图颜色
+var lawColor = '#467aff'; // 民警 - 蓝色
+var opinionColor = '#1cf286'; // 辅警 - 暗绿色
+
+// 低版本配置
+var optionda = {
+    title: {
+        text: '',
+        textStyle: {
+            color: '#ffffff'
+        }
+    },
+    legend: {
+        left: 'center',
+        top: 'top',
+        padding: [10, 0, 50, 0],
+        textStyle: {
+            fontSize: 12,
+            color: '#ffffff'
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 20,
+        data: ['民警达标率', '辅警达标率']
+    },
+    grid: {
+        left: '2%',
+        right: '8%',
+        bottom: '5%',
+        top: '10%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'value',
+        max: 100,
+        min: 0,
+        interval: 10,
+        axisLabel: {
+            textStyle: {
+                color: '#cccccc',
+				fontSize:10
+            },
+            formatter: '{value}'
+        },
+        axisLine: {
+            lineStyle: {
+                color: '#263465',
+                width: 1
+            }
+        },
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: "#263465"
+            }
+        }
+    },
+    yAxis: {
+        type: 'category',
+        data: units,
+        axisLabel: {
+            textStyle: {
+                // 根据平均达标率设置部门名称颜色
+                color: function(params, index) {
+                    return unitColors[index];
+                },
+                fontSize: 12,
+                fontWeight: 'bold'
+            }
+        },
+        axisLine: {
+            lineStyle: {
+                color: '#263465',
+                width: 1
+            }
+        }
+    },
+    series: [
+        {
+            name: '民警达标率',
+            type: 'bar',
+            barWidth: '15%',
+			barGap:'50%',
+            data: lawData,
+            itemStyle: {
+                color: lawColor // 固定为蓝色
+            },
+            label: {
+                show: true,
+                position: 'right',
+                formatter: '{c}%',
+                textStyle: {
+                    color: lawColor
+                }
+            },
+            // 低版本markLine必须放在series内部
+            markLine: {
+                z: 1, // 用z代替zlevel
+                symbol: 'none', // 隐藏箭头
+                lineStyle: {
+                    width: 2,
+                    type: 'dashed',
+                    color: '#ff0000'
+                },
+                label: {
+                    show: true,
+                    color: '#ff0000',
+                    formatter: '达标线'
+                },
+                data: [
+                    {
+						xAxis: 90
+					} // 参考线位置
+                ]
+            }
+
+        },
+        {
+            name: '辅警达标率',
+            type: 'bar',
+            barWidth: '15%',
+            data: opinionData,
+            itemStyle: {
+                color: opinionColor // 固定为暗绿色
+            },
+            label: {
+                show: true,
+                position: 'right',
+                formatter: '{c}%',
+                textStyle: {
+                    color: opinionColor
+                }
+            }
+
+        },
+
+    ]
+};
+
+// 设置图表配置
+daChart.setOption(optionda);
+// 监听窗口大小变化，重绘图表
+window.addEventListener('resize', function() {
+  daChart.resize();
+});
+</script>

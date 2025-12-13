@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+<?php
+if($_COOKIE['isadmin']!=1){
+  Header("Location:error.php");
+}
+
+
+$con = mysql_connect("127.0.0.1","root","2ycf4jd");
+if (!$con){die("dberror");}
+
+mysql_select_db("spjzhiban", $con); 
+mysql_query("SET NAMES UTF8"); 
+
+
+//统计
+
+//用户
+	   $sql="select count(id) as zj from zb_user ";
+	   $rs=mysql_query($sql,$con);
+	   $row = mysql_fetch_array($rs);
+	   $user_zj=$row['zj'];
+	   
+//组
+	   $sql="select count(id) as zj from zb_banci ";
+	   $rs=mysql_query($sql,$con);
+	   $row = mysql_fetch_array($rs);
+	   $banci_zj=$row['zj'];
+	   
+	   	   
+?>
+<body>
+
+<table width="100%" border="0" align="center">
+  <tr>
+    <td width="7%" align="center" valign="top">
+<table width="100%" border="0">
+  <tr>
+    <td height="30" valign="middle" style="padding-left:10px"> <a href="admin_banci.php" ><input type="button" value="值班班次管理" style="width:100px"/></a></td>
+  </tr>
+  <tr>
+    <td height="32" valign="middle" style="padding-left:10px"> <a href="admin_renyuan.php" ><input type="button" value="值班人员管理" style="width:100px" /></a></td>
+  </tr>
+  <tr>
+    <td height="35" valign="middle" style="padding-left:10px"> <a href="admin_zhiban.php"><input type="button" value="值班表管理" style="width:100px" /></a></td>
+  </tr>
+</table>    
+    
+    </td>
+    <td width="93%">
+<table width="99%" border="0" align="center">
+  <tr>
+    <td height="45" align="center" bgcolor="#d6d6d6">值班配置概况</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td style="padding-left:5px">参与值班人数：<?php echo $user_zj?> 人</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td style="padding-left:5px">值班分组： <?php echo $banci_zj?> 个</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td style="padding-left:5px">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>    
+    </td>
+  </tr>
+</table>
+
+
+
+</body>
+</html>

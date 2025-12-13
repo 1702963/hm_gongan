@@ -1,0 +1,181 @@
+<script>
+var EChart = echarts.init(document.getElementById('level'));
+var optionE = {
+	title:{
+		text:'',
+		textStyle:{
+			color:'#ffffff'
+		},
+	},
+    legend: {
+         textStyle:{
+            fontSize: 12,
+            color: '#eeeeee',
+        },
+        padding:[10,0,0,0],
+		itemWidth: 12,
+		itemHeight: 12,
+		itemGap:20
+    },
+    grid: {
+        left: '3%',
+        right: '3%',
+        bottom: '5%',
+		top:'18%',
+        containLabel: true,
+        
+    },
+    tooltip: {
+		trigger: 'axis',	
+	},
+    dataset: {
+        source: [
+            ['product', '已办结', '处理中', '未处理'],
+            ['一级', 93, 85,55],
+            ['二级', 83, 73,36],
+            ['三级', 86, 65,32],
+            ['四级', 72, 53,14],
+            ['五级', 106, 75,44]
+        ]
+    },
+    xAxis: {
+        type: 'category',
+		barCategoryGap:10,
+        axisLabel:{
+        
+        	interval:0,
+			formatter:function(value) {
+							var ret = "";
+							var maxLength = 4;
+							var valLength = value.length;
+							var rowN = Math.ceil(valLength / maxLength); 
+							if (rowN > 1) {
+								for (var i = 0; i < rowN; i++) {
+									var temp = "";
+									var start = i * maxLength;
+									var end = start + maxLength;
+									temp = value.substring(start, end) + "\n";
+									ret += temp;
+								}
+								return ret;
+							} else {
+								return value;
+							}
+				},
+            
+            textStyle:{
+                color:'#ddd',
+				fontSize: 10,
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    yAxis: {
+        axisLabel:{
+            textStyle:{
+                color:'#ddd'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#v',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+        {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+			    normal:{
+					color:'#238bff',
+					label:{
+						show:true,
+						position:'top',
+						textStyle:{
+							color:'#238bff',
+							fontSize:12,
+							fontWeight:'normal'
+						}
+					},
+				},
+			}
+        },
+        {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+			    normal:{
+					color:'#4ae299',
+					label:{
+						show:true,
+						position:'top',
+						textStyle:{
+							color:'#4ae299',
+							fontSize:12,
+							fontWeight:'normal'
+						}
+					}
+				},
+			}
+        },
+     {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+                normal:{
+                    // 根据事件级别动态设置颜色
+                    color: function(params) {
+                        // params.dataIndex对应级别索引：0=一级，1=二级，2=三级，3=四级，4=五级
+                        var levelIndex = params.dataIndex;
+                        // 四级(索引3)和五级(索引4)的未处理柱状图设为红色
+                        if (levelIndex === 3 || levelIndex === 4) {
+                            return '#ff0000';  // 红色
+                        }
+                        // 其他级别保持原有黄色
+                        return '#fc0';  // 黄色
+                    },
+                    label:{
+                        show:true,
+                        position:'top',
+                        textStyle:{
+                            // 标签颜色随柱子颜色变化
+                            color: function(params) {
+                                var levelIndex = params.dataIndex;
+                                if (levelIndex === 3 || levelIndex === 4) {
+                                    return '#ff0000';  // 红色标签
+                                }
+                                return '#fc0';  // 黄色标签
+                            },
+                            fontSize:12,
+                            fontWeight:'normal'
+                        }
+                    }
+                },
+            }
+        }
+    ]
+};
+EChart.setOption(optionE);
+</script>
+

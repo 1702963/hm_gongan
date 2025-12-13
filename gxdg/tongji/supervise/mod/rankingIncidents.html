@@ -1,0 +1,229 @@
+<script>
+//单位监督表现对比
+var carLine = echarts.init(document.getElementById('barChart'));
+
+// 原始数据
+var units = ['政治处','国保大队','网安大队','治安大队','纪委','指挥中心'];
+var dataSeries = [
+  [120, 92, 51, 134, 90, 30],   // 执法办案
+  [220, 102, 201, 134, 290, 130], // 公务用车
+  [320, 202, 301, 234, 390, 230], // 舆情
+  [320, 202, 301, 234, 390, 230], // 信访
+  [320, 202, 301, 234, 390, 230]  // 现场/网上督察
+];
+
+// 计算每个单位的总和并排序
+var unitTotals = units.map((unit, index) => {
+  // 计算每个单位的总和
+  let total = dataSeries.reduce((sum, series) => sum + series[index], 0);
+  return {
+    name: unit,
+    total: total,
+    index: index,
+    // 确定风险等级
+    riskLevel: total >= 1000 ? 'high' : (total === 0 ? 'compliant' : 'normal')
+  };
+});
+
+// 按总和降序排序
+unitTotals.sort((a, b) => b.total - a.total);
+
+// 重新组织排序后的单位名称和数据
+var sortedUnits = unitTotals.map(item => item.name);
+var sortedDataSeries = dataSeries.map(series => {
+  return unitTotals.map(item => series[item.index]);
+});
+
+// 准备右侧Y轴显示的标注文本
+var annotationLabels = unitTotals.map(unit => {
+  if (unit.riskLevel === 'high') {
+    return '高风险单位';
+  } else {
+    return '合规单位';
+  }
+  return ''; // 正常单位不显示标注
+});
+
+optionCar = {
+  title: {
+    text: '',
+    //subtext: '按事件总数降序排列，≥1000为高风险单位，0为合规单位'
+	textStyle:{
+		color:'#ffffff'
+	}
+  },
+  tooltip : {
+    trigger: 'axis',
+    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+      type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+    },
+    formatter: function(params) {
+      const unit = unitTotals[params[0].dataIndex];
+      let riskText = '';
+      if (unit.riskLevel === 'high') {
+        riskText = '<br/><span style="color: #ff0000; font-weight: bold;">高风险单位</span>';
+      } else if (unit.riskLevel === 'compliant') {
+        riskText = '<br/><span style="color: #00ff00; font-weight: bold;">合规单位</span>';
+      }
+      return `${unit.name}<br/>总事件数: ${unit.total}${riskText}<br/>` +
+             params.map(p => `${p.seriesName}: ${p.value}`).join('<br/>');
+    }
+  },
+  grid: {
+	top:'12%',
+    left: '3%',
+    right: '5%', // 右侧预留更多空间显示右侧Y轴标注
+    bottom: '3%',
+    containLabel: true
+  },
+  barWidth: '30%',
+  xAxis: {
+    type: 'value',
+    splitLine: {show: true},
+    axisLabel: {
+      textStyle: {
+		  color: '#C6CACD',
+		  fontSize:10
+		}//字体颜色
+    },
+    axisLine: {
+      lineStyle: {
+        type: 'solid',
+        color: '#3f5291',//下边线的颜色
+        width:'1'//坐标线的宽度
+      }
+    },
+    splitLine: {
+      show: true,//垂直线
+      lineStyle:{
+        color: '#3f5291'
+      }
+    }
+  },
+  yAxis: [
+    // 左侧Y轴 - 单位名称
+    {
+      type: 'category',
+      axisTick: {show: true},//尺寸边线
+      splitLine: {show: false},
+      data: sortedUnits,  // 使用排序后的单位
+      axisLabel: {
+        textStyle: {
+		  fontSize:10,
+          color: function(params, index) {
+            // 根据风险等级设置单位名称颜色
+            const unit = unitTotals[index];
+            if (unit.riskLevel === 'high') {
+              return '#ff0000'; // 高风险单位红色
+            } else if (unit.riskLevel === 'compliant') {
+              return '#00ff00'; // 合规单位绿色
+            }
+            return '#00ff00'; // 正常单位默认颜色
+          },
+          fontWeight: function(params, index) {
+            const unit = unitTotals[index];
+            return (unit.riskLevel === 'high' || unit.riskLevel === 'compliant') ? 'bold' : 'normal';
+          }
+        }
+      },
+      axisLine: {
+        lineStyle: {
+          type: 'solid',
+          color: '#3B526C',//下边线的颜色
+          width:'1'//坐标线的宽度
+        }
+      }
+    },
+    // 右侧Y轴 - 风险标注
+    {
+      type: 'category',
+      position: 'right',
+      axisLine: {show: false},
+      axisTick: {show: false},
+      splitLine: {show: false},
+      data: annotationLabels,
+      axisLabel: {
+        textStyle: {
+          color: function(params, index) {
+            const unit = unitTotals[index];
+            if (unit.riskLevel === 'high') {
+              return '#ff0000'; // 高风险单位红色
+            } else if (unit.riskLevel === 'compliant') {
+              return '#00ff00'; // 合规单位绿色
+            }
+            return '#00ff00'; // 正常单位不显示颜色
+          },
+          fontWeight: 'bold',
+          fontSize: 10
+        }
+      }
+    }
+  ],
+  series: [
+    {
+      type: 'bar',
+      color:'#005ab6',
+      name:'执法办案',
+      stack: true,
+      z: 11,
+      data: sortedDataSeries[0],
+    },
+    {
+      type: 'bar',
+      color:'#6696c8',
+      name:'公务用车',
+      stack: true,
+      z: 10,
+      data: sortedDataSeries[1]
+    },
+    {
+      type: 'bar',
+      color:'#cc0000',
+      name:'舆情',
+      stack: true,
+      z: 9,
+      data: sortedDataSeries[2]
+    },
+    {
+      type: 'bar',
+      color:'#ff6600',
+      name:'信访',
+      stack: true,
+      z: 9,
+      data: sortedDataSeries[3]
+    },
+    {
+      type: 'bar',
+      color:'#953cd4',
+      name:'现场/网上督察',
+      stack: true,
+      z: 9,
+      data: sortedDataSeries[4]
+    }
+  ],
+  
+  markLine:{
+    data:[
+      {
+        type:'max'
+      },
+      // 添加1000的参考线
+      {
+        name: '高风险阈值',
+        yAxis: 1000,
+        lineStyle: {
+          color: '#ff0000',
+          type: 'dashed'
+        },
+        label: {
+          show: true,
+          formatter: '高风险阈值(1000)'
+        }
+      }
+    ]
+  }
+};
+
+carLine.setOption(optionCar);
+
+</script>

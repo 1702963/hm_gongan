@@ -1,0 +1,277 @@
+<script>
+// 1. 初始化ECharts环形图实例（绑定ID为hDon的容器）
+var DChart = echarts.init(document.getElementById('hDon'));
+
+// 1. 数据源（保持不变）
+const attendanceSourceData = {
+	"政治处": {
+		"民警": [
+			{ value: 45, name: '正常考勤' },
+			{ value: 8, name: '事假' },
+			{ value: 5, name: '病假' },
+			{ value: 6, name: '休假' },
+			{ value: 1, name: '旷工' }
+		],
+		"辅警": [
+			{ value: 28, name: '正常考勤' },
+			{ value: 10, name: '事假' },
+			{ value: 7, name: '病假' },
+			{ value: 4, name: '休假' },
+			{ value: 2, name: '旷工' }
+		]
+	},
+	"治安大队": {
+		"民警": [
+			{ value: 56, name: '正常考勤' },
+			{ value: 12, name: '事假' },
+			{ value: 8, name: '病假' },
+			{ value: 9, name: '休假' },
+			{ value: 2, name: '旷工' }
+		],
+		"辅警": [
+			{ value: 42, name: '正常考勤' },
+			{ value: 15, name: '事假' },
+			{ value: 10, name: '病假' },
+			{ value: 7, name: '休假' },
+			{ value: 3, name: '旷工' }
+		]
+	},
+	"网安大队": {
+		"民警": [
+			{ value: 28, name: '正常考勤' },
+			{ value: 5, name: '事假' },
+			{ value: 3, name: '病假' },
+			{ value: 4, name: '休假' },
+			{ value: 0, name: '旷工' }
+		],
+		"辅警": [
+			{ value: 15, name: '正常考勤' },
+			{ value: 6, name: '事假' },
+			{ value: 4, name: '病假' },
+			{ value: 3, name: '休假' },
+			{ value: 1, name: '旷工' }
+		]
+	}
+};
+
+// 2. 初始条件（保持不变）
+let currentUnit = "全部";
+let currentRole = "全部人员";
+
+// 3. 数据计算（保持不变）
+function calculateData(selectedUnit, selectedRole) {
+	const totalData = [
+		{ value: 0, name: '正常考勤' },
+		{ value: 0, name: '事假' },
+		{ value: 0, name: '病假' },
+		{ value: 0, name: '休假' },
+		{ value: 0, name: '旷工' }
+	];
+
+	const targetDepartments = selectedUnit === "全部" 
+		? Object.keys(attendanceSourceData) 
+		: [selectedUnit];
+
+	targetDepartments.forEach(dept => {
+		if (selectedRole === "全部人员") {
+			const policeData = attendanceSourceData[dept]["民警"];
+			const assistantData = attendanceSourceData[dept]["辅警"];
+			
+			policeData.forEach(item => {
+				const target = totalData.find(t => t.name === item.name);
+				target && (target.value += item.value);
+			});
+			assistantData.forEach(item => {
+				const target = totalData.find(t => t.name === item.name);
+				target && (target.value += item.value);
+			});
+		} else {
+			const roleData = attendanceSourceData[dept][selectedRole];
+			roleData.forEach(item => {
+				const target = totalData.find(t => t.name === item.name);
+				target && (target.value += item.value);
+			});
+		}
+	});
+
+	return totalData;
+}
+
+// 4. 图表配置（核心修改：左右布局+legend每行3组）
+function getChartOption(selectedUnit, selectedRole) {
+	const displayData = calculateData(selectedUnit, selectedRole);
+	const legendNames = displayData.map(item => item.name);
+
+	return {
+		title: {
+			//text: `${selectedUnit === "全部" ? "全部门" : selectedUnit}${selectedRole} 本月考勤状态分布`,
+			text:'',
+			left: 28,
+			top: 3,
+			textStyle: { 
+				color: '#fff', 
+				fontSize: 18, 
+				fontWeight: 400 
+			}
+
+		},
+		graphic: {
+			type: 'image',
+			left: 3,
+			top: 0,
+		},
+		tooltip: {
+			trigger: 'item',
+			backgroundColor: 'rgba(15, 20, 45, 0.9)',
+			borderColor: '#263465',
+			borderWidth: 1,
+			textStyle: { color: '#fff' },
+			formatter: '{a} <br/>{b}: {c}人 ({d}%)'
+		},
+		// 关键1：用grid分割左右区域，避免饼图与legend重叠
+		grid: {
+			left: '5%',    // 左侧饼图区域：左边界
+			right: '40%',  // 右侧legend区域：占40%宽度（关键）
+			top: '5%',
+			bottom: '10%'
+		},
+		legend: {
+			orient: 'horizontal', // 水平布局（为每行3组打基础）
+			left: '65%',          // legend左边界=grid.right，固定在右侧区域
+			top: '35%',           // 垂直居中
+			transform: 'translateY(-50%)', // 精准垂直居中
+			width: '30%',         // 固定legend宽度：刚好容纳3个图例项（关键）
+			height: 'auto',       // 高度自适应换行
+			textStyle: {
+				color: '#fff',
+				fontSize: 12,
+				lineHeight: 22,
+				width: 70 // 固定单个图例文本宽度，确保3项均匀分布
+			},
+			itemWidth: 12,
+			itemHeight: 12,
+			itemGap: 15, // 图例项水平间距，控制3项紧凑度
+			formatter: function(name) {
+				const item = displayData.find(data => data.name === name);
+				const count = item ? item.value : 0;
+				return `${name}\n${count}人`; // 换行显示名称+人数
+			},
+			data: legendNames
+		},
+		series: [
+			{
+				name: '考勤状态',
+				type: 'pie',
+				// 关键2：饼图固定在左侧区域，不超出grid范围
+				radius: ['40%', '60%'],
+				center: ['30%', '45%'], // 饼图中心：左侧区域中间（x=25%，y=50%）
+				avoidLabelOverlap: false,
+				itemStyle: { 
+					borderRadius: 8, 
+					borderColor: '#1a1a2e', 
+					borderWidth: 2 
+				},
+				label: { 
+					show: true,
+					position: 'outside',
+					formatter: '{b}\n{c}人({d}%)',
+					fontSize: 12,
+					fontWeight: '500',
+					color: '#ffffff'
+				},
+				// 标签连接线：默认隐藏
+				labelLine: {
+					show: true,
+					length: 5,
+					length2: 10,
+					lineStyle: { width: 1, color: '#cccccc' }
+				},
+				emphasis: { 
+					itemStyle: { 
+						shadowBlur: 10, 
+						shadowColor: 'rgba(0, 100, 255, 0.3)' 
+					} 
+				},
+				data: displayData
+			}
+		],
+		color: ['#52c41a', '#1890ff', '#faad14', '#8884d8', '#f5222d']
+	};
+}
+
+// 5. 筛选控件（保持不变）
+function createFilterControls() {
+	const filterContainer = document.createElement('div');
+	filterContainer.style.textAlign = 'right';
+	filterContainer.style.marginBottom = '20px';
+	filterContainer.style.padding = '10px 0';
+	filterContainer.style.position = 'absolute';
+	filterContainer.style.zIndex = 9999;
+	filterContainer.style.right = '20px';
+	filterContainer.style.top = '5px';
+	
+	const unitSelect = document.createElement('select');
+	unitSelect.style.padding = '4px 6px';
+	unitSelect.style.marginRight = '20px';
+	unitSelect.style.backgroundColor = '#1a1a2e';
+	unitSelect.style.color = '#fff';
+	unitSelect.style.border = '1px solid #263465';
+	unitSelect.style.borderRadius = '4px';
+	unitSelect.style.fontSize = 14;
+
+	const allOption = document.createElement('option');
+	allOption.value = "全部";
+	allOption.textContent = "全部部门";
+	allOption.selected = true;
+	unitSelect.appendChild(allOption);
+
+	Object.keys(attendanceSourceData).forEach(dept => {
+		const option = document.createElement('option');
+		option.value = dept;
+		option.textContent = dept;
+		unitSelect.appendChild(option);
+	});
+
+	const roleSelect = document.createElement('select');
+	roleSelect.style.cssText = unitSelect.style.cssText;
+	roleSelect.style.marginRight = 0;
+
+	const allPeopleOption = document.createElement('option');
+	allPeopleOption.value = "全部人员";
+	allPeopleOption.textContent = "全部人员";
+	allPeopleOption.selected = true;
+	roleSelect.appendChild(allPeopleOption);
+
+	const policeOption = document.createElement('option');
+	policeOption.value = "民警";
+	policeOption.textContent = "民警";
+	roleSelect.appendChild(policeOption);
+
+	const assistantOption = document.createElement('option');
+	assistantOption.value = "辅警";
+	assistantOption.textContent = "辅警";
+	roleSelect.appendChild(assistantOption);
+
+	unitSelect.addEventListener('change', () => {
+		currentUnit = unitSelect.value;
+		DChart.setOption(getChartOption(currentUnit, currentRole));
+	});
+
+	roleSelect.addEventListener('change', () => {
+		currentRole = roleSelect.value;
+		DChart.setOption(getChartOption(currentUnit, currentRole));
+	});
+
+	filterContainer.appendChild(unitSelect);
+	filterContainer.appendChild(roleSelect);
+	const chartDom = document.getElementById('hDon');
+	chartDom.parentNode.insertBefore(filterContainer, chartDom);
+}
+
+// 6. 初始化
+window.onload = function () {
+	createFilterControls();
+	window.addEventListener('resize', () => DChart.resize()); // 窗口缩放同步重绘
+	DChart.setOption(getChartOption(currentUnit, currentRole));
+};
+</script>

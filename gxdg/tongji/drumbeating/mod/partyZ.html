@@ -1,0 +1,187 @@
+<script>
+// 初始化图表
+const chartDomZ = document.getElementById('lineZ');
+const myChartZ = echarts.init(chartDomZ);
+var optionZ;
+
+// 静态模拟数据：近6个月（5-10月）素材与稿件新增数，包含关键节点备注
+const staticData = {
+    // X轴：近6个月
+    categories: ['5月', '6月', '7月', '8月', '9月', '10月'],
+    // 左Y轴数据：月度素材新增数（媒体蓝线）
+    materialData: [45, 52, 48, 36, 55, 78],
+    // 右Y轴数据：月度稿件新增数（活力紫线）
+    articleData: [120, 135, 118, 95, 142, 210],
+    // 关键节点配置：标注需特殊说明的月份及原因
+    keyPoints: [
+        { month: '3月', reason: '3月素材下降：需加强基层采集' }, // 补充历史关键节点
+        { month: '10月', reason: '10月稿件激增：因"国庆安保"专题宣传' }
+    ]
+};
+
+// 初始化图表数据
+function initChart() {
+    const { categories, materialData, articleData, keyPoints } = staticData;
+    
+    optionZ = {
+        title: {
+            text: '', // 调整标题匹配主题
+            textStyle: {
+                color: '#ffffff'
+            },
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line' // 折线图用线指针更精准
+            },
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            borderColor: '#ddd',
+            borderWidth: 1,
+            textStyle: { color: '#333' },
+            formatter: function(params) {
+                // 基础数据展示：月份、素材数、稿件数
+                let res = `${params[0].name}<br/>`;
+                params.forEach(item => {
+                    res += `${item.marker} ${item.seriesName}：${item.value} 条<br/>`;
+                });
+                // 匹配关键节点：若当前月份有备注，追加显示
+                const keyPoint = keyPoints.find(p => p.month === params[0].name);
+                if (keyPoint) {
+                    res += `<br/><span style="color:#f5222d;">备注：${keyPoint.reason}</span>`;
+                }
+                return res;
+            }
+        },
+        legend: {
+            data: ['月度素材新增数', '月度稿件新增数'], // 简化图例，仅保留两个核心系列
+            top: 20,
+            textStyle: {
+                fontSize: 12,
+                color: '#ccc'
+            },
+            itemWidth: 12,
+            itemHeight: 12,
+            itemGap: 20,
+            tooltip: { show: true }
+        },
+        grid: {
+            left: '7%',
+            right: '7%', // 右侧预留更多空间给Y轴名称
+            bottom: '3%',
+            top: '30%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: categories,
+            axisLabel: {
+                interval: 0,
+                rotate: 0,
+                textStyle: {
+                    fontSize: 12,
+                    color: '#ccc'
+                }
+            },
+            axisLine: {
+                lineStyle: { color: '#ccc' }
+            }
+        },
+        // 双Y轴配置
+        yAxis: [
+            // 左Y轴：月度素材新增数（媒体蓝）
+            {
+                type: 'value',
+                name: '月度素材新增数（条）',
+                nameLocation: 'middle',
+                nameGap: 40, // 调整名称与轴的间距
+                nameTextStyle: {
+                    fontWeight: 'bold',
+                    color: '#165DFF' // 轴名称与线同色（媒体蓝）
+                },
+                axisLabel: {
+                    formatter: '{value}',
+                    textStyle: {
+                        fontSize: 12,
+                        color: '#ccc'
+                    }
+                },
+                splitLine: {
+                    lineStyle: { type: 'dashed', color: 'rgba(204,204,204,0.3)' }
+                },
+                axisLine: {
+                    lineStyle: { color: '#165DFF' }
+                }
+            },
+            // 右Y轴：月度稿件新增数（活力紫）
+            {
+                type: 'value',
+                name: '月度稿件新增数（条）',
+                nameLocation: 'middle',
+                nameGap: 50,
+                nameTextStyle: {
+                    fontWeight: 'bold',
+                    color: '#722ED1' // 轴名称与线同色（活力紫）
+                },
+                axisLabel: {
+                    formatter: '{value}',
+                    textStyle: {
+                        fontSize: 12,
+                        color: '#ccc'
+                    }
+                },
+                splitLine: {
+                    show: false // 隐藏右侧Y轴网格线，避免重叠
+                },
+                axisLine: {
+                    lineStyle: { color: '#722ED1' }
+                },
+                position: 'right' // 右Y轴居右显示
+            }
+        ],
+        series: [
+            // 左Y轴系列：月度素材新增数（媒体蓝线）
+            {
+                name: '月度素材新增数',
+                type: 'line', // 折线图类型
+                data: materialData,
+                itemStyle: { color: '#165DFF' }, // 媒体蓝
+                lineStyle: { 
+                    color: '#165DFF',
+                    width: 3 // 线宽加粗，提升辨识度
+                },
+                symbol: 'circle', // 标记点为圆形
+                symbolSize: 8, // 标记点大小
+                emphasis: {
+                    symbolSize: 12, //  hover时标记点放大
+                    itemStyle: { color: '#ffffff', borderColor: '#165DFF', borderWidth: 2 }
+                },
+                yAxisIndex: 0 // 绑定左Y轴
+            },
+            // 右Y轴系列：月度稿件新增数（活力紫线）
+            {
+                name: '月度稿件新增数',
+                type: 'line',
+                data: articleData,
+                itemStyle: { color: '#722ED1' }, // 活力紫
+                lineStyle: {
+                    color: '#722ED1',
+                    width: 3
+                },
+                symbol: 'circle',
+                symbolSize: 8,
+                emphasis: {
+                    symbolSize: 12,
+                    itemStyle: { color: '#ffffff', borderColor: '#722ED1', borderWidth: 2 }
+                },
+                yAxisIndex: 1 // 绑定右Y轴
+            }
+        ]
+    };
+
+    myChartZ.setOption(optionZ);
+}
+
+// 初始化图表
+initChart();
+</script>		

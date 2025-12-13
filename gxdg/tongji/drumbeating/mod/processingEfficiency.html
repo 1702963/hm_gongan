@@ -1,0 +1,164 @@
+<script>
+//基于准备好的dom，初始化echarts实例
+//var daChart = echarts.init(document.getElementById('daChart'));
+
+// 初始化图表容器（适配低版本ECharts DOM获取方式）
+var chartDom = document.getElementById('daChart');
+// 兼容低版本ECharts初始化（避免使用init参数扩展配置）
+var myChart = echarts.init(chartDom);
+var option = {};
+
+// 1. 模拟业务数据：一级单位名称 + 高级别/其他级别采用数
+// 注：低版本ECharts建议直接使用数组存储，避免复杂对象嵌套
+var unitNames = ['政治部', '刑侦支队', '交警支队', '治安支队', '网安支队', '指挥中心']; // Y轴单位名称
+var highLevelData = [42, 35, 28, 22, 18, 15]; // 高级别媒体采用数（紫色段）
+var otherLevelData = [58, 48, 36, 30, 25, 20]; // 其他级别媒体采用数（蓝色段）
+
+// 2. 计算总采用数（用于降序排序）
+var totalData = unitNames.map((name, index) => ({
+    name: name,
+    high: highLevelData[index],
+    other: otherLevelData[index],
+    total: highLevelData[index] + otherLevelData[index]
+}));
+
+// 3. 按总采用数降序排序（核心：保证Y轴单位按总量从高到低排列）
+totalData.sort((a, b) => a.total - b.total);
+
+// 4. 重组排序后的数据（适配低版本series.data格式）
+var sortedNames = []; // 排序后的Y轴单位名称
+var sortedHighData = []; // 排序后的高级别数据
+var sortedOtherData = []; // 排序后的其他级别数据
+totalData.forEach(item => {
+    sortedNames.push(item.name);
+    sortedHighData.push(item.high);
+    sortedOtherData.push(item.other);
+});
+
+// 5. 低版本ECharts配置（避免使用高版本API如rich文本、新样式属性）
+option = {
+    title: {
+        text: '',
+        textStyle: {
+            color: '#ccc',
+            fontSize: 16,
+            fontWeight: 'bold'
+        },
+        left: 'left',
+        top: 10
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow' // 横向柱状图用阴影指针，低版本兼容性更好
+        },
+        // 低版本推荐使用字符串模板，避免复杂函数（部分低版本对formatter函数支持有限）
+        formatter: '{b}<br/>{a0}：{c0} 篇<br/>{a1}：{c1} 篇<br/>总采用数：{c0+c1} 篇'
+    },
+    legend: {
+        data: ['高级别媒体采用数', '其他级别媒体采用数'],
+        left: 'right',
+        top: 10, // 位于标题下方，避免重叠
+        textStyle: {
+            color: '#eee',
+            fontSize: 12
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 20
+    },
+    grid: {
+        left: '5%', // 左侧预留空间放Y轴单位名称
+        right: '8%',
+        bottom: '8%',
+        top: '20%', // 顶部预留标题和图例空间
+        containLabel: true // 低版本必须开启，避免标签超出容器
+    },
+    // X轴：采用数（横向柱状图的"长度轴"）
+    xAxis: [
+        {
+            type: 'value',
+            axisLabel: {
+                color: '#ccc',
+                fontSize: 11,
+                formatter: '{value} 篇' // 标注单位，提升可读性
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#666' // 低版本需显式设置轴线颜色
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: '#666' // 网格线浅色调，避免干扰
+                }
+            }
+        }
+    ],
+    // Y轴：一级单位名称（横向柱状图的"分类轴"，已按总采用数降序）
+    yAxis: [
+        {
+            type: 'category',
+            data: sortedNames,
+            axisLabel: {
+                color: '#ccc',
+                fontSize: 12,
+                width: 80, // 限制单位名称宽度，避免过长
+                overflow: 'ellipsis' // 超出部分省略号显示
+            },
+            axisLine: {
+                show: false // 隐藏Y轴轴线，更简洁
+            },
+            splitLine: {
+                show: false // 隐藏Y轴网格线
+            }
+        }
+    ],
+    series: [
+        // 系列1：高级别媒体采用数（紫色段，靠Y轴侧）
+        {
+            name: '高级别媒体采用数',
+            type: 'bar',
+            stack: 'total', // 关键：开启堆叠，实现"一段接一段"效果
+            barWidth: 12, // 柱状图宽度，适配低版本显示
+            itemStyle: {
+                color: '#722ED1' // 高级别用紫色，符合需求
+            },
+            data: sortedHighData,
+            // 低版本标注：直接在柱子上显示数值（避免使用labelLine，兼容性差）
+            label: {
+                show: true,
+                position: 'right', // 数值显示在柱子右侧
+                textStyle: {
+                    color: '#722ED1',
+                    fontSize: 11
+                },
+                formatter: '{c}' // 仅显示数值，简洁
+            }
+        },
+        // 系列2：其他级别媒体采用数（蓝色段，靠X轴侧）
+        {
+            name: '其他级别媒体采用数',
+            type: 'bar',
+            stack: 'total', // 与系列1同stack，实现堆叠
+            barWidth: 12,
+            itemStyle: {
+                color: '#165DFF' // 其他级别用蓝色，符合需求
+            },
+            data: sortedOtherData,
+            label: {
+                show: true,
+                position: 'right',
+                textStyle: {
+                    color: '#165DFF',
+                    fontSize: 11
+                },
+                formatter: '{c}'
+            }
+        }
+    ]
+};
+
+// 6. 渲染图表（低版本直接调用setOption，无额外参数）
+myChart.setOption(option);
+</script>

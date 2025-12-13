@@ -1,0 +1,112 @@
+<script>
+//近6个月监督事件趋
+var TLine = echarts.init(document.getElementById('topTable'));
+option = {
+	title:{
+		text:'近 3 个月人数趋势',
+		textStyle:{
+			color:'#ffffff',
+			fontSize:14
+		},
+		padding:[10,0,10,0]
+	},
+    tooltip: {
+        trigger: 'axis'
+    },
+	calculable:true,
+    legend: {
+		padding:[0,0,0,0],
+		icon: 'rectangle',
+        data: ['人数变动'],
+        textStyle:{
+             fontSize: 12,
+             color: '#eeeeee'
+        },
+		show:false
+    },
+
+    grid: {
+		top:'35%',
+        left: '1%',
+        right: '2%',
+        bottom: '2%',
+        containLabel: true,
+        
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['8月', '9月','10月'],
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc',
+				fontSize:10
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#263465',
+                width:0
+            }
+        },
+        splitLine: {
+                show:false,
+                lineStyle: {
+                    color: "#263465",
+             }
+        }
+    },
+    yAxis: {
+        type: 'value',
+		max:70,
+		min:30,
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc',
+				fontSize:10
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#263465',
+                width:1
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#263465",
+             }
+        }
+    },
+    series: [
+        {
+            name: '人数变动',
+            type: 'line',
+            smooth: true,
+            symbolSize:8,
+            stack: '',
+            data: [60, 44, 50],
+
+			color:'rgba(255,0,0,1.0)',
+            areaStyle:{
+				color: 'rgba(0,0,0,0)' 
+			},
+            itemStyle:{
+                normal:{
+                    lineStyle:{
+						type:'solid',
+                        width:2
+                    }
+                }
+            }
+        }
+    ]
+	
+};
+TLine.setOption(option);
+// 响应窗口大小变化
+window.addEventListener('resize', function() {
+    TLine.resize();
+});
+</script>

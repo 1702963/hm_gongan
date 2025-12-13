@@ -1,0 +1,77 @@
+<script>
+//监督类型分布
+var myChart = echarts.init(document.getElementById('picH'));
+var colors=['#0066cc','#00ffff','#ffcc00','#00cc33'];
+var option = {
+	width:'96%',
+	grid: {
+		left: '0%',
+		right: '15%',
+		bottom: '0%',
+		top:'5%',
+		containLabel: true
+	},
+	xAxis: {
+		type: 'value',
+		min:10,
+		max: function(value){
+			return Math.floor(value.max+10)
+		},
+		splitNumber:20,
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc',
+				fontSize:12
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:1
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+	},
+	yAxis: {
+		type: 'category',
+		data: ['民警奖励', '文明标兵', '微笑之星', '优秀网格员'],
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+	},
+	series: [{
+		type: 'bar',
+		data: [150, 100, 130, 80],
+		barWidth: '40%', // 可以调整条形的宽度
+		label: {
+			show: true,
+			position: 'right' // 标签显示在右侧
+		},
+      itemStyle: {
+        // color: "#EE6666" // 这是设置所有柱子为同一个颜色
+        // 柱子的颜色设置不同颜色
+        color: function(p){
+          return colors[p.dataIndex]
+        }
+      }
+
+	}],
+
+};
+
+
+myChart.setOption(option);
+</script>

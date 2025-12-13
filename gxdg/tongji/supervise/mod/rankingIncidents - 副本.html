@@ -1,0 +1,124 @@
+<script>
+//单位监督表现对比
+var carLine = echarts.init(document.getElementById('barChart'));
+optionCar = {
+  title: {
+    text: '各一级单位监督事件数量排名',
+    subtext: ''
+  },
+  tooltip : {
+    trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+      type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+    }
+  },
+  grid: {
+    left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+  },
+  barWidth: '60%',
+  xAxis: {
+    type: 'value',
+        splitLine: {show: true},
+    axisLabel: {
+      textStyle: {color: '#C6CACD'}//字体颜色
+    },
+    axisLine: {
+      //show: true,
+      lineStyle: {
+        type: 'solid',
+            color: '#3B526C',//下边线的颜色
+            width:'1'//坐标线的宽度
+      }
+    },
+    splitLine: {
+      show: true,//垂直线
+          lineStyle:{
+        color: '#3B526C'
+      }
+    }
+  },
+  yAxis: {
+    type: 'category',
+        axisTick: {show: true},//尺寸边线
+    splitLine: {show: false},
+    data: ['部门01','部门02','部门03','部门04','部门05','部门06'],
+        axisLabel: {
+      textStyle: {color: '#C6CACD'}//字体颜色
+    },
+    axisLine: {
+      lineStyle: {
+        type: 'solid',
+        color: '#3B526C',//下边线的颜色
+        width:'1'//坐标线的宽度
+      }
+    }
+  },
+  //var colors=['#005ab6','#6696c8','#cc0000','#ff6600','#953cd4'];
+  series: [
+    {
+      type: 'bar',
+      color:'#005ab6',
+      name:'执法办案',
+      stack: true,//堆叠默认、叠加。没有是叠加
+      z: 11,
+      //barGap: '-100%',//叠加重叠使用
+      data: [120, 92, 51, 134, 90, 30],
+    },
+    {
+      type: 'bar',
+      color:'#6696c8',
+      name:'公务用车',
+      stack: true,//堆叠默认、叠加。没有是叠加
+      z: 10,
+      data: [220, 102, 201, 134, 290, 130]
+    },
+    //设置不显示
+    {
+      type: 'bar',
+      color:'#cc0000',
+      name:'舆情',
+      stack: true,//堆叠默认、叠加。没有是叠加
+      z: 9,
+      //设置不显示
+      data: [320, 202, 301, 234, 390, 230],
+      //显示数值
+    },
+    {
+      type: 'bar',
+      color:'#ff6600',
+      name:'信访',
+      stack: true,//堆叠默认、叠加。没有是叠加
+      z: 9,
+      //设置不显示
+      data: [320, 202, 301, 234, 390, 230],
+      //显示数值
+    },
+    {
+      type: 'bar',
+      color:'#953cd4',
+      name:'现场/网上督察',
+      stack: true,//堆叠默认、叠加。没有是叠加
+      z: 9,
+      //设置不显示
+      data: [320, 202, 301, 234, 390, 230],
+      //显示数值
+    },
+  ],
+  
+  markLine:{
+	  data:[
+	  	{
+			type:'max'
+		}
+	  ]
+  }
+
+
+};
+
+carLine.setOption(optionCar);
+
+</script>

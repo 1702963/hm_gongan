@@ -1,0 +1,63 @@
+<script>
+//监督类型分布
+var myChart = echarts.init(document.getElementById('picH'));
+var colors=['#005ab6','#6696c8','#cc0000','#ff6600','#953cd4'];
+var option = {
+	grid: {
+		left: '3%',
+		right: '5%',
+		bottom: '40%',
+		top:'5%%',
+		containLabel: true
+	},
+	xAxis: {
+		type: 'value',
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3f5291',
+                width:1
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3f5291",
+             }
+        }
+	},
+	yAxis: {
+		type: 'category',
+		data: ['执法办案事件数', '公务用车违规数', '舆情事件数', '信访事件数', '现场 / 网上督察违纪数'],
+        axisLabel:{
+            textStyle:{
+                color:'#cccccc'
+            }
+        }
+	},
+	series: [{
+		type: 'bar',
+		data: [1500, 2100, 950, 1800, 3200],
+		barWidth: '30%', // 可以调整条形的宽度
+		label: {
+			show: true,
+			position: 'right' // 标签显示在右侧
+		},
+      itemStyle: {
+        // color: "#EE6666" // 这是设置所有柱子为同一个颜色
+        // 柱子的颜色设置不同颜色
+        color: function(p){
+          return colors[p.dataIndex]
+        }
+      }
+
+	}],
+
+};
+
+myChart.setOption(option);
+</script>

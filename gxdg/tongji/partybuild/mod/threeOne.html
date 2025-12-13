@@ -1,0 +1,138 @@
+<script>
+//基于准备好的dom，初始化echarts实例
+var dTChart = echarts.init(document.getElementById('lineT'));
+
+// 基础数据
+var units = ['支部名称A', '支部名称B', '支部名称C', '支部名称D'];
+var completionRate = [76, 88, 86, 94]; // 完成率数据（百分比）
+
+// 预先计算每个支部名称的颜色（解决低版本ECharts回调问题）
+var nameColors = [];
+for (var i = 0; i < completionRate.length; i++) {
+    if (completionRate[i] < 80) {
+        nameColors.push('#ff0000'); // 红色：完成率<80%
+    } else if (completionRate[i] >= 80 && completionRate[i] < 90) {
+        nameColors.push('#ffff00'); // 黄色：80%-90%
+    } else {
+        nameColors.push('#00ff00'); // 绿色：≥90%
+    }
+}
+
+// 统计未达标党支部数量（完成率<80%）
+var unqualifiedCount = 0;
+var unqualifiedNames = [];
+for (var i = 0; i < completionRate.length; i++) {
+    if (completionRate[i] < 80) {
+        unqualifiedCount++;
+        unqualifiedNames.push(units[i]);
+    }
+}
+
+// 低版本兼容配置
+var optiondT = {
+    title: {
+        text: '',
+        subtext: '未达标党支部：' + unqualifiedCount + ' 个（' + unqualifiedNames.join('、') + '）',
+        textStyle: {
+            color: '#ffffff'
+        },
+        subtextStyle: {
+            color: '#ff0000',
+            fontSize: 14
+        }
+    },
+    legend: {
+        left: 'center',
+        top: 'top',
+        padding: [40, 0, 50, 0],
+        textStyle: {
+            fontSize: 12,
+            color: '#ffffff'
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 20,
+        data: ['完成率']
+    },
+    grid: {
+        left: '2%',
+        right: '5%',
+        bottom: '5%',
+        top: '35%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'value',
+        max: 110,
+        min: 30,
+        interval: 10,
+        axisLabel: {
+            textStyle: {
+                color: '#cccccc',
+                fontSize: 10
+            },
+            formatter: '{value}%'
+        },
+        axisLine: {
+            lineStyle: {
+                color: '#263465',
+                width: 1
+            }
+        },
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: "#263465"
+            }
+        }
+    },
+    yAxis: {
+        type: 'category',
+        data: units,
+        axisLabel: {
+            // 使用预先计算的颜色数组，解决低版本ECharts兼容性问题
+            textStyle: {
+                color: function(params, index) {
+                    return nameColors[index];
+                },
+                fontSize: 12,
+                fontWeight: 'bold'
+            }
+        },
+        axisLine: {
+            lineStyle: {
+                color: '#263465',
+                width: 1
+            }
+        },
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: "#263465"
+            }
+        }
+    },
+    series: [
+        {
+            name: '完成率',
+            type: 'bar',
+            barWidth: '20%',
+            data: completionRate,
+            itemStyle: {
+                color: '#005ab6' // 保持柱子颜色不变
+            },
+            label: {
+                show: true,
+                position: 'right',
+                formatter: '{c}%',
+                textStyle: {
+                    color: '#ffffff'
+                }
+            }
+        }
+    ]
+};
+
+// 设置图表配置
+dTChart.setOption(optiondT);
+</script>

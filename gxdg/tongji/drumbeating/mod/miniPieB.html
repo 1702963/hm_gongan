@@ -1,0 +1,91 @@
+<script>
+
+var BChart = echarts.init(document.getElementById('miniPieB'));
+var optionB = {
+	title:{
+		text:'稿件采用率',
+		textStyle:{
+			color:'#ffffff',
+			fontSize:14
+		},
+	},
+	tooltip: {
+		trigger: 'item',
+		formatter: '{a} <br/>{b}: {c} ({d}%)'
+	},
+	legend: {
+		orient: 'vertical',
+		right: 0,           
+		top: 'center', 
+		padding:[50,0,20,0],
+		textStyle: {
+			fontSize: 12,
+			color: '#ffffff'
+		},
+		itemWidth: 10,
+		itemHeight: 10,
+		itemGap:20
+	},
+	series: [
+		{
+			name: '',
+			type: 'pie',
+			radius: ['40%', '60%'],  // 环形图内外半径
+			center: ['20%', '58%'],  // 图表中心位置（左移以给右侧标签留出空间）
+			avoidLabelOverlap: false,
+			itemStyle: {
+				borderRadius: 8,
+			},
+			// 扇区上显示百分比
+			label: {
+				show: false,
+				position: 'inside',  // 显示在扇区内部
+				formatter: '{b}\n{c}件({d}%)',   // 显示百分比
+				fontSize: 14,
+				fontWeight: '500',
+				color:'#ffffff'
+			},
+			// 隐藏标签连接线（因为文字在扇区内）
+			labelLine: {
+				show: false,
+				length: 15,
+				length2: 10,
+				lineStyle: {
+					width: 1
+				}
+			},
+			emphasis: {
+				label: {
+					show: false,
+					fontSize: 16,
+					fontWeight: 'bold'
+				}
+			},
+			data: [
+				{ value: 40, name: '采用' },
+				{ value: 25, name: '未采用' }
+			]
+		}
+	],
+	graphic:{
+		type:'text',
+		left:125,
+		top:140,
+		style:{
+			text:'',
+			textAlign:'center',
+			fill:'#ffffff',
+			fontSize:16
+		}
+	},
+	color: [
+		'#f5222d',  // 红色
+		'#cccccc',  // 灰色
+		'#faad14',  // 黄色
+		'#8884d8',  // 紫色
+		'#1890ff'   // 蓝色
+	]
+};
+BChart.setOption(optionB);
+
+</script>

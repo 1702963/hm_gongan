@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<style type="text/css">
+*{padding:0; margin:0;}
+.box{ width:175px;}
+.Collapsing{ width:100%;height:72px;line-height:72px;cursor:pointer; text-align:left; background:url(images/pro_left.png) right center no-repeat;color:#fff;font-size:16px}
+.Collapsing:hover {background:#00356b}
+.Collapsing a {color:#fff;font-size:16px}
+.Collapsing img {margin-left:15px;margin-right:15px}
+.coll_body{display: none; background:#00458c}
+.coll_body a{display:block; text-align: left; font-size:14px;text-indent:48px;line-height:56px;color:#eee;text-decoration:none}
+.coll_body a:hover {background:#00356b;color:#fff}
+.current{background:#00458c;color:#fc0}
+</style>
+<script src="statics/js/jquery.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="box">
+    <h5 class="Collapsing  current"><img src="statics/images/nav/01.png" /><a href="#">首页</a></h5>
+    <div class="coll_body"></div>
+    <h5 class="Collapsing"><img src="statics/images/nav/02.png" />人员管理</h5>
+    <div class="coll_body">
+        <a href="#">· 基础信息</a>
+        <a href="#">· 服装发放</a>
+        <a href="#">· 层级管理</a>
+        <a href="#">· 教育培训</a>
+        <a href="#">· 人员调配</a>
+        <a href="#">· 离职管理</a>
+    </div>
+    <h5 class="Collapsing"><img src="statics/images/nav/03.png" />绩效考勤</h5>
+    <div class="coll_body">
+        <a href="#">· 个人绩效</a>
+        <a href="#">· 单位绩效</a>
+        <a href="#">· 岗位标兵评选</a>
+    </div>
+    <h5 class="Collapsing"><img src="statics/images/nav/04.png" />工资管理</h5>
+    <div class="coll_body">
+        <a href="#">· 工资自动生成</a>
+        <a href="#">· 工资查询</a>
+        <a href="#">· 工资维护</a>
+
+    </div>
+    <h5 class="Collapsing"><img src="statics/images/nav/05.png" />系统管理</h5>
+    <div class="coll_body">
+        <a href="#">· 数据字典</a>
+        <a href="#">· 权限管理</a>
+        <a href="#">· 角色管理</a>
+        <a href="#">· 操作日志</a>
+    </div>
+    <h5 class="Collapsing"><img src="statics/images/nav/06.png" />数据分析</h5>
+    <div class="coll_body">
+        <a href="#">· 人员统计</a>
+        <a href="#">· 工资统计</a>
+        <a href="#">· 岗位汇总</a>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $(".coll_body").eq(0).show();
+    $(".Collapsing").click(function(){
+        $(this).toggleClass("current").siblings('.Collapsing').removeClass("current");
+        $(this).next(".coll_body").slideToggle(300).siblings(".coll_body").slideUp(300);
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<script>
+//单位监督表现对比
+var carLine = echarts.init(document.getElementById('barChart'));
+        // 2. 准备数据（可根据实际需求修改单位名称和对应表彰人数）
+        const data = {
+            // y轴单位名称
+            units: ['指挥中心', '政治处', '治安大队', '网安大队', '刑警大队'],
+            // 4类奖励的表彰人数（顺序与下方legend对应）
+            rewardData: {
+                '民警奖励': [5, 3, 0, 7, 0],
+                '文明标兵': [2, 4, 0, 3, 0],
+                '微笑之星': [3, 1, 0, 2, 0],
+                '优秀网格员': [4, 2, 0, 5, 0]
+            }
+        };
+
+        // 3. 处理特殊单位：计算每个单位的总表彰人数，用于判断是否"待提升"
+        const totalCountPerUnit = data.units.map((unit, index) => {
+            return Object.values(data.rewardData).reduce((sum, arr) => sum + arr[index], 0);
+        });
+
+        // 4. 配置图表选项
+        var optionCar = {
+            // 标题配置
+            title: {
+                text: '',
+                left: 'left',
+                textStyle: {
+					color:'#ffffff',
+                    fontSize: 18,
+                    fontWeight: 'bold'
+                }
+            },
+            // 图例配置（对应4类奖励）
+            legend: {
+                data: ['民警奖励', '文明标兵', '微笑之星', '优秀网格员'],
+                left: 'center',
+                top: 10,
+				textStyle:{
+					color:'#cccccc'
+				}
+            },
+            // 提示框配置（鼠标悬浮时显示详细数据）
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow' // 阴影指示器，提升交互体验
+                },
+                // 自定义提示框内容
+                formatter: function(params) {
+                    let unitName = params[0].name;
+                    let tipContent = `<b>${unitName}</b><br/>`;
+                    params.forEach(item => {
+                        if (item.value > 0) { // 只显示有数据的项
+                            tipContent += `${item.seriesName}: ${item.value}人<br/>`;
+                        }
+                    });
+                    return tipContent;
+                }
+            },
+            // 网格配置（控制图表位置，避免与标签重叠）
+            grid: {
+                left: '15%',
+                right: '5%',
+                bottom: '15%',
+                top: '20%'
+            },
+			barWidth: '30%',
+            // x轴配置（人数）
+            xAxis: {
+                type: 'value',
+                name: '表彰人数（人）',
+                nameLocation: 'middle',
+                nameGap: 0, // 名称与轴的距离
+                axisLabel: {
+					color:'#666',
+                    formatter: '{value}' // 显示人数（整数）
+                },
+				axisLine:{
+					lineStyle:{
+					color:'#3B526C',
+					width:2
+					}
+				},
+				splitLine: {
+						show:true,
+						lineStyle: {
+							color: "#3B526C",
+					 }
+				},
+                min: 0 // 最小为0，符合实际意义
+            },
+            // y轴配置（单位）
+            yAxis: {
+                type: 'category',
+                data: data.units,
+                // 自定义y轴标签样式：总人数为0的单位显示灰色
+                axisLabel: {
+                    color: function(params, index) {
+                        return totalCountPerUnit[index] === 0 ? '#666' : '#ccc';
+                    }
+                },
+				axisLine:{
+						lineStyle:{
+						color:'#3B526C',
+						width:2
+					}
+				},
+            },
+            // 系列数据（横向堆叠柱状图核心配置）
+            series: [
+                // 1. 民警奖励（蓝色系）
+                {
+                    name: '民警奖励',
+                    type: 'bar',
+                    stack: 'total', // stack值相同表示堆叠
+                    emphasis: {
+                        focus: 'series' // 高亮当前系列
+                    },
+                    data: data.rewardData['民警奖励'],
+                    // 自定义色块颜色
+                    itemStyle: {
+                        color: '#4895ef'
+                    }
+                },
+                // 2. 文明标兵（绿色系）
+                {
+                    name: '文明标兵',
+                    type: 'bar',
+                    stack: 'total',
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: data.rewardData['文明标兵'],
+                    itemStyle: {
+                        color: '#60a5fa'
+                    }
+                },
+                // 3. 微笑之星（黄色系）
+                {
+                    name: '微笑之星',
+                    type: 'bar',
+                    stack: 'total',
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: data.rewardData['微笑之星'],
+
+                    itemStyle: {
+                        color: '#fbbf24'
+                    }
+                },
+                // 4. 优秀网格员（红色系）
+                {
+                    name: '优秀网格员',
+                    type: 'bar',
+                    stack: 'total',
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: data.rewardData['优秀网格员'],
+                    itemStyle: {
+                        color: '#f87171'
+                    },
+                    // 关键配置：为"待提升"单位添加右侧标签
+                    label: {
+                        show: true,
+                        position: 'right', // 标签在柱子右侧
+                        formatter: function(params) {
+                            // 仅当当前单位总人数为0时，显示"待提升"
+                            const unitIndex = data.units.indexOf(params.name);
+                            return totalCountPerUnit[unitIndex] === 0 ? '待提升' : '';
+                        },
+                        color: '#ff4d4f', // 标签颜色（红色，突出提示）
+                        fontSize: 12,
+                        fontWeight: 'bold'
+                    }
+                }
+            ]
+        };
+carLine.setOption(optionCar);
+
+</script>

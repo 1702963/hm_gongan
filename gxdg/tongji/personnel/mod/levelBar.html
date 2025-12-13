@@ -1,0 +1,146 @@
+<script>
+var EChart = echarts.init(document.getElementById('lineZ'));
+var optionE = {
+	title:{
+		text:'',
+		textStyle:{
+			color:'#ffffff'
+		},
+	},
+    legend: {
+         textStyle:{
+            fontSize: 12,
+            color: '#eeeeee',
+        },
+        padding:[10,0,0,0],
+    },
+    grid: {
+        left: '3%',
+        right: '3%',
+        bottom: '5%',
+		top:'20%',
+        containLabel: true,
+        
+    },
+    tooltip: {
+		trigger: 'axis',	
+	},
+    dataset: {
+        source: [
+            ['product', '劳务派遣', '合同制'],
+            ['退伍军人', 85,55],
+            ['警校毕业', 73,36],
+            ['社会招聘', 65,32]
+        ]
+    },
+    xAxis: {
+        type: 'category',
+		barCategoryGap:10,
+        axisLabel:{
+        
+        	interval:0,
+			formatter:function(value) {
+							var ret = "";
+							var maxLength = 4;
+							var valLength = value.length;
+							var rowN = Math.ceil(valLength / maxLength); 
+							if (rowN > 1) {
+								for (var i = 0; i < rowN; i++) {
+									var temp = "";
+									var start = i * maxLength;
+									var end = start + maxLength;
+									temp = value.substring(start, end) + "\n";
+									ret += temp;
+								}
+								return ret;
+							} else {
+								return value;
+							}
+				},
+            
+            textStyle:{
+                color:'#ddd',
+				fontSize: 12,
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#3B526C',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    yAxis: {
+        axisLabel:{
+            textStyle:{
+                color:'#ddd'
+            }
+        },
+        axisLine:{
+                lineStyle:{
+                color:'#v',
+                width:2
+            }
+        },
+        splitLine: {
+                show:true,
+                lineStyle: {
+                    color: "#3B526C",
+             }
+        }
+    },
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+        {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+			    normal:{
+					color:'#238bff',
+					label:{
+						show:true,
+						position:'top',
+						textStyle:{
+							color:'#238bff',
+							fontSize:12,
+							fontWeight:'normal'
+						}
+					},
+				},
+			}
+        },
+        {
+            type: 'bar',
+            barWidth : 10,
+            itemStyle:{
+			    normal:{
+					color:'#4ae299',
+					label:{
+						show:true,
+						position:'top',
+						textStyle:{
+							color:'#4ae299',
+							fontSize:12,
+							fontWeight:'normal'
+						}
+					}
+				},
+			}
+        }
+
+    ]
+};
+EChart.setOption(optionE);
+// 响应窗口大小变化
+window.addEventListener('resize', function() {
+    EChart.resize();
+});
+</script>
+

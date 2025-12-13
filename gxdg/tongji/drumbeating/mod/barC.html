@@ -1,0 +1,132 @@
+<script>
+// 初始化图表容器（低版本ECharts基础DOM获取）
+var chartDom = document.getElementById('lineC');
+var myChart = echarts.init(chartDom);
+var option = {};
+
+// 1. 基础数据：作者信息、累计采用数、所属单位、高级别发表数
+// 注：低版本建议用数组存储结构化数据，便于排序和渲染
+var authorRawData = [
+    { name: '张三', total: 28, unit: '刑侦支队', highLevel: 5 },    // 累计28件，中央级5件
+    { name: '李四', total: 22, unit: '交警支队', highLevel: 3 },    // 累计22件，中央级3件
+    { name: '王五', total: 19, unit: '政治部', highLevel: 4 },      // 累计19件，中央级4件
+    { name: '赵六', total: 15, unit: '治安支队', highLevel: 2 },    // 累计15件，中央级2件
+    { name: '孙七', total: 11, unit: '网安支队', highLevel: 1 },    // 累计11件，中央级1件
+];
+
+// 2. 按累计采用数降序排序（核心：Y轴作者顺序从高到低排列）
+authorRawData.sort((a, b) => a.total - b.total);
+
+// 3. 重组数据（适配低版本横向条形图格式：Y轴=作者名，X轴=累计采用数）
+var yAxisData = authorRawData.map(item => item.name); // 排序后的作者姓名（Y轴）
+var seriesData = authorRawData.map(item => ({
+    value: item.total, // 累计采用数（X轴数值）
+    unit: item.unit,   // 所属单位（用于tooltip显示）
+    highLevel: item.highLevel // 高级别媒体发表数（用于tooltip显示）
+}));
+
+// 4. 低版本ECharts配置（避免高版本API，保证兼容性）
+option = {
+    title: {
+        text: '',
+        textStyle: {
+            color: '#ccc',
+            fontSize: 16,
+            fontWeight: 'bold'
+        },
+        left: 'left',
+        top: 10
+    },
+    tooltip: {
+        trigger: 'item', // 按单个条形触发，精准显示作者详情
+        axisPointer: {
+            type: 'shadow' // 横向条形图用阴影指针，低版本响应更稳定
+        },
+        backgroundColor: 'rgba(255,255,255,0.9)',
+        borderColor: '#ddd',
+        borderWidth: 1,
+        textStyle: { color: '#333', fontSize: 12 },
+        // 自定义tooltip内容：作者+单位+采用数+高级别发表数
+        formatter: function(params) {
+            // 从seriesData中匹配当前作者的完整信息
+            var authorInfo = seriesData[params.dataIndex];
+            return `${params.name}（${authorInfo.unit}）<br/>
+                    累计采用：${params.value} 件<br/>
+                    含高级别媒体：${authorInfo.highLevel} 件`;
+        }
+    },
+    legend: {
+        show: false // 无需图例，数据通过条形长度和tooltip区分
+    },
+    grid: {
+        left: '5%', // 左侧预留Y轴作者名空间（避免姓名被截断）
+        right: '8%',
+        bottom: '5%',
+        top: '20%',
+        containLabel: true // 低版本必须开启，保证tooltip不溢出容器
+    },
+    // X轴：累计采用数（横向条形图的"数值轴"）
+    xAxis: [
+        {
+            type: 'value',
+            axisLabel: {
+                color: '#ccc',
+                fontSize: 11,
+                formatter: '{value}' // 显式标注"件"，避免歧义
+            },
+            axisLine: {
+                lineStyle: { color: '#666' } // 低版本需显式设置轴线颜色
+            },
+            splitLine: {
+                lineStyle: { color: '#666' } // 浅灰色网格线，辅助读数
+            },
+            min: 0 // X轴从0开始，保证条形长度与采用数成比例
+        }
+    ],
+    // Y轴：作者姓名（横向条形图的"分类轴"，已降序）
+    yAxis: [
+        {
+            type: 'category',
+            data: yAxisData, // 排序后的作者姓名
+            axisLabel: {
+                color: '#ccc',
+                fontSize: 12,
+                width: 80, // 限制姓名宽度，避免过长
+                overflow: 'ellipsis' // 超出部分用省略号显示
+            },
+            axisLine: {
+                show: false // 隐藏Y轴轴线，界面更简洁
+            },
+            splitLine: {
+                show: false // 隐藏Y轴网格线，避免与条形重叠
+            }
+        }
+    ],
+    series: [
+        // 核心系列：作者累计采用数（蓝色条形）
+        {
+            name: '累计采用数',
+            type: 'bar',
+            barWidth: 15, // 条形宽度，保证纵向排列不拥挤
+            itemStyle: {
+                color: '#165DFF' // 统一用蓝色，简洁专业
+            },
+            data: seriesData, // 已关联单位和高级别数据的数据集
+            // 条形右侧显示累计采用数（低版本直接用label，不依赖高级属性）
+            label: {
+                show: true,
+                position: 'right', // 数值在条形右侧，便于读取
+                textStyle: {
+                    color: '#eee',
+                    fontSize: 12,
+                    fontWeight: '500'
+                },
+                formatter: '{c} 篇' // 显示"XX 件"格式
+            }
+        }
+    ]
+};
+
+// 5. 渲染图表（低版本基础用法，无额外参数）
+myChart.setOption(option);
+</script>

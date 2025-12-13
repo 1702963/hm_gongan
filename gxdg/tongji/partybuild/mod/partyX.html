@@ -1,0 +1,97 @@
+<script>
+
+var DXChart = echarts.init(document.getElementById('pieX'));
+
+// 数据处理：计算党员总人数及比例
+var data = [
+    { value: 15, name: '中共党员' },
+    { value: 40, name: '中共预备党员' },
+    { value: 25, name: '其他' }
+];
+var total = data.reduce((sum, item) => sum + item.value, 0); // 总人数
+var partyMembers = data[0].value + data[1].value; // 党员总人数（中共党员+预备党员）
+var partyRatio = ((partyMembers / total) * 100).toFixed(1); // 党员比例，保留一位小数
+
+var optionDX = {
+    title: {
+        text: '民警 政治面貌',
+        textStyle: {
+            color: '#ffffff',
+			fontSize:16
+        },
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        right: 0,           
+        top: 70, 
+        textStyle: {
+            fontSize: 12,
+            color: '#ffffff'
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 20
+    },
+    series: [
+        {
+            name: '民警 政治面貌',
+            type: 'pie',
+            radius: ['40%', '60%'],  // 环形图内外半径
+            center: ['30%', '60%'],  // 图表中心位置
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 8,
+            },
+            label: {
+                show: false,
+                position: 'inside',
+                formatter: '{b}\n{c}件({d}%)',
+                fontSize: 14,
+                fontWeight: '500',
+                color: '#ffffff'
+            },
+            labelLine: {
+                show: false,
+                length: 15,
+                length2: 10,
+                lineStyle: {
+                    width: 1
+                }
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                }
+            },
+            data: data
+        }
+    ],
+    // 添加党员比例标注
+    graphic: {
+        type: 'text',
+        left: 5,
+        top: 30,
+        style: {
+            text: `民警党员占民警总数比例: ${partyRatio}%`, // 显示党员比例
+            textAlign: 'center',
+            fill: '#ffffff',
+            fontSize: 14,
+            fontWeight: 'bold' // 加粗突出显示
+        }
+    },
+    color: [
+        '#8884d8',  // 中共党员 - 紫色
+        '#52c41a',  // 中共预备党员 - 绿色
+        '#faad14'   // 其他 - 黄色
+    ]
+};
+
+DXChart.setOption(optionDX);
+
+</script>

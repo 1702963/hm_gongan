@@ -1,0 +1,180 @@
+<script>
+// 初始化图表容器（低版本ECharts基础DOM获取）
+var chartDom = document.getElementById('lineT');
+var myChart = echarts.init(chartDom);
+var option = {};
+
+// 1. 基础数据：审核通过数、总审核数（用于计算通过率）
+// 结构：{审核类型: {月度通过数, 月度总数, 年度通过数, 年度总数}}
+var auditRawData = {
+    '素材审核': {
+        monthPass: 186,  // 月度通过数
+        monthTotal: 200, // 月度总审核数
+        yearPass: 2150,  // 年度通过数
+        yearTotal: 2300  // 年度总审核数
+    },
+    '稿件审核': {
+        monthPass: 152,  // 月度通过数
+        monthTotal: 160, // 月度总审核数
+        yearPass: 1780,  // 年度通过数
+        yearTotal: 1900  // 年度总审核数
+    }
+};
+
+// 2. 计算通过率（核心逻辑：通过率=通过数/总审核数×100，保留1位小数）
+function calculateRate(passNum, totalNum) {
+    // 避免除数为0（低版本ECharts对NaN兼容差，需特殊处理）
+    if (totalNum === 0) return 0;
+    return (passNum / totalNum * 100).toFixed(1);
+}
+
+// 3. 重组数据（适配横向双柱状图格式：Y轴=审核类型，X轴=通过率%）
+var auditTypes = ['素材审核', '稿件审核']; // Y轴分类（固定顺序）
+var monthRateData = auditTypes.map(type => {
+    // 月度通过率数组
+    return calculateRate(auditRawData[type].monthPass, auditRawData[type].monthTotal);
+});
+var yearRateData = auditTypes.map(type => {
+    // 年度通过率数组
+    return calculateRate(auditRawData[type].yearPass, auditRawData[type].yearTotal);
+});
+
+// 4. 低版本ECharts配置（避免高版本API，保证兼容性）
+option = {
+    title: {
+        text: '',
+        textStyle: {
+            color: '#eee',
+            fontSize: 16,
+            fontWeight: 'bold'
+        },
+        left: 'left',
+        top: 10
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow' // 横向柱状图用阴影指针，低版本响应更稳定
+        },
+        // 显示详细信息：通过率+原始通过/总数（帮助用户理解计算逻辑）
+        formatter: function(params) {
+            // 获取当前审核类型（素材/稿件）
+            var auditType = auditTypes[params[0].dataIndex];
+            // 获取对应原始数据
+            var raw = auditRawData[auditType];
+            // 区分月度/年度，拼接tooltip内容
+            if (params[0].seriesName === '月度通过率') {
+                return `${auditType}<br/>
+                        ${params[0].seriesName}：${params[0].value}%<br/>
+                        通过数/总审核数：${raw.monthPass}/${raw.monthTotal}`;
+            } else {
+                return `${auditType}<br/>
+                        ${params[0].seriesName}：${params[0].value}%<br/>
+                        通过数/总审核数：${raw.yearPass}/${raw.yearTotal}`;
+            }
+        }
+    },
+    legend: {
+        data: ['月度通过率', '年度通过率'], // 双柱对比的图例
+        left: 'center',
+        top: 10, // 位于标题下方，避免重叠
+        textStyle: {
+            color: '#ccc',
+            fontSize: 12
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 30 // 加大间距，避免图例拥挤
+    },
+    grid: {
+        left: '5%', // 左侧预留Y轴文字空间（防止审核类型名称被截断）
+        right: '5%',
+        bottom: '10%',
+        top: '20%',
+        containLabel: true // 低版本必须开启，保证标签不溢出容器
+    },
+    // X轴：通过率%（横向柱状图的"数值轴"）
+    xAxis: [
+        {
+            type: 'value',
+            max: 120, // 通过率最大为100%，固定轴范围更直观
+            axisLabel: {
+                color: '#ccc',
+                fontSize: 11,
+                formatter: '{value}%' // 显式标注"%"，避免歧义
+            },
+            axisLine: {
+                lineStyle: { color: '#666' } // 低版本需显式设置轴线颜色
+            },
+            splitLine: {
+                lineStyle: { color: '#666' } // 浅灰色网格线，不干扰视觉
+            }
+        }
+    ],
+    // Y轴：审核类型（横向柱状图的"分类轴"）
+    yAxis: [
+        {
+            type: 'category',
+            data: auditTypes, // 固定为"素材审核""稿件审核"
+            axisLabel: {
+                color: '#ccc',
+                fontSize: 13, // 加大文字，提升可读性
+                width: 100, // 限制文字宽度，避免过长
+                overflow: 'ellipsis' // 超出部分用省略号显示
+            },
+            axisLine: {
+                show: false // 隐藏Y轴轴线，界面更简洁
+            },
+            splitLine: {
+                show: false // 隐藏Y轴网格线，避免与柱子重叠
+            }
+        }
+    ],
+    series: [
+        // 系列1：月度通过率（蓝色柱）
+        {
+            name: '月度通过率',
+            type: 'bar',
+            barWidth: 16, // 柱子宽度，保证双柱并列不拥挤
+            itemStyle: {
+                color: '#165DFF' // 月度用蓝色，区分年度
+            },
+            data: monthRateData,
+            // 柱子上显示通过率数值（低版本直接用label，不依赖高级属性）
+            label: {
+                show: true,
+                position: 'right', // 数值在柱子右侧，便于读取
+                textStyle: {
+                    color: '#165DFF',
+                    fontSize: 12,
+                    fontWeight: '500'
+                },
+                formatter: '{c}%' // 显示"XX%"格式
+            }
+        },
+        // 系列2：年度通过率（紫色柱）
+        {
+            name: '年度通过率',
+            type: 'bar',
+            barWidth: 16,
+            itemStyle: {
+                color: '#722ED1' // 年度用紫色，与月度形成对比
+            },
+            data: yearRateData,
+            label: {
+                show: true,
+                position: 'right',
+                textStyle: {
+                    color: '#722ED1',
+                    fontSize: 12,
+                    fontWeight: '500'
+                },
+                formatter: '{c}%'
+            }
+        }
+    ]
+};
+
+// 5. 渲染图表（低版本基础用法，无额外参数）
+myChart.setOption(option);
+</script>

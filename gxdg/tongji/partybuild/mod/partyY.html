@@ -1,0 +1,106 @@
+<script>
+
+var DYChart = echarts.init(document.getElementById('pieY'));
+
+// 辅警数据
+var auxiliaryPoliceData = [
+    { value: 15, name: '中共党员' },
+    { value: 40, name: '中共预备党员' },
+    { value: 25, name: '其他' }
+];
+
+// 计算辅警党员总数（中共党员 + 中共预备党员）
+var auxiliaryPartyMembers = auxiliaryPoliceData[0].value + auxiliaryPoliceData[1].value;
+
+// 民警总数（假设的民警总数，实际应用中需替换为真实数据）
+var policeTotal = 200; // 示例：假设民警总数为200人
+
+// 计算辅警党员占民警总数的比例
+var ratio = policeTotal > 0 ? ((auxiliaryPartyMembers / policeTotal) * 100).toFixed(1) : '0.0';
+
+var optionDY = {
+    title: {
+        text: '辅警 政治面貌',
+        textStyle: {
+            color: '#ffffff',
+			fontSize:16
+        },
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        right: 0,           
+        top: 70, 
+        padding: [0, 0, 0, 0],
+        textStyle: {
+            fontSize: 12,
+            color: '#ffffff'
+        },
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 20
+    },
+    series: [
+        {
+            name: '辅警 政治面貌',
+            type: 'pie',
+            radius: ['40%', '60%'],
+            center: ['30%', '60%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 8,
+            },
+            label: {
+                show: false,
+                position: 'inside',
+                formatter: '{b}\n{c}人({d}%)', // 将"件"改为"人"更贴合人员统计
+                fontSize: 14,
+                fontWeight: '500',
+                color: '#ffffff'
+            },
+            labelLine: {
+                show: false,
+                length: 15,
+                length2: 10,
+                lineStyle: {
+                    width: 1
+                }
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                }
+            },
+            data: auxiliaryPoliceData
+        }
+    ],
+    // 添加辅警党员占民警总数比例标注
+    graphic: {
+        type: 'text',
+        left: 5,
+        top: 30,
+        style: {
+            text: `辅警党员占民警总数: ${ratio}%`,
+            textAlign: 'center',
+            fill: '#ffffff',
+            fontSize: 14,
+            fontWeight: 'bold'
+        }
+    },
+    color: [
+        '#f5222d',
+        '#1890ff',
+        '#52c41a',
+        '#8884d8',
+        '#faad14',
+    ]
+};
+
+DYChart.setOption(optionDY);
+
+</script>

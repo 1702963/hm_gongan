@@ -1,0 +1,82 @@
+
+* {  -webkit-user-select: none; outline: none }
+html {height:100%;}
+body {margin:0;padding:0;background:#111;overflow-x:hidden; display:flex; justify-content:center}
+p {margin:0;padding:0}
+a {background:transparent;text-decoration:none}
+a:active, a:hover {outline:0}
+img {border:0}
+em {font-style:normal}
+ul {margin:0;padding:0}
+li {list-style:none}
+table {border-spacing:0;border-collapse:collapse}
+td,th {padding:0}
+.clear {clear:both;font-size:0;height:0;overflow:hidden}
+div { border:0 solid #333; -webkit-box-sizing: border-box; box-sizing: border-box;}
+
+#main {width:1900px; min-width:1900px; height:1080px; border:0 solid #ddd;z-index:999;margin-bottom:30px}
+#myClock {margin-left:10px;letter-spacing:1px;font-weight:500;margin-top:2px}
+
+#header {width:100%;height:100px;background:url(../images/head.png) center 0 no-repeat;text-align:center;color:#fff;font-size:30px;font-weight:900;line-height:80px;position:relative}
+#thisTime {width:1800px;height:50px;position:absolute;left:50%;margin-left:-900px;line-height:50px;color:#7bd2ff;font-size:14px;font-weight:500;top:20px;text-align:left;display:flex;align-items:center}
+#thisTime img {margin-right:6px}
+#thisTime a {color:#7bd2ff;margin-right:15px}
+#thisTime a:hover {color:#fff}
+
+#header {width:100%;height:80px;text-align:center;color:#fff;font-size:32px}
+.container {width:100%;}
+#top {height:180px;justify-content: space-between;}
+#center {height:480px;}
+#bottom {height:300px;justify-content: space-between;}
+.topCon {width:32%; height:170px; float:left; margin-left:1%}
+.conTitle {width:100%;margin-left:0%;color:#fff;height:32px;line-height:24px;text-indent:50px}
+.conTitle span {font-size:16px}
+.topitem {width:46%;height:55px;padding:0 1%;background:#031d31;border-radius:0 0 10px 0;border:1px solid #174551;color:#fff;margin:1% 0 0 2%;float:left;box-shadow:0 0 8px rgba(0,100,250,0.5)}
+
+.itemTitle {width:100%;font-size:14px}
+.itemNum {width:60%;font-size:22px;font-weight:900;float:left}
+.itemFd {width:40%;font-size:12px;justify-content: center;float:left}
+.red {color:#f00}
+.green {color:#3F6}
+.keyRed {background:#c00;}
+.keyDef {background:none; color:#fff}
+
+#pieCon {width:30%;height:490px;float:left;margin-left:1%}
+#tempPieCon {width:100%;height:480px;position:relative}
+.pieWin {width:70%;height:200px;background:rgba(0,0,0,0.9);position:absolute;left:15%;top:30px;z-index:999;display:none}
+.winItem {width:100%;height:200px;flex-wrap:wrap}
+.winTitle {width:100%;height:36px;line-height:36px;color:#fff;text-indent:6px;position:relative;font-size:14px}
+.winTitle em {position:absolute;right:10px;top:0;font-size:12px;cursor:pointer}
+.winCon {width:96%;height:125px;margin-left:2%;}
+.winConList {width:100%;height:40px;border-bototm:1px dashed #ddd;margin-top:5px}
+.winConListNum {width:24px;height:24px;border-radius:24px;background:#06c;font-size:12px;line-height:24px;color:#fff;margin-left:10px;float:left;text-align:center}
+.winConListName {width:calc( 100% - 120px);color:#fff;margin-left:10px;float:left}
+.winConListcode {width:50px;height:24px;color:#eee;font-size:12px;float:left}
+.LableContent {width:100px;height:60px;backgrond:rgba(0,0,0,0.5)}
+.lineBox {width:30%;height:490px;margin-left:1%;float:left}
+.lineCon {width:100%;height:200px;}
+.highrisk {width:36%;height:490px;margin-left:1%;float:left}
+.highCon {width:100%;height:200px;float:left}
+.highDon {width:100%;height:220px;flex-wrap:wrap;justify-content: space-between;float:left}
+.hditem {width:30%;height:180px;padding:1% 2%;background:rgba(0,100,250,0.15);border-radius:5px;color:#fff;display:block;margin:10px 1% 10px 2%;float:left;transition: all .2s ease-in-out}
+.hditem:hover {background:rgba(0,100,250,0.4)}
+.hdTitle {width:100%;font-size:14px;margin-bottom:4px;margin-top:5px}
+
+.cCenter {width:100%;float:left;}
+
+.bLeft {width:50%;height:250px;float:left;margin-left:1%}
+.fjList  {color:#ccc;font-size:12px;margin-left:1%}
+.fjList {}
+.fjList th {line-height:30px;background:rgba(0,100,250,0.2);text-indent:20px}
+.fjList td {line-height:29px;text-indent:20px;border-bottom:1px solid #333}
+.fjList td a {color:#fff}
+.fjList tbody tr {transition: all .2s ease-in-out}
+.fjList tbody tr:hover {background:rgba(0,100,255,0.3)}
+
+.bRight {width:47%;height:300px;float:left;margin-left:1%}
+.bRcon {width:50%;height:250px;float:left;color:#eee}
+.superslider , .picList , .drawLine {width:450px;height:210px;overflow:hidden;float:left}
+.drawLine {flex-wrap:wrap;margin:12px 0 0 12px}
+
+.picList table td { font-size:14px; padding:4px 0}
+.picList table tr {border-bottom:1px dashed rgba(0,100,250,0.5)}

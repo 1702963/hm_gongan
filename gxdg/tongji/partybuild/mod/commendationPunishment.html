@@ -1,0 +1,112 @@
+<script>
+var partyChart = echarts.init(document.getElementById('lineB'));
+
+// 数据定义
+var awardTypes = ['优秀党员', '优秀党务工作者', '先进党组织'];
+var punishmentTypes = ['警告', '严重警告', '撤销党内职务', '留党察看', '开除党籍'];
+var allTypes = awardTypes.concat(punishmentTypes);
+
+// 模拟数据
+var awardData = [35, 18, 12];
+var punishmentData = [0, 0, 0, 8, 3, 2, 1, 1];
+
+// 计算总计和比例
+var totalAwards = awardData.reduce((sum, value) => sum + value, 0);
+var totalPunishments = punishmentData.reduce((sum, value) => sum + value, 0);
+var ratio = totalPunishments > 0 ? (totalAwards / totalPunishments).toFixed(1) : totalAwards + ":0";
+
+// 自定义格式化函数：每4个字换行，超出部分继续分段
+function formatLabel(text) {
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+        // 每4个字加一个换行符（最后一个字符后不加）
+        if (i !== 0 && i % 4 === 0) {
+            result += '\n';
+        }
+        result += text[i];
+    }
+    return result;
+}
+
+var option = {
+    title: {
+        text: '',
+        subtext: '表彰惩处比 ' + ratio + ':1',
+        subtextStyle: { color: '#00ff00', fontSize: 14 },
+        textStyle: { color: '#ffffff', fontSize: 16 },
+        left: 'left'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' },
+        formatter: function(params) {
+            var name = params[0].name;
+            var awardValue = params[0].value || 0;
+            var punishmentValue = params[1].value || 0;
+            return name + '<br/>' +
+                   params[0].seriesName + ': ' + awardValue + '人<br/>' +
+                   params[1].seriesName + ': ' + punishmentValue + '人';
+        }
+    },
+    legend: {
+        data: ['表彰人数', '惩处人数'],
+        top: 30,
+        left: 'right',
+        textStyle: { color: '#888' }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '15%', // 增加底部距离，避免文字被截断
+        containLabel: true
+    },
+    xAxis: {
+        type: 'category',
+        data: allTypes,
+		axisLine:{
+			lineStyle:{
+				color:'#888'
+			}
+		},
+		axisTick:{
+			alignWithLable:true
+		},
+        axisLabel: {
+            interval: 0,
+            rotate: 0, // 关闭倾斜（关键）
+            formatter: formatLabel, // 应用换行格式化
+            textStyle: {
+                fontSize: 12,
+                color: '#888',
+                lineHeight: 16 // 调整行高，避免文字重叠
+            }
+        }
+    },
+    yAxis: {
+        type: 'value',
+        name: '人数',
+        min: 0,
+        axisLabel: { formatter: '{value}', textStyle: { color: '#888' } }
+    },
+    series: [
+        {
+            name: '表彰人数',
+            type: 'bar',
+            data: awardData.concat([0, 0, 0, 0, 0]),
+            itemStyle: { color: '#00ddff' },
+            barWidth: '30%',
+            barGap: '-100%',
+            barCategoryGap: '40%'
+        },
+        {
+            name: '惩处人数',
+            type: 'bar',
+            data: punishmentData,
+            itemStyle: { color: '#ff0000' },
+            barWidth: '30%'
+        }
+    ]
+};
+
+partyChart.setOption(option);
+</script>
