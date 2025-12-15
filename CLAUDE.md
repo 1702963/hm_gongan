@@ -4,10 +4,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-这是一个基于 PHPCMS V9 框架开发的公安管理系统(hm_gongan),包含两个子系统:
+基于 PHPCMS V9 框架开发的公安辅警管理系统，使用 **PHP 5.6** 标准开发。
 
-- **gxdg**: 主要的公安管理系统(公选辅警系统)
-- 使用 PHP 5.6 标准开发
+主要功能: 辅警档案、工资绩效、考勤、培训、奖惩、装备、监督、招录考试、优抚管理。
+
+## 开发命令
+
+```bash
+# 本地开发服务器
+php -S 0.0.0.0:8000 -t gxdg
+
+# 数据库连接
+mysql -h 192.168.1.66 -u root -proot
+
+# 清理模板缓存
+rm -rf gxdg/caches/caches_template/*
+```
+
+## API 入口
+
+- **前台入口**: `gxdg/index.php?m=模块&c=控制器&a=方法`
+- **后台入口**: `gxdg/admin.php?m=模块&c=控制器&a=方法`
+- **API 入口**: `gxdg/api.php?op=操作名`
 
 ## 数据库架构
 
@@ -384,18 +402,16 @@ $table_name = 'kq' . date('Ym'); // 如: kq202412
 $this->table_name = $table_name;
 ```
 
+## 自定义 Agents
+
+项目配置了专用 agents (`.claude/agents/`):
+
+- **phpcms-module-builder**: 创建 PHPcms 模块、MVC 结构、API 开发
+- **php-api-test-automator**: 自动化测试 PHP API 接口
+- **phpcms-frontend-developer**: 开发 PHPcms 模板页面
+
 ## 参考文档
 
-项目包含详细的数据库结构文档:
-
-- `GXDG数据库结构和功能说明文档.md` - gxdg 数据库完整说明
-- `数据库结构和功能说明文档.md` - fujing 数据库完整说明
-- `gxdg/CLAUDE.md` - gxdg 子系统的详细说明
-
-这些文档包含:
-
-- 所有数据表的详细字段说明
-- 表之间的关联关系
-- 字段命名规范
-- 常用查询示例
-- 数据库连接信息是 192.168.1.66 用户名root 密码root，用mysql命令行连接来开发。
+- `GXDG.md` - gxdg 数据库结构 (mj_ 前缀, 180张表)
+- `FUJING.md` - fujing 数据库结构 (v9_ 前缀, 337张表)
+- `AGENTS.md` - 开发规范和提交要求
