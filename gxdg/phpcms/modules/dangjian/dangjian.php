@@ -27,12 +27,14 @@ class dangjian extends admin
         include $this->admin_tpl('banzi_menu');
     }
 
+    //成员
     function banzichengyuan()
     {
 
         include $this->admin_tpl('chengyuan_menu');
     }
 
+    //支部
     function dangzhibu()
     {
         include $this->admin_tpl('zhibu_menu');
