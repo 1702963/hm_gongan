@@ -127,11 +127,6 @@ include $this->admin_tpl('header_new', 'admin');
                 </div>
 
 
-
-
-
-
-
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=dangfeishoujiao&sxty=2" title="党费收缴"><img
@@ -162,5 +157,4 @@ include $this->admin_tpl('header_new', 'admin');
             </div>
         </div>
     </div>
-    </body>
-    </html>
+</div>
