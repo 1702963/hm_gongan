@@ -1,5 +1,6 @@
 <?php
-ini_set("display_errors", "On");
+// 安全修复: 线上环境禁止开启 display_errors，避免暴露错误信息和服务器路径
+// ini_set("display_errors", "On");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);
@@ -101,10 +102,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -120,8 +129,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
@@ -256,6 +264,9 @@ class zhibu extends admin
             echo json_encode(array('status' => 0, 'msg' => '请输入搜索关键词'));
             exit;
         }
+
+        // 安全修复: 对用户输入进行转义，防止 SQL 注入
+        $keyword = addslashes($keyword);
 
         // 搜索辅警（按姓名或身份证号）
         $this->db->table_name = 'v9_fujing';
@@ -613,10 +624,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -632,8 +651,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
@@ -862,10 +880,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -881,8 +907,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
@@ -987,10 +1012,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -1006,8 +1039,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
@@ -1112,10 +1144,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -1131,8 +1171,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
@@ -1320,10 +1359,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -1339,8 +1386,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
@@ -1528,10 +1574,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -1547,8 +1601,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
@@ -1736,10 +1789,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -1755,8 +1816,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
@@ -1974,10 +2034,18 @@ class zhibu extends admin
             exit;
         }
 
-        // 检查文件类型
+        // 检查文件类型（Content-Type 检查，可被伪造，需配合扩展名白名单）
         $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
         if (!in_array($file['type'], $allowed_types)) {
             echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 安全修复: 扩展名白名单验证，防止上传恶意文件
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+        if (!in_array($ext, $allowed_exts)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
             exit;
         }
 
@@ -1993,8 +2061,7 @@ class zhibu extends admin
             mkdir($upload_path, 0755, true);
         }
 
-        // 生成文件名
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        // 生成文件名（扩展名已在上方验证）
         $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
         $filepath = $upload_path . $filename;
 
