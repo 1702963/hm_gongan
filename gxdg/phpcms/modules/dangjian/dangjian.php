@@ -33,6 +33,12 @@ class dangjian extends admin
         include $this->admin_tpl('chengyuan_menu');
     }
 
+    function dangzhibu()
+    {
+        include $this->admin_tpl('zhibu_menu');
+    }
+
+
     //补录辅警  正常情况下不使用本过程
     function add()
     {
