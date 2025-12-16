@@ -249,8 +249,40 @@ class jiagou extends admin
                 showmessage('该辅警已经是党员，请勿重复添加', HTTP_REFERER);
             }
 
-            // 插入数据
-            $data = array(
+            // 收集辅警相关字段
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $fujing_data = array(
+                'xingming' => isset($info['xingming']) ? trim($info['xingming']) : '',
+                'sfz' => isset($info['sfz']) ? trim($info['sfz']) : '',
+                'dwid' => isset($info['dwid']) ? intval($info['dwid']) : 0,
+                'tel' => isset($info['tel']) ? trim($info['tel']) : '',
+                'thumb' => isset($info['thumb']) ? trim($info['thumb']) : '',
+                'sex' => isset($info['sex']) ? trim($info['sex']) : '',
+                'age' => isset($info['age']) ? intval($info['age']) : 0,
+                'jiguan' => isset($info['jiguan']) ? trim($info['jiguan']) : '',
+                'minzu' => isset($info['minzu']) ? trim($info['minzu']) : '',
+                'hun' => isset($info['hun']) ? trim($info['hun']) : '',
+                'xueli' => isset($info['xueli']) ? trim($info['xueli']) : '',
+                'xuexiao' => isset($info['xuexiao']) ? trim($info['xuexiao']) : '',
+                'zhuanye' => isset($info['zhuanye']) ? trim($info['zhuanye']) : '',
+                'hjdizhi' => isset($info['hjdizhi']) ? trim($info['hjdizhi']) : '',
+                'gangwei' => isset($info['gangwei']) ? intval($info['gangwei']) : 0,
+                'jzd' => isset($info['jzd']) ? trim($info['jzd']) : '',
+                'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
+                'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
+                'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
+                'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
+            );
+
+            // 处理时间字段
+            $rdzztime = isset($_POST['rdzztime']) && $_POST['rdzztime'] ? strtotime($_POST['rdzztime']) : 0;
+            $scgztime = isset($_POST['scgztime']) && $_POST['scgztime'] ? strtotime($_POST['scgztime']) : 0;
+            $fujing_data['rdzztime'] = $rdzztime;
+            $fujing_data['scgztime'] = $scgztime;
+
+            // 插入党员信息表
+            $data = array_merge($fujing_data, array(
                 'fujing_id' => $fujing_id,
                 'addtime' => time(),
                 'updatetime' => time(),
@@ -258,9 +290,16 @@ class jiagou extends admin
                 'create_year' => intval(date('Y')),
                 'create_month' => intval(date('m')),
                 'create_day' => intval(date('d'))
-            );
+            ));
 
             $result = $this->db->insert($data);
+
+            // 同步更新辅警表
+            if ($result && $fujing_id) {
+                $this->db->table_name = 'v9_fujing';
+                $this->db->update($fujing_data, " id=$fujing_id ");
+            }
+
             if ($result) {
                 showmessage('添加成功', '?m=dangjian&c=jiagou&a=init');
             } else {
@@ -285,6 +324,151 @@ class jiagou extends admin
             showmessage('删除成功', '?m=dangjian&c=jiagou&a=init');
         } else {
             showmessage('删除失败', HTTP_REFERER);
+        }
+    }
+
+    // 编辑党员页面
+    public function edit()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        // 查询党员信息
+        $this->db->table_name = 'v9_dangyuan_info';
+        $info = $this->db->get_one(" id=$id ");
+        if (!$info) {
+            showmessage('数据不存在', HTTP_REFERER);
+        }
+
+        // 处理照片URL
+        if (!empty($info['thumb'])) {
+            if (strpos($info['thumb'], 'http://') !== 0 && strpos($info['thumb'], 'https://') !== 0) {
+                $upload_url = pc_base::load_config('system', 'upload_url');
+                $thumb_path = str_replace('uploadfile/', '', $info['thumb']);
+                $info['thumb'] = $upload_url . $thumb_path;
+            }
+        }
+
+        // 加载学历数据
+        $this->db->table_name = 'v9_xueli';
+        $xllist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $xueli = array();
+        foreach ($xllist as $v) {
+            $xueli[$v['id']] = $v['gwname'];
+        }
+
+        // 加载岗位数据
+        $this->db->table_name = 'v9_gangwei';
+        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $gangwei = array();
+        foreach ($gwlist as $v) {
+            $gangwei[$v['id']] = $v['gwname'];
+        }
+
+        // 加载职务数据
+        $this->db->table_name = 'v9_zhiwu';
+        $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $zhiwu = array();
+        foreach ($zwlist as $v) {
+            $zhiwu[$v['id']] = $v['zwname'];
+        }
+
+        // 加载层级数据
+        $this->db->table_name = 'v9_cengji';
+        $cjlist = $this->db->select("", 'id,cjname', '', 'id asc');
+        $cengji = array();
+        foreach ($cjlist as $v) {
+            $cengji[$v['id']] = $v['cjname'];
+        }
+
+        // 绑定组织树
+        $tree = pc_base::load_sys_class('tree');
+        $this->db = pc_base::load_model('bumen_model');
+        $result = $this->db->select();
+        $array = array();
+        foreach ($result as $r) {
+            $r['cname'] = $r['name'];
+            $r['selected'] = '';
+            $array[] = $r;
+        }
+        $str = "<option value='\$id' \$selected>\$spacer \$cname</option>";
+        $tree->init($array);
+        $select_categorys = $tree->get_tree(0, $str);
+
+        $this->info = $info;
+        $this->xueli = $xueli;
+        $this->gangwei = $gangwei;
+        $this->zhiwu = $zhiwu;
+        $this->cengji = $cengji;
+        $this->select_categorys = $select_categorys;
+
+        include $this->admin_tpl('dangyuan_edit');
+    }
+
+    // 保存编辑的党员信息
+    public function editsave()
+    {
+        if (isset($_POST['dosubmit'])) {
+            $id = intval($_POST['id']);
+            $fujing_id = intval($_POST['fujing_id']);
+
+            if (!$id) {
+                showmessage('参数错误', HTTP_REFERER);
+            }
+
+            // 收集辅警相关字段
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $fujing_data = array(
+                'xingming' => isset($info['xingming']) ? trim($info['xingming']) : '',
+                'sfz' => isset($info['sfz']) ? trim($info['sfz']) : '',
+                'dwid' => isset($info['dwid']) ? intval($info['dwid']) : 0,
+                'tel' => isset($info['tel']) ? trim($info['tel']) : '',
+                'thumb' => isset($info['thumb']) ? trim($info['thumb']) : '',
+                'sex' => isset($info['sex']) ? trim($info['sex']) : '',
+                'age' => isset($info['age']) ? intval($info['age']) : 0,
+                'jiguan' => isset($info['jiguan']) ? trim($info['jiguan']) : '',
+                'minzu' => isset($info['minzu']) ? trim($info['minzu']) : '',
+                'hun' => isset($info['hun']) ? trim($info['hun']) : '',
+                'xueli' => isset($info['xueli']) ? trim($info['xueli']) : '',
+                'xuexiao' => isset($info['xuexiao']) ? trim($info['xuexiao']) : '',
+                'zhuanye' => isset($info['zhuanye']) ? trim($info['zhuanye']) : '',
+                'hjdizhi' => isset($info['hjdizhi']) ? trim($info['hjdizhi']) : '',
+                'gangwei' => isset($info['gangwei']) ? intval($info['gangwei']) : 0,
+                'jzd' => isset($info['jzd']) ? trim($info['jzd']) : '',
+                'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
+                'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
+                'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
+                'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
+            );
+
+            // 处理时间字段
+            $rdzztime = isset($_POST['rdzztime']) && $_POST['rdzztime'] ? strtotime($_POST['rdzztime']) : 0;
+            $scgztime = isset($_POST['scgztime']) && $_POST['scgztime'] ? strtotime($_POST['scgztime']) : 0;
+            $fujing_data['rdzztime'] = $rdzztime;
+            $fujing_data['scgztime'] = $scgztime;
+
+            // 更新党员信息表
+            $data = array_merge($fujing_data, array(
+                'updatetime' => time()
+            ));
+
+            $this->db->table_name = 'v9_dangyuan_info';
+            $result = $this->db->update($data, " id=$id ");
+
+            // 同步更新辅警表
+            if ($fujing_id) {
+                $this->db->table_name = 'v9_fujing';
+                $this->db->update($fujing_data, " id=$fujing_id ");
+            }
+
+            if ($result !== false) {
+                showmessage('修改成功', '?m=dangjian&c=jiagou&a=init');
+            } else {
+                showmessage('修改失败', HTTP_REFERER);
+            }
         }
     }
 
@@ -426,8 +610,40 @@ class jiagou extends admin
                 showmessage('该辅警已经是入党积极分子，请勿重复添加', HTTP_REFERER);
             }
 
-            // 插入数据
-            $data = array(
+            // 收集辅警相关字段
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $fujing_data = array(
+                'xingming' => isset($info['xingming']) ? trim($info['xingming']) : '',
+                'sfz' => isset($info['sfz']) ? trim($info['sfz']) : '',
+                'dwid' => isset($info['dwid']) ? intval($info['dwid']) : 0,
+                'tel' => isset($info['tel']) ? trim($info['tel']) : '',
+                'thumb' => isset($info['thumb']) ? trim($info['thumb']) : '',
+                'sex' => isset($info['sex']) ? trim($info['sex']) : '',
+                'age' => isset($info['age']) ? intval($info['age']) : 0,
+                'jiguan' => isset($info['jiguan']) ? trim($info['jiguan']) : '',
+                'minzu' => isset($info['minzu']) ? trim($info['minzu']) : '',
+                'hun' => isset($info['hun']) ? trim($info['hun']) : '',
+                'xueli' => isset($info['xueli']) ? trim($info['xueli']) : '',
+                'xuexiao' => isset($info['xuexiao']) ? trim($info['xuexiao']) : '',
+                'zhuanye' => isset($info['zhuanye']) ? trim($info['zhuanye']) : '',
+                'hjdizhi' => isset($info['hjdizhi']) ? trim($info['hjdizhi']) : '',
+                'gangwei' => isset($info['gangwei']) ? intval($info['gangwei']) : 0,
+                'jzd' => isset($info['jzd']) ? trim($info['jzd']) : '',
+                'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
+                'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
+                'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
+                'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
+            );
+
+            // 处理时间字段
+            $rdzztime = isset($_POST['rdzztime']) && $_POST['rdzztime'] ? strtotime($_POST['rdzztime']) : 0;
+            $scgztime = isset($_POST['scgztime']) && $_POST['scgztime'] ? strtotime($_POST['scgztime']) : 0;
+            $fujing_data['rdzztime'] = $rdzztime;
+            $fujing_data['scgztime'] = $scgztime;
+
+            // 插入入党积极分子表
+            $data = array_merge($fujing_data, array(
                 'fujing_id' => $fujing_id,
                 'addtime' => time(),
                 'updatetime' => time(),
@@ -435,9 +651,16 @@ class jiagou extends admin
                 'create_year' => intval(date('Y')),
                 'create_month' => intval(date('m')),
                 'create_day' => intval(date('d'))
-            );
+            ));
 
             $result = $this->db->insert($data);
+
+            // 同步更新辅警表
+            if ($result && $fujing_id) {
+                $this->db->table_name = 'v9_fujing';
+                $this->db->update($fujing_data, " id=$fujing_id ");
+            }
+
             if ($result) {
                 showmessage('添加成功', '?m=dangjian&c=jiagou&a=jijifenzi');
             } else {
@@ -462,6 +685,118 @@ class jiagou extends admin
             showmessage('删除成功', '?m=dangjian&c=jiagou&a=jijifenzi');
         } else {
             showmessage('删除失败', HTTP_REFERER);
+        }
+    }
+
+    // 编辑入党积极分子页面
+    public function jijifenzi_edit()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $this->db->table_name = 'v9_jijifenzi';
+        $info = $this->db->get_one(" id=$id ");
+        if (!$info) {
+            showmessage('数据不存在', HTTP_REFERER);
+        }
+
+        if (!empty($info['thumb'])) {
+            if (strpos($info['thumb'], 'http://') !== 0 && strpos($info['thumb'], 'https://') !== 0) {
+                $upload_url = pc_base::load_config('system', 'upload_url');
+                $thumb_path = str_replace('uploadfile/', '', $info['thumb']);
+                $info['thumb'] = $upload_url . $thumb_path;
+            }
+        }
+
+        $this->db->table_name = 'v9_xueli';
+        $xllist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $xueli = array();
+        foreach ($xllist as $v) { $xueli[$v['id']] = $v['gwname']; }
+
+        $this->db->table_name = 'v9_gangwei';
+        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $gangwei = array();
+        foreach ($gwlist as $v) { $gangwei[$v['id']] = $v['gwname']; }
+
+        $this->db->table_name = 'v9_zhiwu';
+        $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $zhiwu = array();
+        foreach ($zwlist as $v) { $zhiwu[$v['id']] = $v['zwname']; }
+
+        $this->db->table_name = 'v9_cengji';
+        $cjlist = $this->db->select("", 'id,cjname', '', 'id asc');
+        $cengji = array();
+        foreach ($cjlist as $v) { $cengji[$v['id']] = $v['cjname']; }
+
+        $tree = pc_base::load_sys_class('tree');
+        $this->db = pc_base::load_model('bumen_model');
+        $result = $this->db->select();
+        $array = array();
+        foreach ($result as $r) { $r['cname'] = $r['name']; $r['selected'] = ''; $array[] = $r; }
+        $str = "<option value='\$id' \$selected>\$spacer \$cname</option>";
+        $tree->init($array);
+        $select_categorys = $tree->get_tree(0, $str);
+
+        $this->info = $info;
+        $this->xueli = $xueli;
+        $this->gangwei = $gangwei;
+        $this->zhiwu = $zhiwu;
+        $this->cengji = $cengji;
+        $this->select_categorys = $select_categorys;
+
+        include $this->admin_tpl('jijifenzi_edit');
+    }
+
+    // 保存编辑的入党积极分子信息
+    public function jijifenzi_editsave()
+    {
+        if (isset($_POST['dosubmit'])) {
+            $id = intval($_POST['id']);
+            $fujing_id = intval($_POST['fujing_id']);
+
+            if (!$id) { showmessage('参数错误', HTTP_REFERER); }
+
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $fujing_data = array(
+                'xingming' => isset($info['xingming']) ? trim($info['xingming']) : '',
+                'sfz' => isset($info['sfz']) ? trim($info['sfz']) : '',
+                'dwid' => isset($info['dwid']) ? intval($info['dwid']) : 0,
+                'tel' => isset($info['tel']) ? trim($info['tel']) : '',
+                'thumb' => isset($info['thumb']) ? trim($info['thumb']) : '',
+                'sex' => isset($info['sex']) ? trim($info['sex']) : '',
+                'age' => isset($info['age']) ? intval($info['age']) : 0,
+                'xueli' => isset($info['xueli']) ? trim($info['xueli']) : '',
+                'xuexiao' => isset($info['xuexiao']) ? trim($info['xuexiao']) : '',
+                'zhuanye' => isset($info['zhuanye']) ? trim($info['zhuanye']) : '',
+                'gangwei' => isset($info['gangwei']) ? intval($info['gangwei']) : 0,
+                'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
+                'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
+                'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
+                'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
+            );
+
+            $rdzztime = isset($_POST['rdzztime']) && $_POST['rdzztime'] ? strtotime($_POST['rdzztime']) : 0;
+            $scgztime = isset($_POST['scgztime']) && $_POST['scgztime'] ? strtotime($_POST['scgztime']) : 0;
+            $fujing_data['rdzztime'] = $rdzztime;
+            $fujing_data['scgztime'] = $scgztime;
+
+            $data = array_merge($fujing_data, array('updatetime' => time()));
+
+            $this->db->table_name = 'v9_jijifenzi';
+            $result = $this->db->update($data, " id=$id ");
+
+            if ($fujing_id) {
+                $this->db->table_name = 'v9_fujing';
+                $this->db->update($fujing_data, " id=$fujing_id ");
+            }
+
+            if ($result !== false) {
+                showmessage('修改成功', '?m=dangjian&c=jiagou&a=jijifenzi');
+            } else {
+                showmessage('修改失败', HTTP_REFERER);
+            }
         }
     }
 
@@ -603,8 +938,40 @@ class jiagou extends admin
                 showmessage('该辅警已经是发展党员，请勿重复添加', HTTP_REFERER);
             }
 
-            // 插入数据
-            $data = array(
+            // 收集辅警相关字段
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $fujing_data = array(
+                'xingming' => isset($info['xingming']) ? trim($info['xingming']) : '',
+                'sfz' => isset($info['sfz']) ? trim($info['sfz']) : '',
+                'dwid' => isset($info['dwid']) ? intval($info['dwid']) : 0,
+                'tel' => isset($info['tel']) ? trim($info['tel']) : '',
+                'thumb' => isset($info['thumb']) ? trim($info['thumb']) : '',
+                'sex' => isset($info['sex']) ? trim($info['sex']) : '',
+                'age' => isset($info['age']) ? intval($info['age']) : 0,
+                'jiguan' => isset($info['jiguan']) ? trim($info['jiguan']) : '',
+                'minzu' => isset($info['minzu']) ? trim($info['minzu']) : '',
+                'hun' => isset($info['hun']) ? trim($info['hun']) : '',
+                'xueli' => isset($info['xueli']) ? trim($info['xueli']) : '',
+                'xuexiao' => isset($info['xuexiao']) ? trim($info['xuexiao']) : '',
+                'zhuanye' => isset($info['zhuanye']) ? trim($info['zhuanye']) : '',
+                'hjdizhi' => isset($info['hjdizhi']) ? trim($info['hjdizhi']) : '',
+                'gangwei' => isset($info['gangwei']) ? intval($info['gangwei']) : 0,
+                'jzd' => isset($info['jzd']) ? trim($info['jzd']) : '',
+                'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
+                'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
+                'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
+                'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
+            );
+
+            // 处理时间字段
+            $rdzztime = isset($_POST['rdzztime']) && $_POST['rdzztime'] ? strtotime($_POST['rdzztime']) : 0;
+            $scgztime = isset($_POST['scgztime']) && $_POST['scgztime'] ? strtotime($_POST['scgztime']) : 0;
+            $fujing_data['rdzztime'] = $rdzztime;
+            $fujing_data['scgztime'] = $scgztime;
+
+            // 插入发展党员表
+            $data = array_merge($fujing_data, array(
                 'fujing_id' => $fujing_id,
                 'addtime' => time(),
                 'updatetime' => time(),
@@ -612,9 +979,16 @@ class jiagou extends admin
                 'create_year' => intval(date('Y')),
                 'create_month' => intval(date('m')),
                 'create_day' => intval(date('d'))
-            );
+            ));
 
             $result = $this->db->insert($data);
+
+            // 同步更新辅警表
+            if ($result && $fujing_id) {
+                $this->db->table_name = 'v9_fujing';
+                $this->db->update($fujing_data, " id=$fujing_id ");
+            }
+
             if ($result) {
                 showmessage('添加成功', '?m=dangjian&c=jiagou&a=fazhandangyuan');
             } else {
@@ -639,6 +1013,114 @@ class jiagou extends admin
             showmessage('删除成功', '?m=dangjian&c=jiagou&a=fazhandangyuan');
         } else {
             showmessage('删除失败', HTTP_REFERER);
+        }
+    }
+
+    // 编辑发展党员页面
+    public function fazhandangyuan_edit()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) { showmessage('参数错误', HTTP_REFERER); }
+
+        $this->db->table_name = 'v9_fazhandangyuan';
+        $info = $this->db->get_one(" id=$id ");
+        if (!$info) { showmessage('数据不存在', HTTP_REFERER); }
+
+        if (!empty($info['thumb'])) {
+            if (strpos($info['thumb'], 'http://') !== 0 && strpos($info['thumb'], 'https://') !== 0) {
+                $upload_url = pc_base::load_config('system', 'upload_url');
+                $thumb_path = str_replace('uploadfile/', '', $info['thumb']);
+                $info['thumb'] = $upload_url . $thumb_path;
+            }
+        }
+
+        $this->db->table_name = 'v9_xueli';
+        $xllist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $xueli = array();
+        foreach ($xllist as $v) { $xueli[$v['id']] = $v['gwname']; }
+
+        $this->db->table_name = 'v9_gangwei';
+        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $gangwei = array();
+        foreach ($gwlist as $v) { $gangwei[$v['id']] = $v['gwname']; }
+
+        $this->db->table_name = 'v9_zhiwu';
+        $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $zhiwu = array();
+        foreach ($zwlist as $v) { $zhiwu[$v['id']] = $v['zwname']; }
+
+        $this->db->table_name = 'v9_cengji';
+        $cjlist = $this->db->select("", 'id,cjname', '', 'id asc');
+        $cengji = array();
+        foreach ($cjlist as $v) { $cengji[$v['id']] = $v['cjname']; }
+
+        $tree = pc_base::load_sys_class('tree');
+        $this->db = pc_base::load_model('bumen_model');
+        $result = $this->db->select();
+        $array = array();
+        foreach ($result as $r) { $r['cname'] = $r['name']; $r['selected'] = ''; $array[] = $r; }
+        $str = "<option value='\$id' \$selected>\$spacer \$cname</option>";
+        $tree->init($array);
+        $select_categorys = $tree->get_tree(0, $str);
+
+        $this->info = $info;
+        $this->xueli = $xueli;
+        $this->gangwei = $gangwei;
+        $this->zhiwu = $zhiwu;
+        $this->cengji = $cengji;
+        $this->select_categorys = $select_categorys;
+
+        include $this->admin_tpl('fazhandangyuan_edit');
+    }
+
+    // 保存编辑的发展党员信息
+    public function fazhandangyuan_editsave()
+    {
+        if (isset($_POST['dosubmit'])) {
+            $id = intval($_POST['id']);
+            $fujing_id = intval($_POST['fujing_id']);
+
+            if (!$id) { showmessage('参数错误', HTTP_REFERER); }
+
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $fujing_data = array(
+                'xingming' => isset($info['xingming']) ? trim($info['xingming']) : '',
+                'sfz' => isset($info['sfz']) ? trim($info['sfz']) : '',
+                'dwid' => isset($info['dwid']) ? intval($info['dwid']) : 0,
+                'tel' => isset($info['tel']) ? trim($info['tel']) : '',
+                'thumb' => isset($info['thumb']) ? trim($info['thumb']) : '',
+                'sex' => isset($info['sex']) ? trim($info['sex']) : '',
+                'age' => isset($info['age']) ? intval($info['age']) : 0,
+                'xueli' => isset($info['xueli']) ? trim($info['xueli']) : '',
+                'xuexiao' => isset($info['xuexiao']) ? trim($info['xuexiao']) : '',
+                'zhuanye' => isset($info['zhuanye']) ? trim($info['zhuanye']) : '',
+                'gangwei' => isset($info['gangwei']) ? intval($info['gangwei']) : 0,
+                'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
+                'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
+                'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
+                'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
+            );
+
+            $rdzztime = isset($_POST['rdzztime']) && $_POST['rdzztime'] ? strtotime($_POST['rdzztime']) : 0;
+            $scgztime = isset($_POST['scgztime']) && $_POST['scgztime'] ? strtotime($_POST['scgztime']) : 0;
+            $fujing_data['rdzztime'] = $rdzztime;
+            $fujing_data['scgztime'] = $scgztime;
+
+            $data = array_merge($fujing_data, array('updatetime' => time()));
+
+            $this->db->table_name = 'v9_fazhandangyuan';
+            $result = $this->db->update($data, " id=$id ");
+
+            if ($fujing_id) {
+                $this->db->table_name = 'v9_fujing';
+                $this->db->update($fujing_data, " id=$fujing_id ");
+            }
+
+            if ($result !== false) {
+                showmessage('修改成功', '?m=dangjian&c=jiagou&a=fazhandangyuan');
+            } else {
+                showmessage('修改失败', HTTP_REFERER);
+            }
         }
     }
 
@@ -780,8 +1262,40 @@ class jiagou extends admin
                 showmessage('该辅警已经是预备党员，请勿重复添加', HTTP_REFERER);
             }
 
-            // 插入数据
-            $data = array(
+            // 收集辅警相关字段
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $fujing_data = array(
+                'xingming' => isset($info['xingming']) ? trim($info['xingming']) : '',
+                'sfz' => isset($info['sfz']) ? trim($info['sfz']) : '',
+                'dwid' => isset($info['dwid']) ? intval($info['dwid']) : 0,
+                'tel' => isset($info['tel']) ? trim($info['tel']) : '',
+                'thumb' => isset($info['thumb']) ? trim($info['thumb']) : '',
+                'sex' => isset($info['sex']) ? trim($info['sex']) : '',
+                'age' => isset($info['age']) ? intval($info['age']) : 0,
+                'jiguan' => isset($info['jiguan']) ? trim($info['jiguan']) : '',
+                'minzu' => isset($info['minzu']) ? trim($info['minzu']) : '',
+                'hun' => isset($info['hun']) ? trim($info['hun']) : '',
+                'xueli' => isset($info['xueli']) ? trim($info['xueli']) : '',
+                'xuexiao' => isset($info['xuexiao']) ? trim($info['xuexiao']) : '',
+                'zhuanye' => isset($info['zhuanye']) ? trim($info['zhuanye']) : '',
+                'hjdizhi' => isset($info['hjdizhi']) ? trim($info['hjdizhi']) : '',
+                'gangwei' => isset($info['gangwei']) ? intval($info['gangwei']) : 0,
+                'jzd' => isset($info['jzd']) ? trim($info['jzd']) : '',
+                'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
+                'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
+                'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
+                'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
+            );
+
+            // 处理时间字段
+            $rdzztime = isset($_POST['rdzztime']) && $_POST['rdzztime'] ? strtotime($_POST['rdzztime']) : 0;
+            $scgztime = isset($_POST['scgztime']) && $_POST['scgztime'] ? strtotime($_POST['scgztime']) : 0;
+            $fujing_data['rdzztime'] = $rdzztime;
+            $fujing_data['scgztime'] = $scgztime;
+
+            // 插入预备党员表
+            $data = array_merge($fujing_data, array(
                 'fujing_id' => $fujing_id,
                 'addtime' => time(),
                 'updatetime' => time(),
@@ -789,9 +1303,16 @@ class jiagou extends admin
                 'create_year' => intval(date('Y')),
                 'create_month' => intval(date('m')),
                 'create_day' => intval(date('d'))
-            );
+            ));
 
             $result = $this->db->insert($data);
+
+            // 同步更新辅警表
+            if ($result && $fujing_id) {
+                $this->db->table_name = 'v9_fujing';
+                $this->db->update($fujing_data, " id=$fujing_id ");
+            }
+
             if ($result) {
                 showmessage('添加成功', '?m=dangjian&c=jiagou&a=yubeidangyuan');
             } else {
@@ -816,6 +1337,114 @@ class jiagou extends admin
             showmessage('删除成功', '?m=dangjian&c=jiagou&a=yubeidangyuan');
         } else {
             showmessage('删除失败', HTTP_REFERER);
+        }
+    }
+
+    // 编辑预备党员页面
+    public function yubeidangyuan_edit()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) { showmessage('参数错误', HTTP_REFERER); }
+
+        $this->db->table_name = 'v9_yubeidangyuan';
+        $info = $this->db->get_one(" id=$id ");
+        if (!$info) { showmessage('数据不存在', HTTP_REFERER); }
+
+        if (!empty($info['thumb'])) {
+            if (strpos($info['thumb'], 'http://') !== 0 && strpos($info['thumb'], 'https://') !== 0) {
+                $upload_url = pc_base::load_config('system', 'upload_url');
+                $thumb_path = str_replace('uploadfile/', '', $info['thumb']);
+                $info['thumb'] = $upload_url . $thumb_path;
+            }
+        }
+
+        $this->db->table_name = 'v9_xueli';
+        $xllist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $xueli = array();
+        foreach ($xllist as $v) { $xueli[$v['id']] = $v['gwname']; }
+
+        $this->db->table_name = 'v9_gangwei';
+        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $gangwei = array();
+        foreach ($gwlist as $v) { $gangwei[$v['id']] = $v['gwname']; }
+
+        $this->db->table_name = 'v9_zhiwu';
+        $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $zhiwu = array();
+        foreach ($zwlist as $v) { $zhiwu[$v['id']] = $v['zwname']; }
+
+        $this->db->table_name = 'v9_cengji';
+        $cjlist = $this->db->select("", 'id,cjname', '', 'id asc');
+        $cengji = array();
+        foreach ($cjlist as $v) { $cengji[$v['id']] = $v['cjname']; }
+
+        $tree = pc_base::load_sys_class('tree');
+        $this->db = pc_base::load_model('bumen_model');
+        $result = $this->db->select();
+        $array = array();
+        foreach ($result as $r) { $r['cname'] = $r['name']; $r['selected'] = ''; $array[] = $r; }
+        $str = "<option value='\$id' \$selected>\$spacer \$cname</option>";
+        $tree->init($array);
+        $select_categorys = $tree->get_tree(0, $str);
+
+        $this->info = $info;
+        $this->xueli = $xueli;
+        $this->gangwei = $gangwei;
+        $this->zhiwu = $zhiwu;
+        $this->cengji = $cengji;
+        $this->select_categorys = $select_categorys;
+
+        include $this->admin_tpl('yubeidangyuan_edit');
+    }
+
+    // 保存编辑的预备党员信息
+    public function yubeidangyuan_editsave()
+    {
+        if (isset($_POST['dosubmit'])) {
+            $id = intval($_POST['id']);
+            $fujing_id = intval($_POST['fujing_id']);
+
+            if (!$id) { showmessage('参数错误', HTTP_REFERER); }
+
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $fujing_data = array(
+                'xingming' => isset($info['xingming']) ? trim($info['xingming']) : '',
+                'sfz' => isset($info['sfz']) ? trim($info['sfz']) : '',
+                'dwid' => isset($info['dwid']) ? intval($info['dwid']) : 0,
+                'tel' => isset($info['tel']) ? trim($info['tel']) : '',
+                'thumb' => isset($info['thumb']) ? trim($info['thumb']) : '',
+                'sex' => isset($info['sex']) ? trim($info['sex']) : '',
+                'age' => isset($info['age']) ? intval($info['age']) : 0,
+                'xueli' => isset($info['xueli']) ? trim($info['xueli']) : '',
+                'xuexiao' => isset($info['xuexiao']) ? trim($info['xuexiao']) : '',
+                'zhuanye' => isset($info['zhuanye']) ? trim($info['zhuanye']) : '',
+                'gangwei' => isset($info['gangwei']) ? intval($info['gangwei']) : 0,
+                'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
+                'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
+                'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
+                'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
+            );
+
+            $rdzztime = isset($_POST['rdzztime']) && $_POST['rdzztime'] ? strtotime($_POST['rdzztime']) : 0;
+            $scgztime = isset($_POST['scgztime']) && $_POST['scgztime'] ? strtotime($_POST['scgztime']) : 0;
+            $fujing_data['rdzztime'] = $rdzztime;
+            $fujing_data['scgztime'] = $scgztime;
+
+            $data = array_merge($fujing_data, array('updatetime' => time()));
+
+            $this->db->table_name = 'v9_yubeidangyuan';
+            $result = $this->db->update($data, " id=$id ");
+
+            if ($fujing_id) {
+                $this->db->table_name = 'v9_fujing';
+                $this->db->update($fujing_data, " id=$fujing_id ");
+            }
+
+            if ($result !== false) {
+                showmessage('修改成功', '?m=dangjian&c=jiagou&a=yubeidangyuan');
+            } else {
+                showmessage('修改失败', HTTP_REFERER);
+            }
         }
     }
 

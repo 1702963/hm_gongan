@@ -63,7 +63,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
 <div class="tableContent">
 
 <div class="tabcon">
-<div class="title">党支部成员信息</div>
+<div class="title" style="width:auto;">党支部成员信息</div>
 <table cellpadding="0" cellspacing="0" class="baseinfo" align="center">
   <tr>
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>选择辅警：</td>

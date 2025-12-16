@@ -22,7 +22,7 @@ class chengyuan extends admin
         $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
         $pagesize = 15;
 
-        // 使用 JOIN 查询班子成员列表，关联辅警表获取详细信息
+        // 使用 JOIN 查询班子成员列表，关联辅警表获取详细信息（用于兼容旧数据）
         // 创建独立的数据库连接 dbb 用于 JOIN 查询
         $db_config = pc_base::load_config('database');
         pc_base::load_sys_class('db_factory', '', 0);
@@ -38,8 +38,25 @@ class chengyuan extends admin
         $offset = $pagesize * ($page - 1);
         $pages = pages($total, $page, $pagesize, '', array(), 10);
 
-        // 显式指定数据库名 fujing，确保查询正确的数据库
-        $sql = "SELECT bz.*, bz.id as bz_id, fj.*
+        // 使用 COALESCE 优先使用班子成员表的字段，为空则使用辅警表字段
+        $sql = "SELECT bz.id, bz.fujing_id,
+                COALESCE(NULLIF(bz.xingming,''), fj.xingming) as xingming,
+                COALESCE(NULLIF(bz.sex,''), fj.sex) as sex,
+                COALESCE(NULLIF(bz.sfz,''), fj.sfz) as sfz,
+                COALESCE(NULLIF(bz.shengri,''), fj.shengri) as shengri,
+                COALESCE(bz.age, fj.age) as age,
+                COALESCE(NULLIF(bz.tel,''), fj.tel) as tel,
+                COALESCE(NULLIF(bz.xueli,''), fj.xueli) as xueli,
+                COALESCE(NULLIF(bz.zhuanye,''), fj.zhuanye) as zhuanye,
+                COALESCE(NULLIF(bz.xuexiao,''), fj.xuexiao) as xuexiao,
+                COALESCE(bz.dwid, fj.dwid) as dwid,
+                COALESCE(bz.gangwei, fj.gangwei) as gangwei,
+                COALESCE(bz.zhiwu, fj.zhiwu) as zhiwu,
+                COALESCE(bz.cengji, fj.cengji) as cengji,
+                COALESCE(bz.rdzztime, fj.rdzztime) as rdzztime,
+                COALESCE(bz.scgztime, fj.scgztime) as scgztime,
+                COALESCE(NULLIF(bz.thumb,''), fj.thumb) as thumb,
+                bz.ddanwei, bz.beizhu, bz.addtime, bz.updatetime
                 FROM fujing.v9_banzi_chengyuan bz
                 INNER JOIN fujing.v9_fujing fj ON bz.fujing_id = fj.id
                 ORDER BY bz.id DESC
@@ -245,9 +262,33 @@ class chengyuan extends admin
                 showmessage('该辅警已经是班子成员，请勿重复添加', HTTP_REFERER);
             }
 
-            // 插入数据
+            // 获取辅警完整信息
+            $this->db->table_name = 'v9_fujing';
+            $fjinfo = $this->db->get_one(" id=$fujing_id ", '*');
+            if (!$fjinfo) {
+                showmessage('辅警信息不存在', HTTP_REFERER);
+            }
+
+            // 插入数据（包含辅警完整信息）
+            $this->db->table_name = 'v9_banzi_chengyuan';
             $data = array(
                 'fujing_id' => $fujing_id,
+                'xingming' => $fjinfo['xingming'],
+                'sex' => $fjinfo['sex'],
+                'sfz' => $fjinfo['sfz'],
+                'shengri' => $fjinfo['shengri'],
+                'age' => $fjinfo['age'],
+                'tel' => $fjinfo['tel'],
+                'xueli' => $fjinfo['xueli'],
+                'zhuanye' => $fjinfo['zhuanye'],
+                'xuexiao' => $fjinfo['xuexiao'],
+                'dwid' => $fjinfo['dwid'],
+                'gangwei' => $fjinfo['gangwei'],
+                'zhiwu' => $fjinfo['zhiwu'],
+                'cengji' => $fjinfo['cengji'],
+                'rdzztime' => $fjinfo['rdzztime'],
+                'scgztime' => $fjinfo['scgztime'],
+                'thumb' => $fjinfo['thumb'],
                 'ddanwei' => $ddanwei,
                 'beizhu' => $beizhu,
                 'addtime' => time(),
@@ -281,15 +322,25 @@ class chengyuan extends admin
             showmessage('数据不存在', HTTP_REFERER);
         }
 
-        // 查询辅警详细信息
+        // 查询辅警详细信息（用于获取原始数据作为默认值）
         $this->db->table_name = 'v9_fujing';
         $fjinfo = $this->db->get_one(" id={$bzinfo['fujing_id']} ", '*');
         if (!$fjinfo) {
             showmessage('辅警信息不存在', HTTP_REFERER);
         }
 
-        // 合并信息
-        $info = array_merge($fjinfo, $bzinfo);
+        // 合并信息：班子成员表字段优先（如果有值），否则使用辅警表字段
+        $info = $fjinfo;
+        // 覆盖班子成员表中已有的字段
+        $bz_fields = array('xingming', 'sex', 'sfz', 'shengri', 'age', 'tel', 'xueli', 'zhuanye', 'xuexiao', 'dwid', 'gangwei', 'zhiwu', 'cengji', 'rdzztime', 'scgztime', 'thumb', 'ddanwei', 'beizhu');
+        foreach ($bz_fields as $field) {
+            if (isset($bzinfo[$field]) && ($bzinfo[$field] !== null && $bzinfo[$field] !== '')) {
+                $info[$field] = $bzinfo[$field];
+            }
+        }
+        // 保留班子成员表的 id 和 fujing_id
+        $info['id'] = $bzinfo['id'];
+        $info['fujing_id'] = $bzinfo['fujing_id'];
 
         // 处理时间格式
         if ($info['shengri'] != '') {
@@ -366,18 +417,36 @@ class chengyuan extends admin
     {
         if (isset($_POST['dosubmit'])) {
             $id = intval($_POST['id']);
-            $ddanwei = trim($_POST['info']['ddanwei']);
-            $beizhu = trim($_POST['info']['beizhu']);
+            $info = $_POST['info'];
 
             if (!$id) {
                 showmessage('参数错误', HTTP_REFERER);
             }
 
-            // 更新班子成员表
+            // 处理时间字段
+            $rdzztime = !empty($info['rdzztime']) ? strtotime($info['rdzztime']) : 0;
+            $scgztime = !empty($info['scgztime']) ? strtotime($info['scgztime']) : 0;
+
+            // 更新班子成员表（包含所有辅警字段）
             $this->db->table_name = 'v9_banzi_chengyuan';
             $data = array(
-                'ddanwei' => $ddanwei,
-                'beizhu' => $beizhu,
+                'xingming' => trim($info['xingming']),
+                'sex' => trim($info['sex']),
+                'sfz' => trim($info['sfz']),
+                'shengri' => trim($info['shengri']),
+                'age' => intval($info['age']),
+                'tel' => trim($info['tel']),
+                'xueli' => trim($info['xueli']),
+                'zhuanye' => trim($info['zhuanye']),
+                'xuexiao' => trim($info['xuexiao']),
+                'dwid' => intval($info['dwid']),
+                'gangwei' => intval($info['gangwei']),
+                'zhiwu' => intval($info['zhiwu']),
+                'cengji' => intval($info['cengji']),
+                'rdzztime' => $rdzztime,
+                'scgztime' => $scgztime,
+                'ddanwei' => trim($info['ddanwei']),
+                'beizhu' => trim($info['beizhu']),
                 'updatetime' => time()
             );
 

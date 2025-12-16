@@ -150,8 +150,8 @@ if(is_array($this->list)){
       <td><?php if($info['scgztime']!=0){echo date("Y-m-d",$info['scgztime']);}?></td>
       <td><?php echo $info['ddanwei']?></td>
       <td>
-        &nbsp;<a href="index.php?m=dangjian&c=chengyuan&a=edit&id=<?php echo $info['bz_id']?>">编辑</a>
-        &nbsp;<a href="index.php?m=dangjian&c=chengyuan&a=del&id=<?php echo $info['bz_id']?>" onclick="javascript:var r = confirm('确认删除该成员吗？');if(!r){return false;}">删除</a>
+        &nbsp;<a href="index.php?m=dangjian&c=chengyuan&a=edit&id=<?php echo $info['id']?>">编辑</a>
+        &nbsp;<a href="index.php?m=dangjian&c=chengyuan&a=del&id=<?php echo $info['id']?>" onclick="javascript:var r = confirm('确认删除该成员吗？');if(!r){return false;}">删除</a>
       </td>
     </tr>
    <?php

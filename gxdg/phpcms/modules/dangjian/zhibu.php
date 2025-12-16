@@ -175,8 +175,25 @@ class zhibu extends admin
         $offset = $pagesize * ($page - 1);
         $pages = pages($total, $page, $pagesize, '', array(), 10);
 
-        // 显式指定数据库名 fujing
-        $sql = "SELECT zb.*, zb.id as zb_id, fj.*
+        // 使用 COALESCE 优先使用党支部成员表的字段，为空则使用辅警表字段
+        $sql = "SELECT zb.id, zb.fujing_id,
+                COALESCE(NULLIF(zb.xingming,''), fj.xingming) as xingming,
+                COALESCE(NULLIF(zb.sex,''), fj.sex) as sex,
+                COALESCE(NULLIF(zb.sfz,''), fj.sfz) as sfz,
+                COALESCE(NULLIF(zb.shengri,''), fj.shengri) as shengri,
+                COALESCE(zb.age, fj.age) as age,
+                COALESCE(NULLIF(zb.tel,''), fj.tel) as tel,
+                COALESCE(NULLIF(zb.xueli,''), fj.xueli) as xueli,
+                COALESCE(NULLIF(zb.zhuanye,''), fj.zhuanye) as zhuanye,
+                COALESCE(NULLIF(zb.xuexiao,''), fj.xuexiao) as xuexiao,
+                COALESCE(zb.dwid, fj.dwid) as dwid,
+                COALESCE(zb.gangwei, fj.gangwei) as gangwei,
+                COALESCE(zb.zhiwu, fj.zhiwu) as zhiwu,
+                COALESCE(zb.cengji, fj.cengji) as cengji,
+                COALESCE(zb.rdzztime, fj.rdzztime) as rdzztime,
+                COALESCE(zb.scgztime, fj.scgztime) as scgztime,
+                COALESCE(NULLIF(zb.thumb,''), fj.thumb) as thumb,
+                zb.ddanwei, zb.beizhu, zb.addtime, zb.updatetime
                 FROM fujing.v9_zhibu_chengyuan zb
                 INNER JOIN fujing.v9_fujing fj ON zb.fujing_id = fj.id
                 ORDER BY zb.id DESC
@@ -378,9 +395,35 @@ class zhibu extends admin
                 showmessage('该辅警已经是党支部成员，请勿重复添加', HTTP_REFERER);
             }
 
-            // 插入数据
+            // 获取辅警完整信息
+            $this->db->table_name = 'v9_fujing';
+            $fjinfo = $this->db->get_one(" id=$fujing_id ", '*');
+            if (!$fjinfo) {
+                showmessage('辅警信息不存在', HTTP_REFERER);
+            }
+
+            // 插入数据（包含辅警完整信息）
+            $this->db->table_name = 'v9_zhibu_chengyuan';
             $data = array(
                 'fujing_id' => $fujing_id,
+                'xingming' => $fjinfo['xingming'],
+                'sex' => $fjinfo['sex'],
+                'sfz' => $fjinfo['sfz'],
+                'shengri' => $fjinfo['shengri'],
+                'age' => $fjinfo['age'],
+                'tel' => $fjinfo['tel'],
+                'xueli' => $fjinfo['xueli'],
+                'zhuanye' => $fjinfo['zhuanye'],
+                'xuexiao' => $fjinfo['xuexiao'],
+                'dwid' => $fjinfo['dwid'],
+                'gangwei' => $fjinfo['gangwei'],
+                'zhiwu' => $fjinfo['zhiwu'],
+                'cengji' => $fjinfo['cengji'],
+                'rdzztime' => $fjinfo['rdzztime'],
+                'scgztime' => $fjinfo['scgztime'],
+                'thumb' => $fjinfo['thumb'],
+                'addtime' => time(),
+                'updatetime' => time(),
                 'create_datetime' => date('Y-m-d H:i:s'),
                 'create_year' => intval(date('Y')),
                 'create_month' => intval(date('m')),
@@ -412,6 +455,155 @@ class zhibu extends admin
             showmessage('删除成功', '?m=dangjian&c=zhibu&a=baseinfo');
         } else {
             showmessage('删除失败', HTTP_REFERER);
+        }
+    }
+
+    // 编辑党支部成员页面
+    public function baseinfo_edit()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        // 查询党支部成员信息
+        $this->db->table_name = 'v9_zhibu_chengyuan';
+        $zbinfo = $this->db->get_one(" id=$id ");
+        if (!$zbinfo) {
+            showmessage('数据不存在', HTTP_REFERER);
+        }
+
+        // 查询辅警详细信息（用于获取原始数据作为默认值）
+        $this->db->table_name = 'v9_fujing';
+        $fjinfo = $this->db->get_one(" id={$zbinfo['fujing_id']} ", '*');
+        if (!$fjinfo) {
+            showmessage('辅警信息不存在', HTTP_REFERER);
+        }
+
+        // 合并信息：党支部成员表字段优先（如果有值），否则使用辅警表字段
+        $info = $fjinfo;
+        $zb_fields = array('xingming', 'sex', 'sfz', 'shengri', 'age', 'tel', 'xueli', 'zhuanye', 'xuexiao', 'dwid', 'gangwei', 'zhiwu', 'cengji', 'rdzztime', 'scgztime', 'thumb', 'ddanwei', 'beizhu');
+        foreach ($zb_fields as $field) {
+            if (isset($zbinfo[$field]) && ($zbinfo[$field] !== null && $zbinfo[$field] !== '')) {
+                $info[$field] = $zbinfo[$field];
+            }
+        }
+        $info['id'] = $zbinfo['id'];
+        $info['fujing_id'] = $zbinfo['fujing_id'];
+
+        // 处理时间格式
+        if ($info['shengri'] != '') {
+            $info['shengri_show'] = $info['shengri'];
+        }
+        if ($info['rdzztime'] > 0) {
+            $info['rdzztime_show'] = date("Y-m-d", $info['rdzztime']);
+        }
+        if ($info['scgztime'] > 0) {
+            $info['scgztime_show'] = date("Y-m-d", $info['scgztime']);
+        }
+
+        // 处理照片URL
+        if (!empty($info['thumb'])) {
+            if (strpos($info['thumb'], 'http://') !== 0 && strpos($info['thumb'], 'https://') !== 0) {
+                $upload_url = pc_base::load_config('system', 'upload_url');
+                $thumb_path = str_replace('uploadfile/', '', $info['thumb']);
+                $info['thumb'] = $upload_url . $thumb_path;
+            }
+        }
+
+        // 加载学历数据
+        $this->db->table_name = 'v9_xueli';
+        $xllist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $xueli = array();
+        foreach ($xllist as $v) {
+            $xueli[$v['id']] = $v['gwname'];
+        }
+
+        // 加载岗位数据
+        $this->db->table_name = 'v9_gangwei';
+        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        $gangwei = array();
+        foreach ($gwlist as $v) {
+            $gangwei[$v['id']] = $v['gwname'];
+        }
+
+        // 加载职务数据
+        $this->db->table_name = 'v9_zhiwu';
+        $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $zhiwu = array();
+        foreach ($zwlist as $v) {
+            $zhiwu[$v['id']] = $v['zwname'];
+        }
+
+        // 加载层级数据
+        $this->db->table_name = 'v9_cengji';
+        $cjlist = $this->db->select("", 'id,cjname', '', 'id asc');
+        $cengji = array();
+        foreach ($cjlist as $v) {
+            $cengji[$v['id']] = $v['cjname'];
+        }
+
+        // 绑定组织树
+        $tree = pc_base::load_sys_class('tree');
+        $this->db = pc_base::load_model('bumen_model');
+        $result = $this->db->select();
+        $array = array();
+        foreach ($result as $r) {
+            $r['cname'] = $r['name'];
+            $r['selected'] = $r['id'] == $info['dwid'] ? 'selected' : '';
+            $array[] = $r;
+        }
+        $str = "<option value='\$id' \$selected>\$spacer \$cname</option>";
+        $tree->init($array);
+        $select_categorys = $tree->get_tree(0, $str);
+
+        include $this->admin_tpl('zhibu_chengyuan_edit');
+    }
+
+    // 保存编辑的党支部成员信息
+    public function baseinfo_editsave()
+    {
+        if (isset($_POST['dosubmit'])) {
+            $id = intval($_POST['id']);
+            $info = $_POST['info'];
+
+            if (!$id) {
+                showmessage('参数错误', HTTP_REFERER);
+            }
+
+            // 处理时间字段
+            $rdzztime = !empty($info['rdzztime']) ? strtotime($info['rdzztime']) : 0;
+            $scgztime = !empty($info['scgztime']) ? strtotime($info['scgztime']) : 0;
+
+            // 更新党支部成员表（包含所有辅警字段）
+            $this->db->table_name = 'v9_zhibu_chengyuan';
+            $data = array(
+                'xingming' => trim($info['xingming']),
+                'sex' => trim($info['sex']),
+                'sfz' => trim($info['sfz']),
+                'shengri' => trim($info['shengri']),
+                'age' => intval($info['age']),
+                'tel' => trim($info['tel']),
+                'xueli' => trim($info['xueli']),
+                'zhuanye' => trim($info['zhuanye']),
+                'xuexiao' => trim($info['xuexiao']),
+                'dwid' => intval($info['dwid']),
+                'gangwei' => intval($info['gangwei']),
+                'zhiwu' => intval($info['zhiwu']),
+                'cengji' => intval($info['cengji']),
+                'rdzztime' => $rdzztime,
+                'scgztime' => $scgztime,
+                'ddanwei' => trim($info['ddanwei']),
+                'beizhu' => trim($info['beizhu']),
+                'updatetime' => time()
+            );
+
+            $result = $this->db->update($data, " id=$id ");
+            if ($result) {
+                showmessage('修改成功', '?m=dangjian&c=zhibu&a=baseinfo');
+            } else {
+                showmessage('修改失败', HTTP_REFERER);
+            }
         }
     }
 

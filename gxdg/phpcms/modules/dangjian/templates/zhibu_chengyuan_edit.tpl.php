@@ -23,7 +23,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>formvalidatorregex.js" charset="UTF-8"></script>
 <link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 
-<form action="?m=dangjian&c=chengyuan&a=editbz" method="POST" name="myform" id="myform">
+<form action="?m=dangjian&c=zhibu&a=baseinfo_editsave" method="POST" name="myform" id="myform">
 <input type="hidden" name="id" value="<?php echo $info['id']?>" />
 
 <style type="text/css">
@@ -57,7 +57,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
 <div class="tableContent">
 
 <div class="tabcon">
-<div class="title">班子成员信息</div>
+<div class="title">党支部成员信息</div>
 <table cellpadding="0" cellspacing="0" class="baseinfo" align="center">
   <tr>
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>辅警信息：</td>
@@ -65,7 +65,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
       <input type="text" id="basexm" value="<?php echo $info['xingming']?> [<?php echo $info['sex']?>, <?php echo $info['sfz']?>]"
              class="infoinput" readonly
              style="width:500px;background:transparent;color:#fff"/>
-      <span style="color:#999;margin-left:10px">*以下信息可修改，仅影响班子成员记录</span>
+      <span style="color:#999;margin-left:10px">*以下信息可修改，仅影响党支部成员记录</span>
     </td>
   </tr>
   <tr>
@@ -174,38 +174,11 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   </tr>
 
   <tr>
-    <td align="right" class="infotitle"><span style="color:red">*</span>党关系所在支部：</td>
+    <td align="right" class="infotitle">党关系所在支部：</td>
     <td colspan="5">
       <input type="text" name="info[ddanwei]" id="ddanwei"
              style="width:500px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              value="<?php echo $info['ddanwei']?>" placeholder="请输入党关系所在支部"/>
-    </td>
-  </tr>
-
-  <tr>
-    <td align="right" class="infotitle">所获荣誉：</td>
-    <td colspan="5">
-      <textarea name="info[rongy]" id="rongy" readonly
-                style="width:500px;height:60px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
-                placeholder="此字段只读，来自表彰管理"><?php
-                // 获取荣誉列表
-                $bzlist_show = '';
-                if($info['fujing_id']) {
-                    $bzdb = pc_base::load_model('opinion2_model');
-                    $bzdb->table_name = 'v9_biaozhang';
-                    $bzlist = $bzdb->select(" fjid={$info['fujing_id']} AND status=9 ", 'title,bztime', '5', 'bztime desc');
-                    if($bzlist) {
-                        $bzarr = array();
-                        foreach($bzlist as $bz) {
-                            $bzarr[] = date("Y年", $bz['bztime']) . ' ' . $bz['title'];
-                        }
-                        $bzlist_show = implode("\n", $bzarr);
-                    }
-                }
-                echo $bzlist_show;
-                ?></textarea>
-      <br/>
-      <span style="color:#999;font-size:12px;margin-left:10px">*此字段从表彰管理中自动获取，只读</span>
     </td>
   </tr>
 

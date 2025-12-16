@@ -148,6 +148,7 @@ if(is_array($this->list)){
       <td><?php echo $zhiwu[$info['zhiwu']]?></td>
       <td><?php if($info['scgztime']!=0){echo date("Y-m-d",$info['scgztime']);}?></td>
       <td>
+        <a href="index.php?m=dangjian&c=jiagou&a=fazhandangyuan_edit&id=<?php echo $info['fz_id']?>">编辑</a>
         &nbsp;<a href="index.php?m=dangjian&c=jiagou&a=fazhandangyuan_del&id=<?php echo $info['fz_id']?>" onclick="javascript:var r = confirm('确认删除该发展党员吗？');if(!r){return false;}">删除</a>
       </td>
     </tr>
