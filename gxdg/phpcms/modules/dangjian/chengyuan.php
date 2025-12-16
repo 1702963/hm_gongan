@@ -488,11 +488,19 @@ class chengyuan extends admin
 
         // 会议类型筛选
         $huiyi_type = isset($_GET['huiyi_type']) ? trim($_GET['huiyi_type']) : '';
-        $where = '';
+        // 参会人员筛选
+        $canhui_renyuan = isset($_GET['canhui_renyuan']) ? trim($_GET['canhui_renyuan']) : '';
+
+        $conditions = array();
         if ($huiyi_type != '') {
-            $where = "huiyi_type = '" . addslashes($huiyi_type) . "'";
+            $conditions[] = "huiyi_type = '" . addslashes($huiyi_type) . "'";
         }
+        if ($canhui_renyuan != '') {
+            $conditions[] = "canhui_renyuan LIKE '%" . addslashes($canhui_renyuan) . "%'";
+        }
+        $where = !empty($conditions) ? implode(' AND ', $conditions) : '';
         $this->huiyi_type = $huiyi_type;
+        $this->canhui_renyuan = $canhui_renyuan;
 
         // 查询双重组织生活记录
         $this->db->table_name = 'v9_shuangchong_zuzhi';

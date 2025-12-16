@@ -30,7 +30,7 @@ html{_overflow-y:scroll}
 <a href="index.php?m=dangjian&c=chengyuan&a=sczz_add"><input type="button" value="添加记录" style="margin-left:10px; width:80px" class="doLock" name="dook"></a>
 &nbsp;&nbsp;&nbsp;
 会议类型:
-<select id="huiyi_type_filter" onchange="filterByType()" style="margin-left:5px;padding:5px;background:transparent;color:#fff;border:1px solid #ddd;">
+<select id="huiyi_type_filter" onchange="filterByConditions()" style="margin-left:5px;padding:5px;background:transparent;color:#fff;border:1px solid #ddd;">
   <option value="">全部</option>
   <option value="分局党委会" <?php echo $this->huiyi_type == '分局党委会' ? 'selected' : ''?>>分局党委会</option>
   <option value="理论中心组学习会" <?php echo $this->huiyi_type == '理论中心组学习会' ? 'selected' : ''?>>理论中心组学习会</option>
@@ -41,6 +41,19 @@ html{_overflow-y:scroll}
   <option value="党支部党课" <?php echo $this->huiyi_type == '党支部党课' ? 'selected' : ''?>>党支部党课</option>
   <option value="其他活动" <?php echo $this->huiyi_type == '其他活动' ? 'selected' : ''?>>其他活动</option>
 </select>
+&nbsp;&nbsp;&nbsp;
+参会人员:
+<span style="position:relative;display:inline-block;">
+  <input type="text" id="canhui_search" value="<?php echo htmlspecialchars($this->canhui_renyuan)?>"
+         style="width:200px;padding:5px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;"
+         placeholder="输入姓名搜索" autocomplete="off"/>
+  <input type="hidden" id="canhui_renyuan_filter" value="<?php echo htmlspecialchars($this->canhui_renyuan)?>"/>
+  <div id="canhui_inputlist" style="position:absolute;z-index:999;background-color:#28348e;border:1px solid #ccc;display:none;min-width:300px;left:5px;top:30px;">
+    <ul style="list-style:none;padding:0;margin:0;"></ul>
+  </div>
+</span>
+<input type="button" value="筛选" onclick="filterByConditions()" style="margin-left:10px;padding:5px 15px;cursor:pointer;"/>
+<input type="button" value="清空" onclick="clearFilter()" style="margin-left:5px;padding:5px 15px;cursor:pointer;"/>
 </div>
 
 <div class="table-list">
@@ -117,15 +130,104 @@ if(is_array($this->list)){
 </div>
 
 <script type="text/javascript">
-// 会议类型筛选
-function filterByType() {
+// 综合筛选
+function filterByConditions() {
     var huiyi_type = document.getElementById('huiyi_type_filter').value;
+    var canhui_renyuan = document.getElementById('canhui_renyuan_filter').value;
     var url = 'index.php?m=dangjian&c=chengyuan&a=shuangchongzuzhi';
+    var params = [];
     if (huiyi_type != '') {
-        url += '&huiyi_type=' + encodeURIComponent(huiyi_type);
+        params.push('huiyi_type=' + encodeURIComponent(huiyi_type));
+    }
+    if (canhui_renyuan != '') {
+        params.push('canhui_renyuan=' + encodeURIComponent(canhui_renyuan));
+    }
+    if (params.length > 0) {
+        url += '&' + params.join('&');
     }
     window.location.href = url;
 }
+
+// 清空筛选条件
+function clearFilter() {
+    window.location.href = 'index.php?m=dangjian&c=chengyuan&a=shuangchongzuzhi';
+}
+
+// 参会人员搜索功能
+$(function(){
+    // 搜索辅警自动完成
+    $("#canhui_search").bind("keyup click", function(){
+        var t = $(this), _html = "";
+        var searchVal = t.val().trim();
+
+        if(searchVal == "") {
+            $("#canhui_inputlist").hide();
+            return;
+        }
+
+        // 通过AJAX搜索辅警
+        $.ajax({
+            url: 'index.php?m=dangjian&c=chengyuan&a=searchfujing',
+            type: 'POST',
+            data: {keyword: searchVal},
+            dataType: 'json',
+            success: function(res) {
+                if(res.status == 1 && res.data && res.data.length > 0) {
+                    for(var i = 0; i < res.data.length; i++) {
+                        var item = res.data[i];
+                        _html += "<li data-name='" + item.xingming + "' style='line-height:30px;font-size:14px;padding:5px 10px;cursor:pointer;white-space:nowrap;'>"
+                               + item.xingming + " [" + item.sex + ", " + item.sfz + ", " + (item.danwei || '') + "]</li>";
+                    }
+                    $("#canhui_inputlist ul").html(_html);
+                    $("#canhui_inputlist").show();
+                } else {
+                    $("#canhui_inputlist ul").html("<li style='color:#999;padding:5px 10px;'>未找到匹配的辅警</li>");
+                    $("#canhui_inputlist").show();
+                }
+            },
+            error: function() {
+                $("#canhui_inputlist").hide();
+            }
+        });
+    });
+
+    // 选择人员
+    $(document).delegate("#canhui_inputlist ul li", "click", function(){
+        var name = $(this).attr("data-name");
+        if(name) {
+            $("#canhui_search").val(name);
+            $("#canhui_renyuan_filter").val(name);
+            $("#canhui_inputlist").hide();
+        }
+    });
+
+    // 点击其他地方隐藏下拉列表
+    $(document).click(function(e){
+        if(!$(e.target).closest('#canhui_search, #canhui_inputlist').length) {
+            $("#canhui_inputlist").hide();
+        }
+    });
+
+    // 鼠标悬停效果
+    $(document).delegate("#canhui_inputlist ul li", "mouseover", function(){
+        $(this).css('background', '#E0E0E8').css('color', '#28348e');
+    }).delegate("#canhui_inputlist ul li", "mouseout", function(){
+        $(this).css('background', 'transparent').css('color', '#fff');
+    });
+
+    // 输入框内容改变时同步更新隐藏字段
+    $("#canhui_search").on('input', function(){
+        $("#canhui_renyuan_filter").val($(this).val());
+    });
+
+    // 支持回车键筛选
+    $("#canhui_search").on('keydown', function(e){
+        if(e.keyCode == 13) {
+            e.preventDefault();
+            filterByConditions();
+        }
+    });
+});
 
 // 查看附件图片
 function showFujianImages(id) {
