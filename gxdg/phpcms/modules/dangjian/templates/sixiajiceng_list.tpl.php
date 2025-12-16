@@ -99,7 +99,7 @@ if(is_array($this->list)){
 </tbody>
 </table>
 
-<div id="pages"><!-- 分页已禁用，使用完整列表 --></div>
+<div id="pages"><?php echo $this->pages?></div>
 </form>
 </div>
 </div>

@@ -1,0 +1,53 @@
+党建模块数据库表汇总
+========================
+数据库: fujing
+表前缀: v9_
+
+========================
+jiagou.php 创建的表
+========================
+v9_dangyuan_info          -- 党员个人信息
+v9_jijifenzi              -- 入党积极分子
+v9_fazhandangyuan         -- 发展党员情况
+v9_yubeidangyuan          -- 预备党员情况
+v9_lilunxuexi             -- 参加政治理论学习培训情况
+v9_dangzhibu              -- 党支部活动
+v9_guanxibiandong         -- 党关系变动情况
+v9_dangfei                -- 党员个人党费缴纳情况
+
+========================
+zhibu.php 创建的表
+========================
+v9_zhibu_jianjie          -- 支部简介
+v9_zhibu_chengyuan        -- 支部成员
+v9_sanhui_yike            -- 三会一课
+v9_zhibu_pinpai           -- 支部品牌
+v9_dangke                 -- 党课
+v9_shenghuohui            -- 组织生活会
+v9_peiyangfazhan          -- 培养发展
+v9_jingshijiaoyu          -- 警示教育
+v9_zhutidangri            -- 主题党日
+v9_dangfeishoujiao        -- 党费收缴
+v9_zhibu_tanxintanhua     -- 支部谈心谈话
+v9_zhuanxianggongzuo      -- 专项工作
+v9_zhengzhishengri        -- 政治生日
+
+========================
+chengyuan.php 创建的表
+========================
+v9_banzi_chengyuan        -- 班子成员
+v9_shuangchong_zuzhi      -- 双重组织
+v9_tanxintanhua           -- 谈心谈话
+v9_yigangshuangze         -- 一岗双责
+v9_sixiajiceng            -- 四下基层
+
+========================
+引用的已有表（非新建）
+========================
+v9_fujing                 -- 辅警基础信息表
+v9_xueli                  -- 学历字典表
+v9_gangwei                -- 岗位字典表
+v9_zhiwu                  -- 职务字典表
+v9_cengji                 -- 层级字典表
+v9_biaozhang              -- 表彰记录表
+v9_bumen                  -- 部门表

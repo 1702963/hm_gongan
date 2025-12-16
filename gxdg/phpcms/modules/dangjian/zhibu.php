@@ -156,16 +156,31 @@ class zhibu extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+        $pagesize = 15;
+
         // 使用 JOIN 查询党支部成员列表，关联辅警表获取详细信息
         $db_config = pc_base::load_config('database');
         pc_base::load_sys_class('db_factory', '', 0);
         $dbb = db_factory::get_instance($db_config)->get_database('gxdgdb');
 
+        // 查询总数
+        $count_sql = "SELECT COUNT(*) as cnt FROM fujing.v9_zhibu_chengyuan zb INNER JOIN fujing.v9_fujing fj ON zb.fujing_id = fj.id";
+        $dbb->query($count_sql);
+        $count_row = $dbb->fetch_next();
+        $total = $count_row['cnt'];
+
+        // 计算分页
+        $offset = $pagesize * ($page - 1);
+        $pages = pages($total, $page, $pagesize, '', array(), 10);
+
         // 显式指定数据库名 fujing
         $sql = "SELECT zb.*, zb.id as zb_id, fj.*
                 FROM fujing.v9_zhibu_chengyuan zb
                 INNER JOIN fujing.v9_fujing fj ON zb.fujing_id = fj.id
-                ORDER BY zb.id DESC";
+                ORDER BY zb.id DESC
+                LIMIT $offset, $pagesize";
         $dbb->query($sql);
 
         $this->list = array();
@@ -193,6 +208,7 @@ class zhibu extends admin
             $this->list[] = $row;
         }
 
+        $this->pages = $pages;
         include $this->admin_tpl('zhibu_chengyuan_list');
     }
 
@@ -406,9 +422,13 @@ class zhibu extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询三会一课记录
         $this->db->table_name = 'v9_sanhui_yike';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -451,6 +471,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('sanhui_list');
     }
 
@@ -686,9 +707,13 @@ class zhibu extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询品牌创建记录
         $this->db->table_name = 'v9_zhibu_pinpai';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -723,6 +748,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('brand_list');
     }
 
@@ -1218,9 +1244,13 @@ class zhibu extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询培养发展党员情况记录
         $this->db->table_name = 'v9_peiyangfazhan';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -1238,6 +1268,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('peiyangfazhan_list');
     }
 
@@ -1437,9 +1468,13 @@ class zhibu extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询开展警示教育情况记录
         $this->db->table_name = 'v9_jingshijiaoyu';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -1457,6 +1492,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('jingshijiaoyu_list');
     }
 
@@ -1656,9 +1692,13 @@ class zhibu extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询开展主题党日情况记录
         $this->db->table_name = 'v9_zhutidangri';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -1676,6 +1716,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('zhutidangri_list');
     }
 
@@ -1873,8 +1914,12 @@ class zhibu extends admin
     // 党费收缴列表
     public function dangfeishoujiao()
     {
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         $this->db->table_name = 'v9_dangfeishoujiao';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理列表显示数据
         if (is_array($list)) {
@@ -1906,6 +1951,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('dangfeishoujiao_list');
     }
 
@@ -2124,9 +2170,13 @@ class zhibu extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询谈心谈话记录
         $this->db->table_name = 'v9_zhibu_tanxintanhua';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         if (is_array($list)) {
@@ -2166,6 +2216,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('zhibu_tanxintanhua_list');
     }
 
@@ -2368,8 +2419,12 @@ class zhibu extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         $this->db->table_name = 'v9_zhuanxianggongzuo';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         if (is_array($list)) {
@@ -2394,6 +2449,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('zhuanxianggongzuo_list');
     }
 
@@ -2589,8 +2645,13 @@ class zhibu extends admin
     public function zhengzhishengri()
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
+
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         $this->db->table_name = 'v9_zhengzhishengri';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         if (is_array($list)) {
             foreach ($list as &$item) {
@@ -2601,6 +2662,7 @@ class zhibu extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('zhengzhishengri_list');
     }
 

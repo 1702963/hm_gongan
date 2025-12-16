@@ -30,16 +30,31 @@ class jiagou extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+        $pagesize = 15;
+
         // 使用 JOIN 查询党员列表，关联辅警表获取详细信息
         $db_config = pc_base::load_config('database');
         pc_base::load_sys_class('db_factory', '', 0);
         $dbb = db_factory::get_instance($db_config)->get_database('gxdgdb');
 
+        // 查询总数
+        $count_sql = "SELECT COUNT(*) as cnt FROM fujing.v9_dangyuan_info dy INNER JOIN fujing.v9_fujing fj ON dy.fujing_id = fj.id";
+        $dbb->query($count_sql);
+        $count_row = $dbb->fetch_next();
+        $total = $count_row['cnt'];
+
+        // 计算分页
+        $offset = $pagesize * ($page - 1);
+        $pages = pages($total, $page, $pagesize, '', array(), 10);
+
         // 显式指定数据库名 fujing
         $sql = "SELECT dy.*, dy.id as dy_id, fj.*
                 FROM fujing.v9_dangyuan_info dy
                 INNER JOIN fujing.v9_fujing fj ON dy.fujing_id = fj.id
-                ORDER BY dy.id DESC";
+                ORDER BY dy.id DESC
+                LIMIT $offset, $pagesize";
         $dbb->query($sql);
 
         $this->list = array();
@@ -67,6 +82,7 @@ class jiagou extends admin
             $this->list[] = $row;
         }
 
+        $this->pages = $pages;
         include $this->admin_tpl('dangyuan_list');
     }
 
@@ -280,15 +296,30 @@ class jiagou extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+        $pagesize = 15;
+
         // 使用 JOIN 查询入党积极分子列表，关联辅警表获取详细信息
         $db_config = pc_base::load_config('database');
         pc_base::load_sys_class('db_factory', '', 0);
         $dbb = db_factory::get_instance($db_config)->get_database('gxdgdb');
 
+        // 查询总数
+        $count_sql = "SELECT COUNT(*) as cnt FROM fujing.v9_jijifenzi jj INNER JOIN fujing.v9_fujing fj ON jj.fujing_id = fj.id";
+        $dbb->query($count_sql);
+        $count_row = $dbb->fetch_next();
+        $total = $count_row['cnt'];
+
+        // 计算分页
+        $offset = $pagesize * ($page - 1);
+        $pages = pages($total, $page, $pagesize, '', array(), 10);
+
         $sql = "SELECT jj.*, jj.id as jj_id, fj.*
                 FROM fujing.v9_jijifenzi jj
                 INNER JOIN fujing.v9_fujing fj ON jj.fujing_id = fj.id
-                ORDER BY jj.id DESC";
+                ORDER BY jj.id DESC
+                LIMIT $offset, $pagesize";
         $dbb->query($sql);
 
         $this->list = array();
@@ -316,6 +347,7 @@ class jiagou extends admin
             $this->list[] = $row;
         }
 
+        $this->pages = $pages;
         include $this->admin_tpl('jijifenzi_list');
     }
 
@@ -441,15 +473,30 @@ class jiagou extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+        $pagesize = 15;
+
         // 使用 JOIN 查询发展党员列表，关联辅警表获取详细信息
         $db_config = pc_base::load_config('database');
         pc_base::load_sys_class('db_factory', '', 0);
         $dbb = db_factory::get_instance($db_config)->get_database('gxdgdb');
 
+        // 查询总数
+        $count_sql = "SELECT COUNT(*) as cnt FROM fujing.v9_fazhandangyuan fz INNER JOIN fujing.v9_fujing fj ON fz.fujing_id = fj.id";
+        $dbb->query($count_sql);
+        $count_row = $dbb->fetch_next();
+        $total = $count_row['cnt'];
+
+        // 计算分页
+        $offset = $pagesize * ($page - 1);
+        $pages = pages($total, $page, $pagesize, '', array(), 10);
+
         $sql = "SELECT fz.*, fz.id as fz_id, fj.*
                 FROM fujing.v9_fazhandangyuan fz
                 INNER JOIN fujing.v9_fujing fj ON fz.fujing_id = fj.id
-                ORDER BY fz.id DESC";
+                ORDER BY fz.id DESC
+                LIMIT $offset, $pagesize";
         $dbb->query($sql);
 
         $this->list = array();
@@ -477,6 +524,7 @@ class jiagou extends admin
             $this->list[] = $row;
         }
 
+        $this->pages = $pages;
         include $this->admin_tpl('fazhandangyuan_list');
     }
 
@@ -602,15 +650,30 @@ class jiagou extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+        $pagesize = 15;
+
         // 使用 JOIN 查询预备党员列表，关联辅警表获取详细信息
         $db_config = pc_base::load_config('database');
         pc_base::load_sys_class('db_factory', '', 0);
         $dbb = db_factory::get_instance($db_config)->get_database('gxdgdb');
 
+        // 查询总数
+        $count_sql = "SELECT COUNT(*) as cnt FROM fujing.v9_yubeidangyuan yb INNER JOIN fujing.v9_fujing fj ON yb.fujing_id = fj.id";
+        $dbb->query($count_sql);
+        $count_row = $dbb->fetch_next();
+        $total = $count_row['cnt'];
+
+        // 计算分页
+        $offset = $pagesize * ($page - 1);
+        $pages = pages($total, $page, $pagesize, '', array(), 10);
+
         $sql = "SELECT yb.*, yb.id as yb_id, fj.*
                 FROM fujing.v9_yubeidangyuan yb
                 INNER JOIN fujing.v9_fujing fj ON yb.fujing_id = fj.id
-                ORDER BY yb.id DESC";
+                ORDER BY yb.id DESC
+                LIMIT $offset, $pagesize";
         $dbb->query($sql);
 
         $this->list = array();
@@ -638,6 +701,7 @@ class jiagou extends admin
             $this->list[] = $row;
         }
 
+        $this->pages = $pages;
         include $this->admin_tpl('yubeidangyuan_list');
     }
 
@@ -763,9 +827,13 @@ class jiagou extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询理论学习记录
         $this->db->table_name = 'v9_lilunxuexi';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -791,6 +859,7 @@ class jiagou extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('lilunxuexi_list');
     }
 
@@ -1005,9 +1074,13 @@ class jiagou extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询党支部活动记录
         $this->db->table_name = 'v9_dangzhibu';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -1033,6 +1106,7 @@ class jiagou extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('dangzhibu_list');
     }
 
@@ -1244,9 +1318,11 @@ class jiagou extends admin
      */
     public function guanxibiandong() {
         $sxty = isset($_GET['sxty']) ? intval($_GET['sxty']) : 3;
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
 
         $this->db->table_name = 'v9_guanxibiandong';
-        $list = $this->db->select("sxty = $sxty", '*', '', 'id DESC');
+        $list = $this->db->listinfo("sxty = $sxty", 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         if (is_array($list)) {
@@ -1257,6 +1333,7 @@ class jiagou extends admin
             $list = array();
         }
 
+        $this->pages = $pages;
         include $this->admin_tpl('guanxibiandong_list');
     }
 
@@ -1438,8 +1515,11 @@ class jiagou extends admin
      * 党费缴纳 - 列表
      */
     public function dangfei() {
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         $this->db->table_name = 'v9_dangfei';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         if (is_array($list)) {
@@ -1450,6 +1530,7 @@ class jiagou extends admin
             $list = array();
         }
 
+        $this->pages = $pages;
         include $this->admin_tpl('dangfei_list');
     }
 

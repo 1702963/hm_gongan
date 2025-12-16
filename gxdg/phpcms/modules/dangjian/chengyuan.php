@@ -18,17 +18,32 @@ class chengyuan extends admin
 
     public function init()
     {
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+        $pagesize = 15;
+
         // 使用 JOIN 查询班子成员列表，关联辅警表获取详细信息
         // 创建独立的数据库连接 dbb 用于 JOIN 查询
         $db_config = pc_base::load_config('database');
         pc_base::load_sys_class('db_factory', '', 0);
         $dbb = db_factory::get_instance($db_config)->get_database('gxdgdb');
 
+        // 查询总数
+        $count_sql = "SELECT COUNT(*) as cnt FROM fujing.v9_banzi_chengyuan bz INNER JOIN fujing.v9_fujing fj ON bz.fujing_id = fj.id";
+        $dbb->query($count_sql);
+        $count_row = $dbb->fetch_next();
+        $total = $count_row['cnt'];
+
+        // 计算分页
+        $offset = $pagesize * ($page - 1);
+        $pages = pages($total, $page, $pagesize, '', array(), 10);
+
         // 显式指定数据库名 fujing，确保查询正确的数据库
         $sql = "SELECT bz.*, bz.id as bz_id, fj.*
                 FROM fujing.v9_banzi_chengyuan bz
                 INNER JOIN fujing.v9_fujing fj ON bz.fujing_id = fj.id
-                ORDER BY bz.id DESC";
+                ORDER BY bz.id DESC
+                LIMIT $offset, $pagesize";
         $dbb->query($sql);
 
         $this->list = array();
@@ -56,9 +71,7 @@ class chengyuan extends admin
             $this->list[] = $row;
         }
 
-
-
-
+        $this->pages = $pages;
         include $this->admin_tpl('banzi_list');
     }
 
@@ -401,9 +414,13 @@ class chengyuan extends admin
     // 双重组织生活列表
     public function shuangchongzuzhi()
     {
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询双重组织生活记录
         $this->db->table_name = 'v9_shuangchong_zuzhi';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -438,6 +455,7 @@ class chengyuan extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('shuangchong_list');
     }
 
@@ -683,9 +701,13 @@ class chengyuan extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询谈心谈话记录
         $this->db->table_name = 'v9_tanxintanhua';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -720,6 +742,7 @@ class chengyuan extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('tanxintanhua_list');
     }
 
@@ -892,9 +915,13 @@ class chengyuan extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询一岗双责记录
         $this->db->table_name = 'v9_yigangshuangze';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -929,6 +956,7 @@ class chengyuan extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('yigangshuangze_list');
     }
 
@@ -1085,9 +1113,13 @@ class chengyuan extends admin
     {
         setcookie('zq_hash', $_SESSION['pc_hash']);
 
+        // 分页参数
+        $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
         // 查询四下基层记录
         $this->db->table_name = 'v9_sixiajiceng';
-        $list = $this->db->select('', '*', '', 'id DESC');
+        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $pages = $this->db->pages;
 
         // 处理数据
         foreach ($list as &$item) {
@@ -1122,6 +1154,7 @@ class chengyuan extends admin
         }
 
         $this->list = $list;
+        $this->pages = $pages;
         include $this->admin_tpl('sixiajiceng_list');
     }
 
