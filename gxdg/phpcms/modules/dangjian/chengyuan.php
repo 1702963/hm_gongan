@@ -18,8 +18,6 @@ class chengyuan extends admin
 
     public function init()
     {
-        setcookie('zq_hash', $_SESSION['pc_hash']);
-
         // 使用 JOIN 查询班子成员列表，关联辅警表获取详细信息
         // 创建独立的数据库连接 dbb 用于 JOIN 查询
         $db_config = pc_base::load_config('database');
@@ -399,8 +397,6 @@ class chengyuan extends admin
     // 双重组织生活列表
     public function shuangchongzuzhi()
     {
-        setcookie('zq_hash', $_SESSION['pc_hash']);
-
         // 查询双重组织生活记录
         $this->db->table_name = 'v9_shuangchong_zuzhi';
         $list = $this->db->select('', '*', '', 'id DESC');

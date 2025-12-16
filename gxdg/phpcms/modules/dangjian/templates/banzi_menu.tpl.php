@@ -2,8 +2,8 @@
 defined('IN_ADMIN') or exit('No permission resources.');
 include $this->admin_tpl('header_new','admin');
 ?>
-<link href="statics/css/modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
-<link href="statics/css/gridStyle.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo CSS_PATH?>gridStyle.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 <style type="text/css">
 * {margin:0;padding:0}
 body {margin:0;padding:0; /*url(statics/images/admin_img/2025/tb/bodybg.jpg) center center no-repeat*/display:flex;justify-content: center;font-family:microsoft yahei}

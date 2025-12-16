@@ -8,7 +8,7 @@
 <link href="<?php echo CSS_PATH?>reset.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo CSS_PATH.SYS_STYLE;?>-system.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo CSS_PATH?>table_form.css?ver<?php echo time() ?>" rel="stylesheet" type="text/css" />
-<link href="statics/css/modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 <?php
 if(!$this->get_siteid()) showmessage(L('admin_login'),'?m=admin&c=index&a=login');
 if(isset($show_dialog)) {

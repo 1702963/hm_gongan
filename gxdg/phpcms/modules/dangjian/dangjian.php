@@ -13,6 +13,7 @@ class dangjian extends admin
         $this->db = pc_base::load_model('opinion2_model');
         $this->db->table_name = 'v9_fujing';
         pc_base::load_app_func('global');
+        setcookie('zq_hash', $_SESSION['pc_hash']);
     }
 
     public function init()

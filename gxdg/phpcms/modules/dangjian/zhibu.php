@@ -18,8 +18,6 @@ class zhibu extends admin
 
     public function init()
     {
-        setcookie('zq_hash', $_SESSION['pc_hash']);
-
         // 查询是否已有党支部简介记录
         $this->db->table_name = 'v9_zhibu_jianjie';
         $info = $this->db->get_one('', '*', '', 'id DESC');
@@ -2068,6 +2066,658 @@ class zhibu extends admin
         // 移动上传文件
         if (move_uploaded_file($file['tmp_name'], $filepath)) {
             // 返回成功信息和文件路径
+            echo json_encode(array(
+                'status' => 1,
+                'msg' => '上传成功',
+                'url' => $filepath
+            ));
+        } else {
+            echo json_encode(array('status' => 0, 'msg' => '文件保存失败'));
+        }
+        exit;
+    }
+
+    // ==================== 党支部谈心谈话 ====================
+
+    // 谈心谈话列表
+    public function tanxintanhua()
+    {
+        setcookie('zq_hash', $_SESSION['pc_hash']);
+
+        // 查询谈心谈话记录
+        $this->db->table_name = 'v9_zhibu_tanxintanhua';
+        $list = $this->db->select('', '*', '', 'id DESC');
+
+        // 处理数据
+        if (is_array($list)) {
+            foreach ($list as &$item) {
+                // 处理时间格式
+                if ($item['talk_time'] > 0) {
+                    $item['talk_time_show'] = date("Y-m-d", $item['talk_time']);
+                } else {
+                    $item['talk_time_show'] = '';
+                }
+
+                // 谈话人员显示（只显示前3个）
+                if (!empty($item['tanhua_renyuan'])) {
+                    $renyuan_arr = explode(',', $item['tanhua_renyuan']);
+                    $item['tanhua_renyuan_show'] = count($renyuan_arr) > 3
+                        ? implode('、', array_slice($renyuan_arr, 0, 3)) . '...'
+                        : implode('、', $renyuan_arr);
+                } else {
+                    $item['tanhua_renyuan_show'] = '';
+                }
+
+                // 处理附件图片URL（支持JSON格式多图片）
+                if (!empty($item['fujian'])) {
+                    $upload_url = pc_base::load_config('system', 'upload_url');
+                    $fujian_array = json_decode($item['fujian'], true);
+                    if (is_array($fujian_array)) {
+                        foreach ($fujian_array as &$url) {
+                            if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+                                $fujian_path = str_replace('uploadfile/', '', $url);
+                                $url = $upload_url . $fujian_path;
+                            }
+                        }
+                        $item['fujian'] = json_encode($fujian_array);
+                    }
+                }
+            }
+        }
+
+        $this->list = $list;
+        include $this->admin_tpl('zhibu_tanxintanhua_list');
+    }
+
+    // 谈心谈话添加页面
+    public function tanxintanhua_add()
+    {
+        include $this->admin_tpl('zhibu_tanxintanhua_add');
+    }
+
+    // 谈心谈话添加保存
+    public function tanxintanhua_addsave()
+    {
+        $tanhua_renyuan = isset($_POST['info']['tanhua_renyuan']) ? trim($_POST['info']['tanhua_renyuan']) : '';
+        $theme = trim($_POST['info']['theme']);
+        $location = trim($_POST['info']['location']);
+        $talk_time = strtotime($_POST['info']['talk_time']);
+        $fujian = trim($_POST['info']['fujian']);
+
+        if (!$theme) {
+            showmessage('请输入谈话主题', HTTP_REFERER);
+        }
+
+        $data = array(
+            'tanhua_renyuan' => $tanhua_renyuan,
+            'theme' => $theme,
+            'location' => $location,
+            'talk_time' => $talk_time,
+            'fujian' => $fujian,
+            'addtime' => time(),
+            'updatetime' => time()
+        );
+
+        $this->db->table_name = 'v9_zhibu_tanxintanhua';
+        $result = $this->db->insert($data);
+
+        if ($result) {
+            showmessage('添加成功', '?m=dangjian&c=zhibu&a=tanxintanhua&sxty=4');
+        } else {
+            showmessage('添加失败', HTTP_REFERER);
+        }
+    }
+
+    // 谈心谈话编辑页面
+    public function tanxintanhua_edit()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $this->db->table_name = 'v9_zhibu_tanxintanhua';
+        $info = $this->db->get_one(" id=$id ");
+
+        if (!$info) {
+            showmessage('记录不存在', HTTP_REFERER);
+        }
+
+        // 处理时间格式显示
+        if ($info['talk_time'] > 0) {
+            $info['talk_time_show'] = date('Y-m-d', $info['talk_time']);
+        }
+
+        // 处理附件图片URL（支持JSON格式多图片）
+        if (!empty($info['fujian'])) {
+            $upload_url = pc_base::load_config('system', 'upload_url');
+            $fujian_array = json_decode($info['fujian'], true);
+            if (is_array($fujian_array)) {
+                foreach ($fujian_array as &$url) {
+                    if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+                        $fujian_path = str_replace('uploadfile/', '', $url);
+                        $url = $upload_url . $fujian_path;
+                    }
+                }
+                $info['fujian'] = json_encode($fujian_array);
+            }
+        }
+
+        $this->info = $info;
+        include $this->admin_tpl('zhibu_tanxintanhua_edit');
+    }
+
+    // 谈心谈话编辑保存
+    public function tanxintanhua_editsave()
+    {
+        $id = intval($_POST['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $tanhua_renyuan = isset($_POST['info']['tanhua_renyuan']) ? trim($_POST['info']['tanhua_renyuan']) : '';
+        $theme = trim($_POST['info']['theme']);
+        $location = trim($_POST['info']['location']);
+        $talk_time = strtotime($_POST['info']['talk_time']);
+        $fujian = trim($_POST['info']['fujian']);
+
+        if (!$theme) {
+            showmessage('请输入谈话主题', HTTP_REFERER);
+        }
+
+        $data = array(
+            'tanhua_renyuan' => $tanhua_renyuan,
+            'theme' => $theme,
+            'location' => $location,
+            'talk_time' => $talk_time,
+            'fujian' => $fujian,
+            'updatetime' => time()
+        );
+
+        $this->db->table_name = 'v9_zhibu_tanxintanhua';
+        $result = $this->db->update($data, " id=$id ");
+
+        if ($result) {
+            showmessage('修改成功', '?m=dangjian&c=zhibu&a=tanxintanhua&sxty=4');
+        } else {
+            showmessage('修改失败', HTTP_REFERER);
+        }
+    }
+
+    // 谈心谈话删除
+    public function tanxintanhua_del()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $this->db->table_name = 'v9_zhibu_tanxintanhua';
+        $result = $this->db->delete(" id=$id ");
+
+        if ($result) {
+            showmessage('删除成功', '?m=dangjian&c=zhibu&a=tanxintanhua&sxty=4');
+        } else {
+            showmessage('删除失败', HTTP_REFERER);
+        }
+    }
+
+    // 上传谈心谈话附件图片
+    public function upload_tanxintanhua_image()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        if (!isset($_FILES['file'])) {
+            echo json_encode(array('status' => 0, 'msg' => '未选择文件'));
+            exit;
+        }
+
+        $file = $_FILES['file'];
+
+        // 检查上传错误
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            echo json_encode(array('status' => 0, 'msg' => '上传失败，错误代码：' . $file['error']));
+            exit;
+        }
+
+        // 检查文件类型
+        $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
+        if (!in_array($file['type'], $allowed_types)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        // 检查文件大小（限制5MB）
+        if ($file['size'] > 5 * 1024 * 1024) {
+            echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
+            exit;
+        }
+
+        // 生成保存路径
+        $upload_path = 'uploadfile/dangjian/zhibu_tanxintanhua/' . date('Ymd') . '/';
+        if (!is_dir($upload_path)) {
+            mkdir($upload_path, 0755, true);
+        }
+
+        // 生成文件名
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
+        $filepath = $upload_path . $filename;
+
+        // 移动上传文件
+        if (move_uploaded_file($file['tmp_name'], $filepath)) {
+            echo json_encode(array(
+                'status' => 1,
+                'msg' => '上传成功',
+                'url' => $filepath
+            ));
+        } else {
+            echo json_encode(array('status' => 0, 'msg' => '文件保存失败'));
+        }
+        exit;
+    }
+
+    // ==================== 专项工作 ====================
+
+    // 专项工作列表
+    public function zhuanxianggongzuo()
+    {
+        setcookie('zq_hash', $_SESSION['pc_hash']);
+
+        $this->db->table_name = 'v9_zhuanxianggongzuo';
+        $list = $this->db->select('', '*', '', 'id DESC');
+
+        // 处理数据
+        if (is_array($list)) {
+            foreach ($list as &$item) {
+                // 处理时间格式
+                if ($item['meeting_time'] > 0) {
+                    $item['meeting_time_show'] = date("Y-m-d", $item['meeting_time']);
+                } else {
+                    $item['meeting_time_show'] = '';
+                }
+
+                // 参会人员显示（只显示前3个）
+                if (!empty($item['canhui_renyuan'])) {
+                    $renyuan_arr = explode(',', $item['canhui_renyuan']);
+                    $item['canhui_renyuan_show'] = count($renyuan_arr) > 3
+                        ? implode('、', array_slice($renyuan_arr, 0, 3)) . '...'
+                        : implode('、', $renyuan_arr);
+                } else {
+                    $item['canhui_renyuan_show'] = '';
+                }
+            }
+        }
+
+        $this->list = $list;
+        include $this->admin_tpl('zhuanxianggongzuo_list');
+    }
+
+    // 专项工作添加页面
+    public function zhuanxianggongzuo_add()
+    {
+        include $this->admin_tpl('zhuanxianggongzuo_add');
+    }
+
+    // 专项工作添加保存
+    public function zhuanxianggongzuo_addsave()
+    {
+        $theme = trim($_POST['info']['theme']);
+        $meeting_time = strtotime($_POST['info']['meeting_time']);
+        $content = trim($_POST['info']['content']);
+        $fujian = trim($_POST['info']['fujian']);
+        $canhui_renyuan = isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '';
+
+        if (!$theme) {
+            showmessage('请输入主题', HTTP_REFERER);
+        }
+
+        $data = array(
+            'theme' => $theme,
+            'meeting_time' => $meeting_time,
+            'content' => $content,
+            'fujian' => $fujian,
+            'canhui_renyuan' => $canhui_renyuan,
+            'addtime' => time(),
+            'updatetime' => time()
+        );
+
+        $this->db->table_name = 'v9_zhuanxianggongzuo';
+        $result = $this->db->insert($data);
+
+        if ($result) {
+            showmessage('添加成功', '?m=dangjian&c=zhibu&a=zhuanxianggongzuo&sxty=4');
+        } else {
+            showmessage('添加失败', HTTP_REFERER);
+        }
+    }
+
+    // 专项工作编辑页面
+    public function zhuanxianggongzuo_edit()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $this->db->table_name = 'v9_zhuanxianggongzuo';
+        $info = $this->db->get_one(" id=$id ");
+
+        if (!$info) {
+            showmessage('记录不存在', HTTP_REFERER);
+        }
+
+        // 处理时间格式显示
+        if ($info['meeting_time'] > 0) {
+            $info['meeting_time_show'] = date('Y-m-d', $info['meeting_time']);
+        }
+
+        // 处理附件图片URL（支持JSON格式多图片）
+        if (!empty($info['fujian'])) {
+            $upload_url = pc_base::load_config('system', 'upload_url');
+            $fujian_array = json_decode($info['fujian'], true);
+            if (is_array($fujian_array)) {
+                foreach ($fujian_array as &$url) {
+                    if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+                        $fujian_path = str_replace('uploadfile/', '', $url);
+                        $url = $upload_url . $fujian_path;
+                    }
+                }
+                $info['fujian'] = json_encode($fujian_array);
+            }
+        }
+
+        $this->info = $info;
+        include $this->admin_tpl('zhuanxianggongzuo_edit');
+    }
+
+    // 专项工作编辑保存
+    public function zhuanxianggongzuo_editsave()
+    {
+        $id = intval($_POST['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $theme = trim($_POST['info']['theme']);
+        $meeting_time = strtotime($_POST['info']['meeting_time']);
+        $content = trim($_POST['info']['content']);
+        $fujian = trim($_POST['info']['fujian']);
+        $canhui_renyuan = isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '';
+
+        if (!$theme) {
+            showmessage('请输入主题', HTTP_REFERER);
+        }
+
+        $data = array(
+            'theme' => $theme,
+            'meeting_time' => $meeting_time,
+            'content' => $content,
+            'fujian' => $fujian,
+            'canhui_renyuan' => $canhui_renyuan,
+            'updatetime' => time()
+        );
+
+        $this->db->table_name = 'v9_zhuanxianggongzuo';
+        $result = $this->db->update($data, " id=$id ");
+
+        if ($result) {
+            showmessage('修改成功', '?m=dangjian&c=zhibu&a=zhuanxianggongzuo&sxty=4');
+        } else {
+            showmessage('修改失败', HTTP_REFERER);
+        }
+    }
+
+    // 专项工作删除
+    public function zhuanxianggongzuo_del()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $this->db->table_name = 'v9_zhuanxianggongzuo';
+        $result = $this->db->delete(" id=$id ");
+
+        if ($result) {
+            showmessage('删除成功', '?m=dangjian&c=zhibu&a=zhuanxianggongzuo&sxty=4');
+        } else {
+            showmessage('删除失败', HTTP_REFERER);
+        }
+    }
+
+    // 上传专项工作附件图片
+    public function upload_zhuanxianggongzuo_image()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        if (!isset($_FILES['file'])) {
+            echo json_encode(array('status' => 0, 'msg' => '未选择文件'));
+            exit;
+        }
+
+        $file = $_FILES['file'];
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            echo json_encode(array('status' => 0, 'msg' => '上传失败，错误代码：' . $file['error']));
+            exit;
+        }
+
+        $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
+        if (!in_array($file['type'], $allowed_types)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        if ($file['size'] > 5 * 1024 * 1024) {
+            echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
+            exit;
+        }
+
+        $upload_path = 'uploadfile/dangjian/zhuanxianggongzuo/' . date('Ymd') . '/';
+        if (!is_dir($upload_path)) {
+            mkdir($upload_path, 0755, true);
+        }
+
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
+        $filepath = $upload_path . $filename;
+
+        if (move_uploaded_file($file['tmp_name'], $filepath)) {
+            echo json_encode(array(
+                'status' => 1,
+                'msg' => '上传成功',
+                'url' => $filepath
+            ));
+        } else {
+            echo json_encode(array('status' => 0, 'msg' => '文件保存失败'));
+        }
+        exit;
+    }
+
+    // ==================== 政治生日模块 ====================
+
+    // 政治生日列表
+    public function zhengzhishengri()
+    {
+        setcookie('zq_hash', $_SESSION['pc_hash']);
+        $this->db->table_name = 'v9_zhengzhishengri';
+        $list = $this->db->select('', '*', '', 'id DESC');
+
+        if (is_array($list)) {
+            foreach ($list as &$item) {
+                $item['meeting_time_show'] = $item['meeting_time'] ? date('Y-m-d', $item['meeting_time']) : '';
+                $item['zhengzhi_shengri_show'] = $item['zhengzhi_shengri'] ? date('Y-m-d', $item['zhengzhi_shengri']) : '';
+                $item['canhui_renyuan_show'] = $item['canhui_renyuan'] ? str_replace(',', '、', $item['canhui_renyuan']) : '';
+            }
+        }
+
+        $this->list = $list;
+        include $this->admin_tpl('zhengzhishengri_list');
+    }
+
+    // 政治生日添加页面
+    public function zhengzhishengri_add()
+    {
+        include $this->admin_tpl('zhengzhishengri_add');
+    }
+
+    // 政治生日添加保存
+    public function zhengzhishengri_addsave()
+    {
+        $info = $_POST['info'];
+
+        $theme = trim($info['theme']);
+        $meeting_time = !empty($info['meeting_time']) ? strtotime($info['meeting_time']) : 0;
+        $content = trim($info['content']);
+        $fujian = trim($info['fujian']);
+        $canhui_renyuan = trim($info['canhui_renyuan']);
+        $zhengzhi_shengri = !empty($info['zhengzhi_shengri']) ? strtotime($info['zhengzhi_shengri']) : 0;
+
+        if (!$theme) {
+            showmessage('请输入主题', HTTP_REFERER);
+        }
+
+        $data = array(
+            'theme' => $theme,
+            'meeting_time' => $meeting_time,
+            'content' => $content,
+            'fujian' => $fujian,
+            'canhui_renyuan' => $canhui_renyuan,
+            'zhengzhi_shengri' => $zhengzhi_shengri,
+            'addtime' => time(),
+            'updatetime' => time()
+        );
+
+        $this->db->table_name = 'v9_zhengzhishengri';
+        $result = $this->db->insert($data, true);
+
+        if ($result) {
+            showmessage('添加成功', '?m=dangjian&c=zhibu&a=zhengzhishengri&sxty=4');
+        } else {
+            showmessage('添加失败', HTTP_REFERER);
+        }
+    }
+
+    // 政治生日编辑页面
+    public function zhengzhishengri_edit()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $this->db->table_name = 'v9_zhengzhishengri';
+        $info = $this->db->get_one(" id=$id ");
+
+        if (!$info) {
+            showmessage('记录不存在', HTTP_REFERER);
+        }
+
+        $info['meeting_time_show'] = $info['meeting_time'] ? date('Y-m-d', $info['meeting_time']) : '';
+        $info['zhengzhi_shengri_show'] = $info['zhengzhi_shengri'] ? date('Y-m-d', $info['zhengzhi_shengri']) : '';
+
+        $this->info = $info;
+        include $this->admin_tpl('zhengzhishengri_edit');
+    }
+
+    // 政治生日编辑保存
+    public function zhengzhishengri_editsave()
+    {
+        $id = intval($_POST['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $info = $_POST['info'];
+
+        $theme = trim($info['theme']);
+        $meeting_time = !empty($info['meeting_time']) ? strtotime($info['meeting_time']) : 0;
+        $content = trim($info['content']);
+        $fujian = trim($info['fujian']);
+        $canhui_renyuan = trim($info['canhui_renyuan']);
+        $zhengzhi_shengri = !empty($info['zhengzhi_shengri']) ? strtotime($info['zhengzhi_shengri']) : 0;
+
+        if (!$theme) {
+            showmessage('请输入主题', HTTP_REFERER);
+        }
+
+        $data = array(
+            'theme' => $theme,
+            'meeting_time' => $meeting_time,
+            'content' => $content,
+            'fujian' => $fujian,
+            'canhui_renyuan' => $canhui_renyuan,
+            'zhengzhi_shengri' => $zhengzhi_shengri,
+            'updatetime' => time()
+        );
+
+        $this->db->table_name = 'v9_zhengzhishengri';
+        $result = $this->db->update($data, " id=$id ");
+
+        if ($result) {
+            showmessage('修改成功', '?m=dangjian&c=zhibu&a=zhengzhishengri&sxty=4');
+        } else {
+            showmessage('修改失败', HTTP_REFERER);
+        }
+    }
+
+    // 政治生日删除
+    public function zhengzhishengri_del()
+    {
+        $id = intval($_GET['id']);
+        if (!$id) {
+            showmessage('参数错误', HTTP_REFERER);
+        }
+
+        $this->db->table_name = 'v9_zhengzhishengri';
+        $result = $this->db->delete(" id=$id ");
+
+        if ($result) {
+            showmessage('删除成功', '?m=dangjian&c=zhibu&a=zhengzhishengri&sxty=4');
+        } else {
+            showmessage('删除失败', HTTP_REFERER);
+        }
+    }
+
+    // 上传政治生日附件图片
+    public function upload_zhengzhishengri_image()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        if (!isset($_FILES['file'])) {
+            echo json_encode(array('status' => 0, 'msg' => '未选择文件'));
+            exit;
+        }
+
+        $file = $_FILES['file'];
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            echo json_encode(array('status' => 0, 'msg' => '上传失败，错误代码：' . $file['error']));
+            exit;
+        }
+
+        $allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
+        if (!in_array($file['type'], $allowed_types)) {
+            echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+            exit;
+        }
+
+        if ($file['size'] > 5 * 1024 * 1024) {
+            echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
+            exit;
+        }
+
+        $upload_path = 'uploadfile/dangjian/zhengzhishengri/' . date('Ymd') . '/';
+        if (!is_dir($upload_path)) {
+            mkdir($upload_path, 0755, true);
+        }
+
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
+        $filepath = $upload_path . $filename;
+
+        if (move_uploaded_file($file['tmp_name'], $filepath)) {
             echo json_encode(array(
                 'status' => 1,
                 'msg' => '上传成功',

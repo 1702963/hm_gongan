@@ -20,7 +20,7 @@ html{_overflow-y:scroll}
     color:#bbd8f1
 }
 </style>
-<link href="statics/css/modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 
 <div class="tableContent">
 <div class="pad-lr-10">
