@@ -417,9 +417,17 @@ class chengyuan extends admin
         // 分页参数
         $page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
 
+        // 会议类型筛选
+        $huiyi_type = isset($_GET['huiyi_type']) ? trim($_GET['huiyi_type']) : '';
+        $where = '';
+        if ($huiyi_type != '') {
+            $where = "huiyi_type = '" . addslashes($huiyi_type) . "'";
+        }
+        $this->huiyi_type = $huiyi_type;
+
         // 查询双重组织生活记录
         $this->db->table_name = 'v9_shuangchong_zuzhi';
-        $list = $this->db->listinfo('', 'id DESC', $page, 15);
+        $list = $this->db->listinfo($where, 'id DESC', $page, 15);
         $pages = $this->db->pages;
 
         // 处理数据

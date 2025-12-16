@@ -28,6 +28,19 @@ html{_overflow-y:scroll}
 <div class="explain-col">
   快速工具:
 <a href="index.php?m=dangjian&c=chengyuan&a=sczz_add"><input type="button" value="添加记录" style="margin-left:10px; width:80px" class="doLock" name="dook"></a>
+&nbsp;&nbsp;&nbsp;
+会议类型:
+<select id="huiyi_type_filter" onchange="filterByType()" style="margin-left:5px;padding:5px;background:transparent;color:#fff;border:1px solid #ddd;">
+  <option value="">全部</option>
+  <option value="分局党委会" <?php echo $this->huiyi_type == '分局党委会' ? 'selected' : ''?>>分局党委会</option>
+  <option value="理论中心组学习会" <?php echo $this->huiyi_type == '理论中心组学习会' ? 'selected' : ''?>>理论中心组学习会</option>
+  <option value="民主生活会" <?php echo $this->huiyi_type == '民主生活会' ? 'selected' : ''?>>民主生活会</option>
+  <option value="党支部生活会" <?php echo $this->huiyi_type == '党支部生活会' ? 'selected' : ''?>>党支部生活会</option>
+  <option value="党支部党员大会" <?php echo $this->huiyi_type == '党支部党员大会' ? 'selected' : ''?>>党支部党员大会</option>
+  <option value="党支部党小组会" <?php echo $this->huiyi_type == '党支部党小组会' ? 'selected' : ''?>>党支部党小组会</option>
+  <option value="党支部党课" <?php echo $this->huiyi_type == '党支部党课' ? 'selected' : ''?>>党支部党课</option>
+  <option value="其他活动" <?php echo $this->huiyi_type == '其他活动' ? 'selected' : ''?>>其他活动</option>
+</select>
 </div>
 
 <div class="table-list">
@@ -104,6 +117,16 @@ if(is_array($this->list)){
 </div>
 
 <script type="text/javascript">
+// 会议类型筛选
+function filterByType() {
+    var huiyi_type = document.getElementById('huiyi_type_filter').value;
+    var url = 'index.php?m=dangjian&c=chengyuan&a=shuangchongzuzhi';
+    if (huiyi_type != '') {
+        url += '&huiyi_type=' + encodeURIComponent(huiyi_type);
+    }
+    window.location.href = url;
+}
+
 // 查看附件图片
 function showFujianImages(id) {
     var fujianJson = $('#fujian_imgs_' + id).text();
