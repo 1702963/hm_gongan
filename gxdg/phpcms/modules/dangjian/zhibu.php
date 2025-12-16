@@ -126,7 +126,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/zhibu/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/zhibu/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -677,7 +677,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/sanhui/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/sanhui/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -942,7 +942,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/brand/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/brand/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -1078,7 +1078,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/dangke/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/dangke/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -1214,7 +1214,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/shenghuohui/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/shenghuohui/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -1438,7 +1438,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/peiyangfazhan/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/peiyangfazhan/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -1662,7 +1662,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/jingshijiaoyu/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/jingshijiaoyu/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -1886,7 +1886,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/zhutidangri/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/zhutidangri/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -2140,7 +2140,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/dangfeishoujiao/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/dangfeishoujiao/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -2389,7 +2389,7 @@ class zhibu extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/zhibu_tanxintanhua/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/zhibu_tanxintanhua/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -2618,7 +2618,7 @@ class zhibu extends admin
             exit;
         }
 
-        $upload_path = 'uploadfile/dangjian/zhuanxianggongzuo/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/zhuanxianggongzuo/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
@@ -2822,7 +2822,7 @@ class zhibu extends admin
             exit;
         }
 
-        $upload_path = 'uploadfile/dangjian/zhengzhishengri/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/zhengzhishengri/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }

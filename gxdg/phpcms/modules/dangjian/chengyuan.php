@@ -671,7 +671,7 @@ class chengyuan extends admin
         }
 
         // 生成保存路径
-        $upload_path = 'uploadfile/dangjian/shuangchong/' . date('Ymd') . '/';
+        $upload_path = 'uploadfile/dangjian/shuangchong/' . date('Y/md') . '/';
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
         }
