@@ -238,7 +238,11 @@ class chengyuan extends admin
                 'ddanwei' => $ddanwei,
                 'beizhu' => $beizhu,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -474,7 +478,11 @@ class chengyuan extends admin
                 'meeting_time' => $meeting_time,
                 'fujian' => $fujian,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -750,7 +758,11 @@ class chengyuan extends admin
                 'talk_time' => $talk_time,
                 'fujian' => $fujian,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -947,7 +959,11 @@ class chengyuan extends admin
                 'content_time' => $content_time,
                 'fujian' => $fujian,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -1140,7 +1156,11 @@ class chengyuan extends admin
                 'service_count' => $service_count,
                 'fujian' => $fujian,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);

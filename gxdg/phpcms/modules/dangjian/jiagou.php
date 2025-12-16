@@ -237,7 +237,11 @@ class jiagou extends admin
             $data = array(
                 'fujing_id' => $fujing_id,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -394,7 +398,11 @@ class jiagou extends admin
             $data = array(
                 'fujing_id' => $fujing_id,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -551,7 +559,11 @@ class jiagou extends admin
             $data = array(
                 'fujing_id' => $fujing_id,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -708,7 +720,11 @@ class jiagou extends admin
             $data = array(
                 'fujing_id' => $fujing_id,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -807,7 +823,11 @@ class jiagou extends admin
                 'photos' => $photos,
                 'canhui_renyuan' => $canhui_renyuan,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -1045,7 +1065,11 @@ class jiagou extends admin
                 'photos' => $photos,
                 'canhui_renyuan' => $canhui_renyuan,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -1262,7 +1286,11 @@ class jiagou extends admin
             'renyuan' => isset($info['renyuan']) ? trim($info['renyuan']) : '',
             'photos' => isset($info['photos']) ? trim($info['photos']) : '',
             'addtime' => time(),
-            'updatetime' => time()
+            'updatetime' => time(),
+            'create_datetime' => date('Y-m-d H:i:s'),
+            'create_year' => intval(date('Y')),
+            'create_month' => intval(date('m')),
+            'create_day' => intval(date('d'))
         );
 
         // 处理变动日期
@@ -1449,7 +1477,11 @@ class jiagou extends admin
             'jiaona_qingkuang' => isset($info['jiaona_qingkuang']) ? trim($info['jiaona_qingkuang']) : '',
             'photos' => isset($info['photos']) ? trim($info['photos']) : '',
             'addtime' => time(),
-            'updatetime' => time()
+            'updatetime' => time(),
+            'create_datetime' => date('Y-m-d H:i:s'),
+            'create_year' => intval(date('Y')),
+            'create_month' => intval(date('m')),
+            'create_day' => intval(date('d'))
         );
 
         // 处理时间

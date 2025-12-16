@@ -44,6 +44,10 @@ class zhibu extends admin
             } else {
                 // 新增记录
                 $data['addtime'] = time();
+                $data['create_datetime'] = date('Y-m-d H:i:s');
+                $data['create_year'] = intval(date('Y'));
+                $data['create_month'] = intval(date('m'));
+                $data['create_day'] = intval(date('d'));
                 $result = $this->db->insert($data);
                 if ($result) {
                     showmessage('添加成功', '?m=dangjian&c=zhibu&a=init');
@@ -360,7 +364,11 @@ class zhibu extends admin
 
             // 插入数据
             $data = array(
-                'fujing_id' => $fujing_id
+                'fujing_id' => $fujing_id,
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -481,7 +489,11 @@ class zhibu extends admin
                 'meeting_time' => $meeting_time,
                 'fujian' => $fujian,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -743,7 +755,11 @@ class zhibu extends admin
                 'jianjie' => $jianjie,
                 'liangdian' => $liangdian,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -954,6 +970,10 @@ class zhibu extends admin
             } else {
                 // 新增记录
                 $data['addtime'] = time();
+                $data['create_datetime'] = date('Y-m-d H:i:s');
+                $data['create_year'] = intval(date('Y'));
+                $data['create_month'] = intval(date('m'));
+                $data['create_day'] = intval(date('d'));
                 $result = $this->db->insert($data);
                 if ($result) {
                     showmessage('添加成功', '?m=dangjian&c=zhibu&a=dangke');
@@ -1086,6 +1106,10 @@ class zhibu extends admin
             } else {
                 // 新增记录
                 $data['addtime'] = time();
+                $data['create_datetime'] = date('Y-m-d H:i:s');
+                $data['create_year'] = intval(date('Y'));
+                $data['create_month'] = intval(date('m'));
+                $data['create_day'] = intval(date('d'));
                 $result = $this->db->insert($data);
                 if ($result) {
                     showmessage('添加成功', '?m=dangjian&c=zhibu&a=shenghuohui');
@@ -1246,7 +1270,11 @@ class zhibu extends admin
                 'jingzhuang_photo' => $jingzhuang_photo,
                 'canhui_renyuan' => $canhui_renyuan,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -1461,7 +1489,11 @@ class zhibu extends admin
                 'jingzhuang_photo' => $jingzhuang_photo,
                 'canhui_renyuan' => $canhui_renyuan,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -1676,7 +1708,11 @@ class zhibu extends admin
                 'jingzhuang_photo' => $jingzhuang_photo,
                 'canhui_renyuan' => $canhui_renyuan,
                 'addtime' => time(),
-                'updatetime' => time()
+                'updatetime' => time(),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'create_year' => intval(date('Y')),
+                'create_month' => intval(date('m')),
+                'create_day' => intval(date('d'))
             );
 
             $result = $this->db->insert($data);
@@ -1903,7 +1939,11 @@ class zhibu extends admin
             'fujian_tupian' => $fujian_tupian,
             'canyu_renyuan' => $canyu_renyuan,
             'addtime' => time(),
-            'updatetime' => time()
+            'updatetime' => time(),
+            'create_datetime' => date('Y-m-d H:i:s'),
+            'create_year' => intval(date('Y')),
+            'create_month' => intval(date('m')),
+            'create_day' => intval(date('d'))
         );
 
         $this->db->table_name = 'v9_dangfeishoujiao';
@@ -2155,7 +2195,11 @@ class zhibu extends admin
             'talk_time' => $talk_time,
             'fujian' => $fujian,
             'addtime' => time(),
-            'updatetime' => time()
+            'updatetime' => time(),
+            'create_datetime' => date('Y-m-d H:i:s'),
+            'create_year' => intval(date('Y')),
+            'create_month' => intval(date('m')),
+            'create_day' => intval(date('d'))
         );
 
         $this->db->table_name = 'v9_zhibu_tanxintanhua';
@@ -2379,7 +2423,11 @@ class zhibu extends admin
             'fujian' => $fujian,
             'canhui_renyuan' => $canhui_renyuan,
             'addtime' => time(),
-            'updatetime' => time()
+            'updatetime' => time(),
+            'create_datetime' => date('Y-m-d H:i:s'),
+            'create_year' => intval(date('Y')),
+            'create_month' => intval(date('m')),
+            'create_day' => intval(date('d'))
         );
 
         $this->db->table_name = 'v9_zhuanxianggongzuo';
@@ -2586,7 +2634,11 @@ class zhibu extends admin
             'canhui_renyuan' => $canhui_renyuan,
             'zhengzhi_shengri' => $zhengzhi_shengri,
             'addtime' => time(),
-            'updatetime' => time()
+            'updatetime' => time(),
+            'create_datetime' => date('Y-m-d H:i:s'),
+            'create_year' => intval(date('Y')),
+            'create_month' => intval(date('m')),
+            'create_day' => intval(date('d'))
         );
 
         $this->db->table_name = 'v9_zhengzhishengri';
