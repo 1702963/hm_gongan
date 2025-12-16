@@ -2,55 +2,67 @@
 defined('IN_ADMIN') or exit('No permission resources.');
 include PC_PATH.'modules'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'header.tpl.php';
 
-/*
-$this->db->table_name = 'v9_xuanchuan_sucai';
-$tjrs = $this->db->get_one(" isok=1 and dbtype='素材' ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_sczs= $tjrs['hj'];
+// 统计数据查询 - 从配置读取fujing数据库连接
+$_db_config = pc_base::load_config('database', 'gxdgdb');
+$_fj_conn = new mysqli($_db_config['hostname'], $_db_config['username'], $_db_config['password'], $_db_config['database']);
+$_fj_conn->set_charset($_db_config['charset']);
 
-$tjrs = $this->db->get_one(" isok=1 and dbtype='稿件' ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_gaozs= $tjrs['hj'];
+// 党员数量
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangyuan_info");
+$_row = $_rs->fetch_assoc();
+$_dangyuan_count = intval($_row['hj']);
+
+// 预备党员 - zzmm=2
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangyuan_info WHERE zzmm=2");
+$_row = $_rs->fetch_assoc();
+$_yubei_count = intval($_row['hj']);
+
+// 入党积极分子 - zzmm=3
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangyuan_info WHERE zzmm=3");
+$_row = $_rs->fetch_assoc();
+$_jijifenzi_count = intval($_row['hj']);
+
+// 政治生日 - 本月入党周年
+$_benyue = date("m");
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangyuan_info WHERE rdzztime > 0 AND FROM_UNIXTIME(rdzztime, '%m') = '$_benyue'");
+$_row = $_rs->fetch_assoc();
+$_zhengzhishengri_count = intval($_row['hj']);
+
+// 专项工作
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_zhuanxianggongzuo");
+$_row = $_rs->fetch_assoc();
+$_zhuanxiang_count = intval($_row['hj']);
+
+// 谈心谈话
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_tanxintanhua");
+$_row = $_rs->fetch_assoc();
+$_tanxin_count = intval($_row['hj']);
+
+// 党课
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangke");
+$_row = $_rs->fetch_assoc();
+$_dangke_count = intval($_row['hj']);
+
+// 组织生活会
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_shenghuohui");
+$_row = $_rs->fetch_assoc();
+$_shenghuo_count = intval($_row['hj']);
+
+// 党费缴纳
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangfei");
+$_row = $_rs->fetch_assoc();
+$_dangfei_count = intval($_row['hj']);
+
+// 一岗双责
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_yigangshuangze");
+$_row = $_rs->fetch_assoc();
+$_yigangshuangze_count = intval($_row['hj']);
+
+$_fj_conn->close();
 
 
-$_bennian=date("Y");
-$_benyue=date("m");
-$_benweek=date("w");
-/// 已发表
-$tjrs = $this->db->get_one(" isok=1 and caiyong='已发表' and ns=$_bennian ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_fbzs= $tjrs['hj'];
-/// 已采
-$tjrs = $this->db->get_one(" isok=1 and caiyong='已采纳' and ms=$_benyue ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_cyzs= $tjrs['hj'];
-/// 未
-$tjrs = $this->db->get_one(" isok=1 and caiyong='未采纳' and ws=$_benweek ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_wczs= $tjrs['hj'];
 
-//国家
-$tjrs = $this->db->get_one(" isok=1 and mtjibie='国家级' ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_gjzs= $tjrs['hj'];
-//省级
-$tjrs = $this->db->get_one(" isok=1 and mtjibie='省（部）级' ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_sbzs= $tjrs['hj'];
-//市级
-$tjrs = $this->db->get_one(" isok=1 and mtjibie='市级' ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_shizs= $tjrs['hj'];
-//市局
-$tjrs = $this->db->get_one(" isok=1 and mtjibie='市局内部' ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_sjzs= $tjrs['hj'];
-//本局
-$tjrs = $this->db->get_one(" isok=1 and mtjibie='分局内部' ",'count(*) as hj');
-if($tjrs['hj']>0){$tjrs['hj']+=1;}
-$_bjzs= $tjrs['hj'];
 
-*/
 ?>
 <!--
 <div id="main_frameid" class="pad-10 display" style="_margin-right:-12px;_width:98.9%;">
@@ -67,26 +79,29 @@ $(function(){
 	
 	//设置需要显示的数据
 	var ArrayWrapData = [
-		['minjingrenshu', <?php echo $_sczs?>],        // 民警人数
-		['fujingrenshu', <?php echo $_gaozs?>],          // 辅警人数
-		['shishikaoqin', <?php echo $_fbzs?>],          // 实时考勤
-		['xiujiarenshu ', <?php echo $_cyzs?>],          // 休假人数
-		['gerenshixiangtianbao', <?php echo $_wczs?>], // 个人事项同填报
-		['benyuebiaozhang', <?php echo $_gjzs?>],        // 本月表彰人数
-		['wenmingbiaobing', <?php echo $_sbzs?>],       // 文明标兵
-		['weixiaozhixing', <?php echo $_shizs?>],        // 微笑之星
-		['youxiuwanggeyuan', <?php echo $_sjzs?>],       // 优秀网格员
-		['benyuetongbaorenshu', <?php echo $_bjzs?>]     // 本月通报人数
+		['minjingrenshu', <?php echo $_dangyuan_count?>],        // 党员数量
+		['fujingrenshu', <?php echo $_yubei_count?>],            // 预备党员
+		['shishikaoqin', <?php echo $_jijifenzi_count?>],        // 入党积极分子
+		['xiujiarenshu', <?php echo $_zhengzhishengri_count?>],  // 政治生日
+		['gerenshixiangtianbao', <?php echo $_dangfei_count?>],  // 党费缴纳
+		['benyuebiaozhang', <?php echo $_zhuanxiang_count?>],    // 专项工作
+		['wenmingbiaobing', <?php echo $_tanxin_count?>],        // 谈心谈话
+		['weixiaozhixing', <?php echo $_dangke_count?>],         // 党课
+		['youxiuwanggeyuan', <?php echo $_shenghuo_count?>],     // 组织生活会
+		['benyuetongbaorenshu', <?php echo $_yigangshuangze_count?>]  // 一岗双责
 	];
 	//数字过渡效果
 	function numberAnimate(idName,countNumber) {
 		var fidName = idName;
 		var fcount = parseInt(countNumber);
-		$("#"+fidName).animate({count: fcount}, {     
-			duration: 2000,     
-			step: function() {       
+		$("#"+fidName).animate({count: fcount}, {
+			duration: 2000,
+			step: function() {
 				$("#"+fidName).text( Intl.NumberFormat().format( parseInt(this.count) ) );
-			}  
+			},
+			complete: function() {
+				$("#"+fidName).text( Intl.NumberFormat().format( fcount ) );
+			}
 		});
 	}
 	//遍历数组并执行过渡效果

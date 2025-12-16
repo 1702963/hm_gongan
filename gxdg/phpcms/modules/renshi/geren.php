@@ -35,10 +35,1153 @@ class geren extends admin {
 	
 	function addsx()
 	{
-		
-		include $this->admin_tpl('add_geren');
-	}	
-	
+		// 分局党委介绍 - 添加/修改
+		$this->db->table_name = 'v9_dangweijieshao';
+		$info = $this->db->get_one('', '*', '', 'id DESC');
+
+		// POST提交保存
+		if (isset($_POST['dosubmit'])) {
+			$neirong = trim($_POST['info']['neirong']);
+			$fujian = trim($_POST['info']['fujian']);
+
+			$data = array(
+				'neirong' => $neirong,
+				'fujian' => $fujian,
+				'updatetime' => time()
+			);
+
+			if ($info && $info['id']) {
+				// 更新现有记录
+				$result = $this->db->update($data, " id=" . $info['id']);
+				if ($result !== false) {
+					showmessage('修改成功', '?m=renshi&c=geren&a=addsx');
+				} else {
+					showmessage('修改失败', HTTP_REFERER);
+				}
+			} else {
+				// 新增记录
+				$data['addtime'] = time();
+				$data['create_datetime'] = date('Y-m-d H:i:s');
+				$data['create_year'] = intval(date('Y'));
+				$data['create_month'] = intval(date('m'));
+				$data['create_day'] = intval(date('d'));
+				$result = $this->db->insert($data);
+				if ($result) {
+					showmessage('添加成功', '?m=renshi&c=geren&a=addsx');
+				} else {
+					showmessage('添加失败', HTTP_REFERER);
+				}
+			}
+			exit;
+		}
+
+		// 处理附件图片URL（支持JSON格式多图片）
+		if ($info && !empty($info['fujian'])) {
+			$upload_url = pc_base::load_config('system', 'upload_url');
+			$fujian_array = json_decode($info['fujian'], true);
+			if (is_array($fujian_array)) {
+				foreach ($fujian_array as &$url) {
+					if (strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+						$url = $upload_url . str_replace('uploadfile/', '', $url);
+					}
+				}
+				$info['fujian'] = json_encode($fujian_array);
+			} else {
+				if (strpos($info['fujian'], 'http://') !== 0 && strpos($info['fujian'], 'https://') !== 0) {
+					$info['fujian'] = $upload_url . str_replace('uploadfile/', '', $info['fujian']);
+				}
+			}
+		}
+
+		$this->info = $info;
+		include $this->admin_tpl('dangweijieshao_form');
+	}
+
+	// 党委介绍图片上传
+	public function upload_dangwei_image()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+
+		if (!isset($_FILES['file'])) {
+			echo json_encode(array('status' => 0, 'msg' => '未选择文件'));
+			exit;
+		}
+
+		$file = $_FILES['file'];
+
+		// 检查上传错误
+		if ($file['error'] !== UPLOAD_ERR_OK) {
+			echo json_encode(array('status' => 0, 'msg' => '上传失败，错误代码：' . $file['error']));
+			exit;
+		}
+
+		// 检查文件类型
+		$allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
+		if (!in_array($file['type'], $allowed_types)) {
+			echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+			exit;
+		}
+
+		// 扩展名白名单验证
+		$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+		$allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+		if (!in_array($ext, $allowed_exts)) {
+			echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
+			exit;
+		}
+
+		// 检查文件大小（限制5MB）
+		if ($file['size'] > 5 * 1024 * 1024) {
+			echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
+			exit;
+		}
+
+		// 生成保存路径
+		$upload_path = 'uploadfile/renshi/dangwei/' . date('Y/md') . '/';
+		if (!is_dir($upload_path)) {
+			mkdir($upload_path, 0755, true);
+		}
+
+		// 生成文件名
+		$filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
+		$filepath = $upload_path . $filename;
+
+		// 移动上传文件
+		if (move_uploaded_file($file['tmp_name'], $filepath)) {
+			echo json_encode(array(
+				'status' => 1,
+				'msg' => '上传成功',
+				'url' => $filepath
+			));
+		} else {
+			echo json_encode(array('status' => 0, 'msg' => '文件保存失败'));
+		}
+		exit;
+	}
+
+	// ==================== 落实全面从严治党工作 ====================
+
+	// 落实全面从严治党工作 - 列表
+	function addsx2()
+	{
+		setcookie('zq_hash', $_SESSION['pc_hash']);
+
+		// 分页参数
+		$page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
+		// 查询记录
+		$this->db->table_name = 'v9_congyanzhidang';
+		$list = $this->db->listinfo('', 'id DESC', $page, 15);
+		$pages = $this->db->pages;
+
+		// 处理数据
+		if (is_array($list)) {
+			foreach ($list as &$item) {
+				// 处理时间格式
+				if ($item['content_time'] > 0) {
+					$item['content_time_show'] = date("Y-m-d", $item['content_time']);
+				} else {
+					$item['content_time_show'] = '';
+				}
+
+				// 参会人员显示（只显示前3个）
+				if (!empty($item['canhui_renyuan'])) {
+					$renyuan_arr = explode(',', $item['canhui_renyuan']);
+					$item['canhui_renyuan_show'] = count($renyuan_arr) > 3
+						? implode('、', array_slice($renyuan_arr, 0, 3)) . '...'
+						: implode('、', $renyuan_arr);
+				} else {
+					$item['canhui_renyuan_show'] = '';
+				}
+
+				// 处理附件图片URL（支持JSON格式多图片）
+				if (!empty($item['fujian'])) {
+					$upload_url = pc_base::load_config('system', 'upload_url');
+					$fujian_array = json_decode($item['fujian'], true);
+					if (is_array($fujian_array)) {
+						foreach ($fujian_array as &$url) {
+							if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+								$fujian_path = str_replace('uploadfile/', '', $url);
+								$url = $upload_url . $fujian_path;
+							}
+						}
+						$item['fujian'] = json_encode($fujian_array);
+					}
+				}
+			}
+		}
+
+		$this->list = $list;
+		$this->pages = $pages;
+		include $this->admin_tpl('congyanzhidang_list');
+	}
+
+	// 落实全面从严治党工作 - 添加页面
+	public function addsx2_add()
+	{
+		// 加载辅警列表（用于参会人员选择）
+		$this->db->table_name = 'v9_fujing';
+		$fjlist = $this->db->select(" status=1 AND isok=1 ", 'id,xingming', '', 'xingming asc');
+		$this->fjlist = $fjlist;
+
+		include $this->admin_tpl('congyanzhidang_add');
+	}
+
+	// 落实全面从严治党工作 - 添加保存
+	public function addsx2_addsave()
+	{
+		if (isset($_POST['dosubmit'])) {
+			$canhui_renyuan = isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '';
+			$theme = trim($_POST['info']['theme']);
+			$content_time = strtotime($_POST['info']['content_time']);
+			$neirong = trim($_POST['info']['neirong']);
+			$fujian = trim($_POST['info']['fujian']);
+
+			if (!$theme) {
+				showmessage('请输入主题', HTTP_REFERER);
+			}
+
+			$data = array(
+				'canhui_renyuan' => $canhui_renyuan,
+				'theme' => $theme,
+				'content_time' => $content_time,
+				'neirong' => $neirong,
+				'fujian' => $fujian,
+				'addtime' => time(),
+				'updatetime' => time(),
+				'create_datetime' => date('Y-m-d H:i:s'),
+				'create_year' => intval(date('Y')),
+				'create_month' => intval(date('m')),
+				'create_day' => intval(date('d'))
+			);
+
+			$this->db->table_name = 'v9_congyanzhidang';
+			$result = $this->db->insert($data);
+
+			if ($result) {
+				showmessage('添加成功', '?m=renshi&c=geren&a=addsx2');
+			} else {
+				showmessage('添加失败', HTTP_REFERER);
+			}
+		}
+	}
+
+	// 落实全面从严治党工作 - 编辑页面
+	public function addsx2_edit()
+	{
+		$id = intval($_GET['id']);
+		if (!$id) {
+			showmessage('参数错误', HTTP_REFERER);
+		}
+
+		$this->db->table_name = 'v9_congyanzhidang';
+		$info = $this->db->get_one(" id=$id ");
+
+		if (!$info) {
+			showmessage('记录不存在', HTTP_REFERER);
+		}
+
+		// 处理时间格式显示
+		if ($info['content_time'] > 0) {
+			$info['content_time_show'] = date('Y-m-d', $info['content_time']);
+		}
+
+		// 处理附件图片URL（支持JSON格式多图片）
+		if (!empty($info['fujian'])) {
+			$upload_url = pc_base::load_config('system', 'upload_url');
+			$fujian_array = json_decode($info['fujian'], true);
+			if (is_array($fujian_array)) {
+				foreach ($fujian_array as &$url) {
+					if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+						$fujian_path = str_replace('uploadfile/', '', $url);
+						$url = $upload_url . $fujian_path;
+					}
+				}
+				$info['fujian'] = json_encode($fujian_array);
+			}
+		}
+
+		// 加载辅警列表
+		$this->db->table_name = 'v9_fujing';
+		$fjlist = $this->db->select(" status=1 AND isok=1 ", 'id,xingming', '', 'xingming asc');
+		$this->fjlist = $fjlist;
+
+		$this->info = $info;
+		include $this->admin_tpl('congyanzhidang_edit');
+	}
+
+	// 落实全面从严治党工作 - 编辑保存
+	public function addsx2_editsave()
+	{
+		if (isset($_POST['dosubmit'])) {
+			$id = intval($_POST['id']);
+			if (!$id) {
+				showmessage('参数错误', HTTP_REFERER);
+			}
+
+			$canhui_renyuan = isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '';
+			$theme = trim($_POST['info']['theme']);
+			$content_time = strtotime($_POST['info']['content_time']);
+			$neirong = trim($_POST['info']['neirong']);
+			$fujian = trim($_POST['info']['fujian']);
+
+			if (!$theme) {
+				showmessage('请输入主题', HTTP_REFERER);
+			}
+
+			$data = array(
+				'canhui_renyuan' => $canhui_renyuan,
+				'theme' => $theme,
+				'content_time' => $content_time,
+				'neirong' => $neirong,
+				'fujian' => $fujian,
+				'updatetime' => time()
+			);
+
+			$this->db->table_name = 'v9_congyanzhidang';
+			$result = $this->db->update($data, " id=$id ");
+
+			if ($result !== false) {
+				showmessage('修改成功', '?m=renshi&c=geren&a=addsx2');
+			} else {
+				showmessage('修改失败', HTTP_REFERER);
+			}
+		}
+	}
+
+	// 落实全面从严治党工作 - 删除
+	public function addsx2_del()
+	{
+		$id = intval($_GET['id']);
+		if (!$id) {
+			showmessage('参数错误', HTTP_REFERER);
+		}
+
+		$this->db->table_name = 'v9_congyanzhidang';
+		$result = $this->db->delete(" id=$id ");
+
+		if ($result) {
+			showmessage('删除成功', '?m=renshi&c=geren&a=addsx2');
+		} else {
+			showmessage('删除失败', HTTP_REFERER);
+		}
+	}
+
+	// 上传落实全面从严治党工作附件图片
+	public function upload_congyanzhidang_image()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+
+		if (!isset($_FILES['file'])) {
+			echo json_encode(array('status' => 0, 'msg' => '未选择文件'));
+			exit;
+		}
+
+		$file = $_FILES['file'];
+
+		// 检查上传错误
+		if ($file['error'] !== UPLOAD_ERR_OK) {
+			echo json_encode(array('status' => 0, 'msg' => '上传失败，错误代码：' . $file['error']));
+			exit;
+		}
+
+		// 检查文件类型
+		$allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
+		if (!in_array($file['type'], $allowed_types)) {
+			echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+			exit;
+		}
+
+		// 扩展名白名单验证
+		$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+		$allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+		if (!in_array($ext, $allowed_exts)) {
+			echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
+			exit;
+		}
+
+		// 检查文件大小（限制5MB）
+		if ($file['size'] > 5 * 1024 * 1024) {
+			echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
+			exit;
+		}
+
+		// 生成保存路径
+		$upload_path = 'uploadfile/renshi/congyanzhidang/' . date('Y/md') . '/';
+		if (!is_dir($upload_path)) {
+			mkdir($upload_path, 0755, true);
+		}
+
+		// 生成文件名
+		$filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
+		$filepath = $upload_path . $filename;
+
+		// 移动上传文件
+		if (move_uploaded_file($file['tmp_name'], $filepath)) {
+			echo json_encode(array(
+				'status' => 1,
+				'msg' => '上传成功',
+				'url' => $filepath
+			));
+		} else {
+			echo json_encode(array('status' => 0, 'msg' => '文件保存失败'));
+		}
+		exit;
+	}
+
+	// 搜索辅警（用于参会人员搜索）
+	public function search_fujing_congyanzhidang()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+
+		$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+		if (empty($keyword)) {
+			echo json_encode(array('status' => 0, 'data' => array()));
+			exit;
+		}
+
+		$this->db->table_name = 'v9_fujing';
+		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . addslashes($keyword) . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
+
+		$result = array();
+		if (is_array($list)) {
+			foreach ($list as $item) {
+				$result[] = array(
+					'id' => $item['id'],
+					'name' => $item['xingming'],
+					'sfz' => $item['sfz'],
+					'sex' => $item['sex'],
+					'danwei' => $item['ddanwei']
+				);
+			}
+		}
+
+		echo json_encode(array('status' => 1, 'data' => $result));
+		exit;
+	}
+
+	// ==================== 意识形态工作 ====================
+
+	// 意识形态工作 - 列表
+	function addsx3()
+	{
+		setcookie('zq_hash', $_SESSION['pc_hash']);
+
+		// 分页参数
+		$page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
+		// 查询记录
+		$this->db->table_name = 'v9_yishixingtai';
+		$list = $this->db->listinfo('', 'id DESC', $page, 15);
+		$pages = $this->db->pages;
+
+		// 处理数据
+		if (is_array($list)) {
+			foreach ($list as &$item) {
+				// 处理时间格式
+				if ($item['content_time'] > 0) {
+					$item['content_time_show'] = date("Y-m-d", $item['content_time']);
+				} else {
+					$item['content_time_show'] = '';
+				}
+
+				// 参会人员显示（只显示前3个）
+				if (!empty($item['canhui_renyuan'])) {
+					$renyuan_arr = explode(',', $item['canhui_renyuan']);
+					$item['canhui_renyuan_show'] = count($renyuan_arr) > 3
+						? implode('、', array_slice($renyuan_arr, 0, 3)) . '...'
+						: implode('、', $renyuan_arr);
+				} else {
+					$item['canhui_renyuan_show'] = '';
+				}
+
+				// 处理附件图片URL
+				if (!empty($item['fujian'])) {
+					$upload_url = pc_base::load_config('system', 'upload_url');
+					$fujian_array = json_decode($item['fujian'], true);
+					if (is_array($fujian_array)) {
+						foreach ($fujian_array as &$url) {
+							if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+								$fujian_path = str_replace('uploadfile/', '', $url);
+								$url = $upload_url . $fujian_path;
+							}
+						}
+						$item['fujian'] = json_encode($fujian_array);
+					}
+				}
+			}
+		}
+
+		$this->list = $list;
+		$this->pages = $pages;
+		include $this->admin_tpl('yishixingtai_list');
+	}
+
+	// 意识形态工作 - 添加页面
+	public function addsx3_add()
+	{
+		$this->db->table_name = 'v9_fujing';
+		$fjlist = $this->db->select(" status=1 AND isok=1 ", 'id,xingming', '', 'xingming asc');
+		$this->fjlist = $fjlist;
+
+		include $this->admin_tpl('yishixingtai_add');
+	}
+
+	// 意识形态工作 - 添加保存
+	public function addsx3_addsave()
+	{
+		if (isset($_POST['dosubmit'])) {
+			$canhui_renyuan = isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '';
+			$theme = trim($_POST['info']['theme']);
+			$content_time = strtotime($_POST['info']['content_time']);
+			$neirong = trim($_POST['info']['neirong']);
+			$fujian = trim($_POST['info']['fujian']);
+
+			if (!$theme) {
+				showmessage('请输入主题', HTTP_REFERER);
+			}
+
+			$data = array(
+				'canhui_renyuan' => $canhui_renyuan,
+				'theme' => $theme,
+				'content_time' => $content_time,
+				'neirong' => $neirong,
+				'fujian' => $fujian,
+				'addtime' => time(),
+				'updatetime' => time(),
+				'create_datetime' => date('Y-m-d H:i:s'),
+				'create_year' => intval(date('Y')),
+				'create_month' => intval(date('m')),
+				'create_day' => intval(date('d'))
+			);
+
+			$this->db->table_name = 'v9_yishixingtai';
+			$result = $this->db->insert($data);
+
+			if ($result) {
+				showmessage('添加成功', '?m=renshi&c=geren&a=addsx3');
+			} else {
+				showmessage('添加失败', HTTP_REFERER);
+			}
+		}
+	}
+
+	// 意识形态工作 - 编辑页面
+	public function addsx3_edit()
+	{
+		$id = intval($_GET['id']);
+		if (!$id) {
+			showmessage('参数错误', HTTP_REFERER);
+		}
+
+		$this->db->table_name = 'v9_yishixingtai';
+		$info = $this->db->get_one(" id=$id ");
+
+		if (!$info) {
+			showmessage('记录不存在', HTTP_REFERER);
+		}
+
+		if ($info['content_time'] > 0) {
+			$info['content_time_show'] = date('Y-m-d', $info['content_time']);
+		}
+
+		if (!empty($info['fujian'])) {
+			$upload_url = pc_base::load_config('system', 'upload_url');
+			$fujian_array = json_decode($info['fujian'], true);
+			if (is_array($fujian_array)) {
+				foreach ($fujian_array as &$url) {
+					if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+						$fujian_path = str_replace('uploadfile/', '', $url);
+						$url = $upload_url . $fujian_path;
+					}
+				}
+				$info['fujian'] = json_encode($fujian_array);
+			}
+		}
+
+		$this->db->table_name = 'v9_fujing';
+		$fjlist = $this->db->select(" status=1 AND isok=1 ", 'id,xingming', '', 'xingming asc');
+		$this->fjlist = $fjlist;
+
+		$this->info = $info;
+		include $this->admin_tpl('yishixingtai_edit');
+	}
+
+	// 意识形态工作 - 编辑保存
+	public function addsx3_editsave()
+	{
+		if (isset($_POST['dosubmit'])) {
+			$id = intval($_POST['id']);
+			if (!$id) {
+				showmessage('参数错误', HTTP_REFERER);
+			}
+
+			$canhui_renyuan = isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '';
+			$theme = trim($_POST['info']['theme']);
+			$content_time = strtotime($_POST['info']['content_time']);
+			$neirong = trim($_POST['info']['neirong']);
+			$fujian = trim($_POST['info']['fujian']);
+
+			if (!$theme) {
+				showmessage('请输入主题', HTTP_REFERER);
+			}
+
+			$data = array(
+				'canhui_renyuan' => $canhui_renyuan,
+				'theme' => $theme,
+				'content_time' => $content_time,
+				'neirong' => $neirong,
+				'fujian' => $fujian,
+				'updatetime' => time()
+			);
+
+			$this->db->table_name = 'v9_yishixingtai';
+			$result = $this->db->update($data, " id=$id ");
+
+			if ($result !== false) {
+				showmessage('修改成功', '?m=renshi&c=geren&a=addsx3');
+			} else {
+				showmessage('修改失败', HTTP_REFERER);
+			}
+		}
+	}
+
+	// 意识形态工作 - 删除
+	public function addsx3_del()
+	{
+		$id = intval($_GET['id']);
+		if (!$id) {
+			showmessage('参数错误', HTTP_REFERER);
+		}
+
+		$this->db->table_name = 'v9_yishixingtai';
+		$result = $this->db->delete(" id=$id ");
+
+		if ($result) {
+			showmessage('删除成功', '?m=renshi&c=geren&a=addsx3');
+		} else {
+			showmessage('删除失败', HTTP_REFERER);
+		}
+	}
+
+	// 意识形态工作 - 图片上传
+	public function upload_yishixingtai_image()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+
+		if (!isset($_FILES['file'])) {
+			echo json_encode(array('status' => 0, 'msg' => '未选择文件'));
+			exit;
+		}
+
+		$file = $_FILES['file'];
+
+		if ($file['error'] !== UPLOAD_ERR_OK) {
+			echo json_encode(array('status' => 0, 'msg' => '上传失败，错误代码：' . $file['error']));
+			exit;
+		}
+
+		$allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
+		if (!in_array($file['type'], $allowed_types)) {
+			echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+			exit;
+		}
+
+		$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+		$allowed_exts = array('jpg', 'jpeg', 'png', 'gif');
+		if (!in_array($ext, $allowed_exts)) {
+			echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式的图片'));
+			exit;
+		}
+
+		if ($file['size'] > 5 * 1024 * 1024) {
+			echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
+			exit;
+		}
+
+		$upload_path = 'uploadfile/renshi/yishixingtai/' . date('Y/md') . '/';
+		if (!is_dir($upload_path)) {
+			mkdir($upload_path, 0755, true);
+		}
+
+		$filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
+		$filepath = $upload_path . $filename;
+
+		if (move_uploaded_file($file['tmp_name'], $filepath)) {
+			echo json_encode(array(
+				'status' => 1,
+				'msg' => '上传成功',
+				'url' => $filepath
+			));
+		} else {
+			echo json_encode(array('status' => 0, 'msg' => '文件保存失败'));
+		}
+		exit;
+	}
+
+	// 意识形态工作 - 搜索辅警
+	public function search_fujing_yishixingtai()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+
+		$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+		if (empty($keyword)) {
+			echo json_encode(array('status' => 0, 'data' => array()));
+			exit;
+		}
+
+		$this->db->table_name = 'v9_fujing';
+		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . addslashes($keyword) . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
+
+		$result = array();
+		if (is_array($list)) {
+			foreach ($list as $item) {
+				$result[] = array(
+					'id' => $item['id'],
+					'name' => $item['xingming'],
+					'sfz' => $item['sfz'],
+					'sex' => $item['sex'],
+					'danwei' => $item['ddanwei']
+				);
+			}
+		}
+
+		echo json_encode(array('status' => 1, 'data' => $result));
+		exit;
+	}
+
+	// ==================== 主题活动 ====================
+
+	// 主题活动 - 列表
+	function addsx4()
+	{
+		setcookie('zq_hash', $_SESSION['pc_hash']);
+		$page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
+		$this->db->table_name = 'v9_zhutihuodong';
+		$list = $this->db->listinfo('', 'id DESC', $page, 15);
+		$pages = $this->db->pages;
+
+		if (is_array($list)) {
+			foreach ($list as &$item) {
+				$item['content_time_show'] = $item['content_time'] > 0 ? date("Y-m-d", $item['content_time']) : '';
+
+				if (!empty($item['canhui_renyuan'])) {
+					$renyuan_arr = explode(',', $item['canhui_renyuan']);
+					$item['canhui_renyuan_show'] = count($renyuan_arr) > 3
+						? implode('、', array_slice($renyuan_arr, 0, 3)) . '...'
+						: implode('、', $renyuan_arr);
+				} else {
+					$item['canhui_renyuan_show'] = '';
+				}
+
+				if (!empty($item['fujian'])) {
+					$upload_url = pc_base::load_config('system', 'upload_url');
+					$fujian_array = json_decode($item['fujian'], true);
+					if (is_array($fujian_array)) {
+						foreach ($fujian_array as &$url) {
+							if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+								$url = $upload_url . str_replace('uploadfile/', '', $url);
+							}
+						}
+						$item['fujian'] = json_encode($fujian_array);
+					}
+				}
+			}
+		}
+
+		$this->list = $list;
+		$this->pages = $pages;
+		include $this->admin_tpl('zhutihuodong_list');
+	}
+
+	public function addsx4_add()
+	{
+		$this->db->table_name = 'v9_fujing';
+		$this->fjlist = $this->db->select(" status=1 AND isok=1 ", 'id,xingming', '', 'xingming asc');
+		include $this->admin_tpl('zhutihuodong_add');
+	}
+
+	public function addsx4_addsave()
+	{
+		if (isset($_POST['dosubmit'])) {
+			$theme = trim($_POST['info']['theme']);
+			if (!$theme) {
+				showmessage('请输入主题', HTTP_REFERER);
+			}
+
+			$data = array(
+				'canhui_renyuan' => isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '',
+				'theme' => $theme,
+				'content_time' => strtotime($_POST['info']['content_time']),
+				'neirong' => trim($_POST['info']['neirong']),
+				'fujian' => trim($_POST['info']['fujian']),
+				'addtime' => time(),
+				'updatetime' => time(),
+				'create_datetime' => date('Y-m-d H:i:s'),
+				'create_year' => intval(date('Y')),
+				'create_month' => intval(date('m')),
+				'create_day' => intval(date('d'))
+			);
+
+			$this->db->table_name = 'v9_zhutihuodong';
+			if ($this->db->insert($data)) {
+				showmessage('添加成功', '?m=renshi&c=geren&a=addsx4');
+			} else {
+				showmessage('添加失败', HTTP_REFERER);
+			}
+		}
+	}
+
+	public function addsx4_edit()
+	{
+		$id = intval($_GET['id']);
+		if (!$id) {
+			showmessage('参数错误', HTTP_REFERER);
+		}
+
+		$this->db->table_name = 'v9_zhutihuodong';
+		$info = $this->db->get_one(" id=$id ");
+		if (!$info) {
+			showmessage('记录不存在', HTTP_REFERER);
+		}
+
+		$info['content_time_show'] = $info['content_time'] > 0 ? date('Y-m-d', $info['content_time']) : '';
+
+		if (!empty($info['fujian'])) {
+			$upload_url = pc_base::load_config('system', 'upload_url');
+			$fujian_array = json_decode($info['fujian'], true);
+			if (is_array($fujian_array)) {
+				foreach ($fujian_array as &$url) {
+					if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+						$url = $upload_url . str_replace('uploadfile/', '', $url);
+					}
+				}
+				$info['fujian'] = json_encode($fujian_array);
+			}
+		}
+
+		$this->db->table_name = 'v9_fujing';
+		$this->fjlist = $this->db->select(" status=1 AND isok=1 ", 'id,xingming', '', 'xingming asc');
+		$this->info = $info;
+		include $this->admin_tpl('zhutihuodong_edit');
+	}
+
+	public function addsx4_editsave()
+	{
+		if (isset($_POST['dosubmit'])) {
+			$id = intval($_POST['id']);
+			if (!$id) {
+				showmessage('参数错误', HTTP_REFERER);
+			}
+
+			$theme = trim($_POST['info']['theme']);
+			if (!$theme) {
+				showmessage('请输入主题', HTTP_REFERER);
+			}
+
+			$data = array(
+				'canhui_renyuan' => isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '',
+				'theme' => $theme,
+				'content_time' => strtotime($_POST['info']['content_time']),
+				'neirong' => trim($_POST['info']['neirong']),
+				'fujian' => trim($_POST['info']['fujian']),
+				'updatetime' => time()
+			);
+
+			$this->db->table_name = 'v9_zhutihuodong';
+			if ($this->db->update($data, " id=$id ") !== false) {
+				showmessage('修改成功', '?m=renshi&c=geren&a=addsx4');
+			} else {
+				showmessage('修改失败', HTTP_REFERER);
+			}
+		}
+	}
+
+	public function addsx4_del()
+	{
+		$id = intval($_GET['id']);
+		if (!$id) {
+			showmessage('参数错误', HTTP_REFERER);
+		}
+
+		$this->db->table_name = 'v9_zhutihuodong';
+		if ($this->db->delete(" id=$id ")) {
+			showmessage('删除成功', '?m=renshi&c=geren&a=addsx4');
+		} else {
+			showmessage('删除失败', HTTP_REFERER);
+		}
+	}
+
+	public function upload_zhutihuodong_image()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+
+		if (!isset($_FILES['file'])) {
+			echo json_encode(array('status' => 0, 'msg' => '未选择文件'));
+			exit;
+		}
+
+		$file = $_FILES['file'];
+		if ($file['error'] !== UPLOAD_ERR_OK) {
+			echo json_encode(array('status' => 0, 'msg' => '上传失败，错误代码：' . $file['error']));
+			exit;
+		}
+
+		$allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
+		if (!in_array($file['type'], $allowed_types)) {
+			echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件'));
+			exit;
+		}
+
+		$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+		if (!in_array($ext, array('jpg', 'jpeg', 'png', 'gif'))) {
+			echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式'));
+			exit;
+		}
+
+		if ($file['size'] > 5 * 1024 * 1024) {
+			echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
+			exit;
+		}
+
+		$upload_path = 'uploadfile/renshi/zhutihuodong/' . date('Y/md') . '/';
+		if (!is_dir($upload_path)) {
+			mkdir($upload_path, 0755, true);
+		}
+
+		$filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
+		$filepath = $upload_path . $filename;
+
+		if (move_uploaded_file($file['tmp_name'], $filepath)) {
+			echo json_encode(array('status' => 1, 'msg' => '上传成功', 'url' => $filepath));
+		} else {
+			echo json_encode(array('status' => 0, 'msg' => '文件保存失败'));
+		}
+		exit;
+	}
+
+	public function search_fujing_zhutihuodong()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+
+		$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+		if (empty($keyword)) {
+			echo json_encode(array('status' => 0, 'data' => array()));
+			exit;
+		}
+
+		$this->db->table_name = 'v9_fujing';
+		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . addslashes($keyword) . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
+
+		$result = array();
+		if (is_array($list)) {
+			foreach ($list as $item) {
+				$result[] = array('id' => $item['id'], 'name' => $item['xingming'], 'sfz' => $item['sfz'], 'sex' => $item['sex'], 'danwei' => $item['ddanwei']);
+			}
+		}
+
+		echo json_encode(array('status' => 1, 'data' => $result));
+		exit;
+	}
+
+	// ==================== 专项工作 ====================
+
+	function addsx5()
+	{
+		setcookie('zq_hash', $_SESSION['pc_hash']);
+		$page = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1;
+
+		$this->db->table_name = 'v9_zhuanxianggongzuo';
+		$list = $this->db->listinfo('', 'id DESC', $page, 15);
+		$pages = $this->db->pages;
+
+		if (is_array($list)) {
+			foreach ($list as &$item) {
+				$item['content_time_show'] = $item['meeting_time'] > 0 ? date("Y-m-d", $item['meeting_time']) : '';
+				if (!empty($item['canhui_renyuan'])) {
+					$renyuan_arr = explode(',', $item['canhui_renyuan']);
+					$item['canhui_renyuan_show'] = count($renyuan_arr) > 3 ? implode('、', array_slice($renyuan_arr, 0, 3)) . '...' : implode('、', $renyuan_arr);
+				} else {
+					$item['canhui_renyuan_show'] = '';
+				}
+				if (!empty($item['fujian'])) {
+					$upload_url = pc_base::load_config('system', 'upload_url');
+					$fujian_array = json_decode($item['fujian'], true);
+					if (is_array($fujian_array)) {
+						foreach ($fujian_array as &$url) {
+							if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+								$url = $upload_url . str_replace('uploadfile/', '', $url);
+							}
+						}
+						$item['fujian'] = json_encode($fujian_array);
+					}
+				}
+			}
+		}
+
+		$this->list = $list;
+		$this->pages = $pages;
+		include $this->admin_tpl('zhuanxianggongzuo_list');
+	}
+
+	public function addsx5_add()
+	{
+		$this->db->table_name = 'v9_fujing';
+		$this->fjlist = $this->db->select(" status=1 AND isok=1 ", 'id,xingming', '', 'xingming asc');
+		include $this->admin_tpl('zhuanxianggongzuo_add');
+	}
+
+	public function addsx5_addsave()
+	{
+		if (isset($_POST['dosubmit'])) {
+			$theme = trim($_POST['info']['theme']);
+			if (!$theme) { showmessage('请输入主题', HTTP_REFERER); }
+
+			$data = array(
+				'canhui_renyuan' => isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '',
+				'theme' => $theme,
+				'meeting_time' => strtotime($_POST['info']['content_time']),
+				'content' => trim($_POST['info']['neirong']),
+				'fujian' => trim($_POST['info']['fujian']),
+				'addtime' => time(),
+				'updatetime' => time(),
+				'create_datetime' => date('Y-m-d H:i:s'),
+				'create_year' => intval(date('Y')),
+				'create_month' => intval(date('m')),
+				'create_day' => intval(date('d'))
+			);
+
+			$this->db->table_name = 'v9_zhuanxianggongzuo';
+			if ($this->db->insert($data)) {
+				showmessage('添加成功', '?m=renshi&c=geren&a=addsx5');
+			} else {
+				showmessage('添加失败', HTTP_REFERER);
+			}
+		}
+	}
+
+	public function addsx5_edit()
+	{
+		$id = intval($_GET['id']);
+		if (!$id) { showmessage('参数错误', HTTP_REFERER); }
+
+		$this->db->table_name = 'v9_zhuanxianggongzuo';
+		$info = $this->db->get_one(" id=$id ");
+		if (!$info) { showmessage('记录不存在', HTTP_REFERER); }
+
+		$info['content_time_show'] = $info['meeting_time'] > 0 ? date('Y-m-d', $info['meeting_time']) : '';
+		$info['neirong'] = $info['content'];
+
+		if (!empty($info['fujian'])) {
+			$upload_url = pc_base::load_config('system', 'upload_url');
+			$fujian_array = json_decode($info['fujian'], true);
+			if (is_array($fujian_array)) {
+				foreach ($fujian_array as &$url) {
+					if (!empty($url) && strpos($url, 'http://') !== 0 && strpos($url, 'https://') !== 0) {
+						$url = $upload_url . str_replace('uploadfile/', '', $url);
+					}
+				}
+				$info['fujian'] = json_encode($fujian_array);
+			}
+		}
+
+		$this->db->table_name = 'v9_fujing';
+		$this->fjlist = $this->db->select(" status=1 AND isok=1 ", 'id,xingming', '', 'xingming asc');
+		$this->info = $info;
+		include $this->admin_tpl('zhuanxianggongzuo_edit');
+	}
+
+	public function addsx5_editsave()
+	{
+		if (isset($_POST['dosubmit'])) {
+			$id = intval($_POST['id']);
+			if (!$id) { showmessage('参数错误', HTTP_REFERER); }
+
+			$theme = trim($_POST['info']['theme']);
+			if (!$theme) { showmessage('请输入主题', HTTP_REFERER); }
+
+			$data = array(
+				'canhui_renyuan' => isset($_POST['info']['canhui_renyuan']) ? trim($_POST['info']['canhui_renyuan']) : '',
+				'theme' => $theme,
+				'meeting_time' => strtotime($_POST['info']['content_time']),
+				'content' => trim($_POST['info']['neirong']),
+				'fujian' => trim($_POST['info']['fujian']),
+				'updatetime' => time()
+			);
+
+			$this->db->table_name = 'v9_zhuanxianggongzuo';
+			if ($this->db->update($data, " id=$id ") !== false) {
+				showmessage('修改成功', '?m=renshi&c=geren&a=addsx5');
+			} else {
+				showmessage('修改失败', HTTP_REFERER);
+			}
+		}
+	}
+
+	public function addsx5_del()
+	{
+		$id = intval($_GET['id']);
+		if (!$id) { showmessage('参数错误', HTTP_REFERER); }
+
+		$this->db->table_name = 'v9_zhuanxianggongzuo';
+		if ($this->db->delete(" id=$id ")) {
+			showmessage('删除成功', '?m=renshi&c=geren&a=addsx5');
+		} else {
+			showmessage('删除失败', HTTP_REFERER);
+		}
+	}
+
+	public function upload_zhuanxianggongzuo_image()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+		if (!isset($_FILES['file'])) { echo json_encode(array('status' => 0, 'msg' => '未选择文件')); exit; }
+
+		$file = $_FILES['file'];
+		if ($file['error'] !== UPLOAD_ERR_OK) { echo json_encode(array('status' => 0, 'msg' => '上传失败，错误代码：' . $file['error'])); exit; }
+
+		$allowed_types = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif');
+		if (!in_array($file['type'], $allowed_types)) { echo json_encode(array('status' => 0, 'msg' => '只允许上传图片文件')); exit; }
+
+		$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+		if (!in_array($ext, array('jpg', 'jpeg', 'png', 'gif'))) { echo json_encode(array('status' => 0, 'msg' => '只允许上传 jpg、jpeg、png、gif 格式')); exit; }
+
+		if ($file['size'] > 5 * 1024 * 1024) { echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB')); exit; }
+
+		$upload_path = 'uploadfile/renshi/zhuanxianggongzuo/' . date('Y/md') . '/';
+		if (!is_dir($upload_path)) { mkdir($upload_path, 0755, true); }
+
+		$filename = date('YmdHis') . '_' . rand(1000, 9999) . '.' . $ext;
+		$filepath = $upload_path . $filename;
+
+		if (move_uploaded_file($file['tmp_name'], $filepath)) {
+			echo json_encode(array('status' => 1, 'msg' => '上传成功', 'url' => $filepath));
+		} else {
+			echo json_encode(array('status' => 0, 'msg' => '文件保存失败'));
+		}
+		exit;
+	}
+
+	public function search_fujing_zhuanxianggongzuo()
+	{
+		header('Content-Type: application/json; charset=utf-8');
+		$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+		if (empty($keyword)) { echo json_encode(array('status' => 0, 'data' => array())); exit; }
+
+		$this->db->table_name = 'v9_fujing';
+		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . addslashes($keyword) . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
+
+		$result = array();
+		if (is_array($list)) {
+			foreach ($list as $item) {
+				$result[] = array('id' => $item['id'], 'name' => $item['xingming'], 'sfz' => $item['sfz'], 'sex' => $item['sex'], 'danwei' => $item['ddanwei']);
+			}
+		}
+
+		echo json_encode(array('status' => 1, 'data' => $result));
+		exit;
+	}
+
 	//补录辅警  正常情况下不使用本过程		
 	function add()
 	{
