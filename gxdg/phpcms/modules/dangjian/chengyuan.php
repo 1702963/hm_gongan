@@ -106,16 +106,16 @@ class chengyuan extends admin
             $xueli[$v['id']] = $v['gwname'];
         }
 
-        // 加载岗位数据
-        $this->db->table_name = 'v9_gangwei';
-        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        // 加载岗位数据(来源: v9_zhiwu_mj表, 对应fujing.zhiwu字段)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $gwlist = $this->db->select("", 'id,zwname', '', 'id asc');
         $gangwei = array();
         foreach ($gwlist as $v) {
-            $gangwei[$v['id']] = $v['gwname'];
+            $gangwei[$v['id']] = $v['zwname'];
         }
 
-        // 加载职务数据
-        $this->db->table_name = 'v9_zhiwu';
+        // 加载职务数据(来源: v9_zhiwu2_mj表, 对应fujing.zy_zhiwu字段)
+        $this->db->table_name = 'v9_zhiwu2_mj';
         $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
         $zhiwu = array();
         foreach ($zwlist as $v) {
@@ -242,6 +242,9 @@ class chengyuan extends admin
         if ($info['ismj'] == '1' && $info['zz_xueli'] > 0) {
             $info['xueli'] = $info['zz_xueli'];
         }
+
+        $info['gangwei'] = $info['zhiwu'];
+
         echo json_encode(array('status' => 1, 'data' => $info));
         exit;
     }
@@ -286,8 +289,8 @@ class chengyuan extends admin
                 'zhuanye' => $fjinfo['zhuanye'],
                 'xuexiao' => $fjinfo['xuexiao'],
                 'dwid' => $fjinfo['dwid'],
-                'gangwei' => $fjinfo['gangwei'],
-                'zhiwu' => $fjinfo['zhiwu'],
+                'gangwei' => $fjinfo['zhiwu'],       // 行政职务←fujing.zhiwu
+                'zhiwu' => $fjinfo['zhiwu2'],       // 警务职务←fujing.zhiwu2
                 'cengji' => $fjinfo['cengji'],
                 'rdzztime' => $fjinfo['rdzztime'],
                 'scgztime' => $fjinfo['scgztime'],
@@ -373,19 +376,20 @@ class chengyuan extends admin
             $xueli[$v['id']] = $v['gwname'];
         }
 
-        // 加载岗位数据
-        $this->db->table_name = 'v9_gangwei';
-        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        // 加载岗位数据(来源: v9_zhiwu_mj表, 对应fujing.zhiwu字段)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $gwlist = $this->db->select("", 'id,zwname', '', 'id asc');
         $gangwei = array();
         foreach ($gwlist as $v) {
-            $gangwei[$v['id']] = $v['gwname'];
+            $gangwei[$v['id']] = $v['zwname'];
         }
 
-        // 加载职务数据
-        $this->db->table_name = 'v9_zhiwu';
+
+
+        // 加载职务数据(来源: v9_zhiwu2_mj表, 对应fujing.zy_zhiwu字段)
+        $this->db->table_name = 'v9_zhiwu2_mj';
         $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
         $zhiwu = array();
-        // Bug修复: 原代码错误地遍历空数组 $zhiwu，应遍历查询结果 $zwlist
         foreach ($zwlist as $v) {
             $zhiwu[$v['id']] = $v['zwname'];
         }
@@ -443,8 +447,8 @@ class chengyuan extends admin
                 'zhuanye' => trim($info['zhuanye']),
                 'xuexiao' => trim($info['xuexiao']),
                 'dwid' => intval($info['dwid']),
-                'gangwei' => intval($info['gangwei']),
-                'zhiwu' => intval($info['zhiwu']),
+                'gangwei' => intval($info['zhiwu']),
+                'zhiwu' => intval($info['zhiwu2']),
                 'cengji' => intval($info['cengji']),
                 'rdzztime' => $rdzztime,
                 'scgztime' => $scgztime,
