@@ -139,7 +139,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   </tr>
 
   <tr>
-    <td align="right" class="infotitle">岗位：</td>
+    <td align="right" class="infotitle">行政职务：</td>
     <td>
       <select name="info[gangwei]" id="gangwei" class="infoselect" style="background:transparent;color:#fff">
         <option value="">请选择</option>
@@ -148,7 +148,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
         <?php }?>
       </select>
     </td>
-    <td align="right" class="infotitle">职务：</td>
+    <td align="right" class="infotitle">警务职务：</td>
     <td>
       <select name="info[zhiwu]" id="zhiwu" class="infoselect" style="background:transparent;color:#fff">
         <option value="">请选择</option>
