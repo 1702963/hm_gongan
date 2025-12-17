@@ -244,16 +244,16 @@ class zhibu extends admin
             $xueli[$v['id']] = $v['gwname'];
         }
 
-        // 加载岗位数据
-        $this->db->table_name = 'v9_gangwei';
-        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        // 加载岗位数据(来源: v9_zhiwu_mj表, 对应fujing.zhiwu字段)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $gwlist = $this->db->select("", 'id,zwname', '', 'id asc');
         $gangwei = array();
         foreach ($gwlist as $v) {
-            $gangwei[$v['id']] = $v['gwname'];
+            $gangwei[$v['id']] = $v['zwname'];
         }
 
-        // 加载职务数据
-        $this->db->table_name = 'v9_zhiwu';
+        // 加载职务数据(来源: v9_zhiwu2_mj表, 对应fujing.zhiwu2字段)
+        $this->db->table_name = 'v9_zhiwu2_mj';
         $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
         $zhiwu = array();
         foreach ($zwlist as $v) {
@@ -373,6 +373,15 @@ class zhibu extends admin
         } else {
             $info['scgztime'] = '';
         }
+
+        // 民警学历使用zz_xueli字段
+        if ($info['ismj'] == '1' && $info['zz_xueli'] > 0) {
+            $info['xueli'] = $info['zz_xueli'];
+        }
+
+        // 字段映射: 行政职务←zhiwu, 警务职务←zhiwu2
+        $info['gangwei'] = $info['zhiwu'];
+        $info['zhiwu'] = $info['zhiwu2'];
 
         echo json_encode(array('status' => 1, 'data' => $info));
         exit;
@@ -519,16 +528,16 @@ class zhibu extends admin
             $xueli[$v['id']] = $v['gwname'];
         }
 
-        // 加载岗位数据
-        $this->db->table_name = 'v9_gangwei';
-        $gwlist = $this->db->select("", 'id,gwname', '', 'id asc');
+        // 加载岗位数据(来源: v9_zhiwu_mj表, 对应fujing.zhiwu字段)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $gwlist = $this->db->select("", 'id,zwname', '', 'id asc');
         $gangwei = array();
         foreach ($gwlist as $v) {
-            $gangwei[$v['id']] = $v['gwname'];
+            $gangwei[$v['id']] = $v['zwname'];
         }
 
-        // 加载职务数据
-        $this->db->table_name = 'v9_zhiwu';
+        // 加载职务数据(来源: v9_zhiwu2_mj表, 对应fujing.zhiwu2字段)
+        $this->db->table_name = 'v9_zhiwu2_mj';
         $zwlist = $this->db->select("", 'id,zwname', '', 'id asc');
         $zhiwu = array();
         foreach ($zwlist as $v) {
