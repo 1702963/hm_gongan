@@ -1,0 +1,573 @@
+========================
+党建模块数据库表DDL汇总
+========================
+
+========================
+一、jiagou.php 创建的表
+========================
+
+-- v9_dangyuan_info
+CREATE TABLE `v9_dangyuan_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fujing_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联辅警ID',
+  `xingming` varchar(255) DEFAULT NULL,
+  `sfz` varchar(20) DEFAULT NULL,
+  `dwid` int(10) DEFAULT NULL,
+  `tel` char(15) DEFAULT NULL,
+  `thumb` varchar(255) DEFAULT NULL,
+  `sex` char(10) DEFAULT NULL,
+  `age` int(3) DEFAULT NULL,
+  `jiguan` varchar(255) DEFAULT NULL,
+  `minzu` varchar(30) DEFAULT NULL,
+  `hun` varchar(30) DEFAULT NULL,
+  `xueli` varchar(100) DEFAULT NULL,
+  `xuexiao` varchar(255) DEFAULT NULL,
+  `zhuanye` varchar(255) DEFAULT NULL,
+  `hjdizhi` varchar(255) DEFAULT NULL,
+  `gangwei` int(10) DEFAULT NULL,
+  `jzd` varchar(255) DEFAULT NULL,
+  `zhiwu` int(10) DEFAULT NULL,
+  `cengji` int(9) DEFAULT '0',
+  `rdzztime` int(10) DEFAULT NULL,
+  `scgztime` int(10) DEFAULT NULL,
+  `zzmm` int(2) DEFAULT NULL,
+  `shengri` varchar(32) DEFAULT NULL,
+  `beizhu` text,
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_fujing_id` (`fujing_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='党员个人信息';
+
+-- v9_jijifenzi
+CREATE TABLE `v9_jijifenzi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fujing_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联辅警ID',
+  `xingming` varchar(255) DEFAULT NULL,
+  `sfz` varchar(20) DEFAULT NULL,
+  `dwid` int(10) DEFAULT NULL,
+  `tel` char(15) DEFAULT NULL,
+  `thumb` varchar(255) DEFAULT NULL,
+  `sex` char(10) DEFAULT NULL,
+  `age` int(3) DEFAULT NULL,
+  `jiguan` varchar(255) DEFAULT NULL,
+  `minzu` varchar(30) DEFAULT NULL,
+  `hun` varchar(30) DEFAULT NULL,
+  `xueli` varchar(100) DEFAULT NULL,
+  `xuexiao` varchar(255) DEFAULT NULL,
+  `zhuanye` varchar(255) DEFAULT NULL,
+  `hjdizhi` varchar(255) DEFAULT NULL,
+  `gangwei` int(10) DEFAULT NULL,
+  `jzd` varchar(255) DEFAULT NULL,
+  `zhiwu` int(10) DEFAULT NULL,
+  `cengji` int(9) DEFAULT '0',
+  `rdzztime` int(10) DEFAULT NULL,
+  `scgztime` int(10) DEFAULT NULL,
+  `zzmm` int(2) DEFAULT NULL,
+  `shengri` varchar(32) DEFAULT NULL,
+  `beizhu` text,
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_fujing_id` (`fujing_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='入党积极分子';
+
+-- v9_fazhandangyuan
+CREATE TABLE `v9_fazhandangyuan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fujing_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联辅警ID',
+  `xingming` varchar(255) DEFAULT NULL,
+  `sfz` varchar(20) DEFAULT NULL,
+  `dwid` int(10) DEFAULT NULL,
+  `tel` char(15) DEFAULT NULL,
+  `thumb` varchar(255) DEFAULT NULL,
+  `sex` char(10) DEFAULT NULL,
+  `age` int(3) DEFAULT NULL,
+  `jiguan` varchar(255) DEFAULT NULL,
+  `minzu` varchar(30) DEFAULT NULL,
+  `hun` varchar(30) DEFAULT NULL,
+  `xueli` varchar(100) DEFAULT NULL,
+  `xuexiao` varchar(255) DEFAULT NULL,
+  `zhuanye` varchar(255) DEFAULT NULL,
+  `hjdizhi` varchar(255) DEFAULT NULL,
+  `gangwei` int(10) DEFAULT NULL,
+  `jzd` varchar(255) DEFAULT NULL,
+  `zhiwu` int(10) DEFAULT NULL,
+  `cengji` int(9) DEFAULT '0',
+  `rdzztime` int(10) DEFAULT NULL,
+  `scgztime` int(10) DEFAULT NULL,
+  `zzmm` int(2) DEFAULT NULL,
+  `shengri` varchar(32) DEFAULT NULL,
+  `beizhu` text,
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_fujing_id` (`fujing_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='发展党员情况';
+
+-- v9_yubeidangyuan
+CREATE TABLE `v9_yubeidangyuan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fujing_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联辅警ID',
+  `xingming` varchar(255) DEFAULT NULL,
+  `sfz` varchar(20) DEFAULT NULL,
+  `dwid` int(10) DEFAULT NULL,
+  `tel` char(15) DEFAULT NULL,
+  `thumb` varchar(255) DEFAULT NULL,
+  `sex` char(10) DEFAULT NULL,
+  `age` int(3) DEFAULT NULL,
+  `jiguan` varchar(255) DEFAULT NULL,
+  `minzu` varchar(30) DEFAULT NULL,
+  `hun` varchar(30) DEFAULT NULL,
+  `xueli` varchar(100) DEFAULT NULL,
+  `xuexiao` varchar(255) DEFAULT NULL,
+  `zhuanye` varchar(255) DEFAULT NULL,
+  `hjdizhi` varchar(255) DEFAULT NULL,
+  `gangwei` int(10) DEFAULT NULL,
+  `jzd` varchar(255) DEFAULT NULL,
+  `zhiwu` int(10) DEFAULT NULL,
+  `cengji` int(9) DEFAULT '0',
+  `rdzztime` int(10) DEFAULT NULL,
+  `scgztime` int(10) DEFAULT NULL,
+  `zzmm` int(2) DEFAULT NULL,
+  `shengri` varchar(32) DEFAULT NULL,
+  `beizhu` text,
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_fujing_id` (`fujing_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='预备党员情况';
+
+-- v9_lilunxuexi
+CREATE TABLE `v9_lilunxuexi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) NOT NULL DEFAULT '' COMMENT '主题',
+  `study_time` int(11) DEFAULT '0' COMMENT '学习时间',
+  `content` text COMMENT '正文内容',
+  `photos` text COMMENT '个人学习照片(JSON格式多图)',
+  `canhui_renyuan` text COMMENT '参会人员(逗号分隔)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='参加政治理论学习培训情况';
+
+-- v9_dangzhibu
+CREATE TABLE `v9_dangzhibu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) NOT NULL DEFAULT '' COMMENT '主题',
+  `activity_time` int(11) DEFAULT '0' COMMENT '活动时间',
+  `content` text COMMENT '正文内容',
+  `photos` text COMMENT '个人参加活动照片(JSON格式多图)',
+  `canhui_renyuan` text COMMENT '参会人员(逗号分隔)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='党支部活动';
+
+-- v9_guanxibiandong
+CREATE TABLE `v9_guanxibiandong` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sxty` int(11) NOT NULL DEFAULT '3' COMMENT '类型标识',
+  `biandong_date` int(11) DEFAULT '0' COMMENT '变动日期时间戳',
+  `yuan_suozaidi` varchar(255) NOT NULL DEFAULT '' COMMENT '原所在党关系所在地',
+  `xian_suozaidi` varchar(255) NOT NULL DEFAULT '' COMMENT '现党关系所在地',
+  `renyuan` text COMMENT '人员,逗号分隔多人',
+  `photos` text COMMENT '个人参加活动照片,JSON格式多图',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_sxty` (`sxty`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='党关系变动情况';
+
+-- v9_dangfei
+CREATE TABLE `v9_dangfei` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) NOT NULL DEFAULT '' COMMENT '主题',
+  `pay_time` int(11) DEFAULT '0' COMMENT '时间戳',
+  `content` text COMMENT '正文内容',
+  `photos` text COMMENT '附件图片,JSON格式多图',
+  `renyuan` varchar(100) NOT NULL DEFAULT '' COMMENT '人员(单人)',
+  `jiaona_qingkuang` text COMMENT '党费缴纳情况',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='党员个人党费缴纳情况';
+
+
+========================
+二、zhibu.php 创建的表
+========================
+
+-- v9_zhibu_jianjie
+CREATE TABLE `v9_zhibu_jianjie` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `jianjie` text COMMENT '党支部简介',
+  `fujian` text COMMENT '附件图片(JSON格式)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='党支部简介表';
+
+-- v9_zhibu_chengyuan
+CREATE TABLE `v9_zhibu_chengyuan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `fujing_id` int(11) NOT NULL DEFAULT '0' COMMENT '辅警ID',
+  `xingming` varchar(255) DEFAULT NULL,
+  `sex` char(10) DEFAULT NULL,
+  `sfz` varchar(20) DEFAULT NULL,
+  `shengri` varchar(32) DEFAULT NULL,
+  `age` int(3) DEFAULT NULL,
+  `tel` char(15) DEFAULT NULL,
+  `xueli` varchar(100) DEFAULT NULL,
+  `zhuanye` varchar(255) DEFAULT NULL,
+  `xuexiao` varchar(255) DEFAULT NULL,
+  `dwid` int(10) DEFAULT NULL,
+  `gangwei` int(10) DEFAULT NULL,
+  `zhiwu` int(10) DEFAULT NULL,
+  `cengji` int(10) DEFAULT NULL,
+  `rdzztime` int(10) DEFAULT NULL,
+  `scgztime` int(10) DEFAULT NULL,
+  `thumb` varchar(255) DEFAULT NULL,
+  `ddanwei` varchar(255) DEFAULT NULL,
+  `beizhu` text,
+  `addtime` int(11) DEFAULT '0',
+  `updatetime` int(11) DEFAULT '0',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_fujing_id` (`fujing_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='党支部成员表';
+
+-- v9_sanhui_yike
+CREATE TABLE `v9_sanhui_yike` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `theme` varchar(255) NOT NULL DEFAULT '' COMMENT '主题',
+  `meeting_time` int(11) DEFAULT '0' COMMENT '时间',
+  `content` text COMMENT '正文',
+  `fujian` text COMMENT '附件图片(JSON格式)',
+  `canhui_renyuan` text COMMENT '参会人员(逗号分隔的辅警ID)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='三会一课表';
+
+-- v9_zhibu_pinpai
+CREATE TABLE `v9_zhibu_pinpai` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `theme` varchar(255) NOT NULL DEFAULT '' COMMENT '主题',
+  `create_time` int(11) DEFAULT '0' COMMENT '时间',
+  `logo` text COMMENT 'LOGO图片(JSON格式)',
+  `jianjie` text COMMENT '情况简介',
+  `liangdian` text COMMENT '亮点特色',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='党支部品牌创建表';
+
+-- v9_dangke
+CREATE TABLE `v9_dangke` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `neirong` text COMMENT '党课内容',
+  `fujian` text COMMENT '附件图片(JSON格式存储)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='党课表';
+
+-- v9_shenghuohui
+CREATE TABLE `v9_shenghuohui` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `neirong` text COMMENT '生活会内容',
+  `fujian` text COMMENT '附件图片(JSON格式存储)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='组织生活会表';
+
+-- v9_peiyangfazhan
+CREATE TABLE `v9_peiyangfazhan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) DEFAULT NULL COMMENT '主题',
+  `meeting_time` int(11) DEFAULT NULL COMMENT '时间',
+  `content` text COMMENT '正文',
+  `jingzhuang_photo` text COMMENT '个人警装照片展示(JSON格式存储)',
+  `canhui_renyuan` text COMMENT '参会人员(逗号分隔的姓名)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='培养发展党员情况表';
+
+-- v9_jingshijiaoyu
+CREATE TABLE `v9_jingshijiaoyu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) DEFAULT NULL COMMENT '主题',
+  `meeting_time` int(11) DEFAULT NULL COMMENT '时间',
+  `content` text COMMENT '正文',
+  `jingzhuang_photo` text COMMENT '个人警装照片展示(JSON格式存储)',
+  `canhui_renyuan` text COMMENT '参会人员(逗号分隔的姓名)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='开展警示教育情况表';
+
+-- v9_zhutidangri
+CREATE TABLE `v9_zhutidangri` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) DEFAULT NULL COMMENT '主题',
+  `meeting_time` int(11) DEFAULT NULL COMMENT '时间',
+  `content` text COMMENT '正文',
+  `jingzhuang_photo` text COMMENT '个人警装照片展示(JSON格式存储)',
+  `canhui_renyuan` text COMMENT '参会人员(逗号分隔的姓名)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='开展主题党日情况表';
+
+-- v9_dangfeishoujiao
+CREATE TABLE `v9_dangfeishoujiao` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) DEFAULT NULL COMMENT '主题',
+  `meeting_time` int(11) DEFAULT NULL COMMENT '时间',
+  `zhengshou_qingkuang` text COMMENT '征收情况',
+  `jiaona_jine` decimal(10,2) DEFAULT NULL COMMENT '缴纳金额',
+  `fujian_tupian` text COMMENT '附件图片',
+  `canyu_renyuan` text COMMENT '参与人员',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='党费收缴';
+
+-- v9_zhibu_tanxintanhua
+CREATE TABLE `v9_zhibu_tanxintanhua` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tanhua_renyuan` text COMMENT '谈话人员',
+  `theme` varchar(500) DEFAULT NULL COMMENT '主题',
+  `location` varchar(255) DEFAULT NULL COMMENT '地点',
+  `talk_time` int(11) DEFAULT NULL COMMENT '谈话时间',
+  `fujian` text COMMENT '附件图片',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_talk_time` (`talk_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='党支部谈心谈话';
+
+-- v9_zhuanxianggongzuo
+CREATE TABLE `v9_zhuanxianggongzuo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(500) DEFAULT NULL COMMENT '主题',
+  `meeting_time` int(11) DEFAULT NULL COMMENT '时间',
+  `content` text COMMENT '正文',
+  `fujian` text COMMENT '附件图片',
+  `canhui_renyuan` text COMMENT '参会人员',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_meeting_time` (`meeting_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='专项工作';
+
+-- v9_zhengzhishengri
+CREATE TABLE `v9_zhengzhishengri` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `theme` varchar(500) DEFAULT NULL COMMENT '主题',
+  `meeting_time` int(11) DEFAULT NULL COMMENT '时间',
+  `content` text COMMENT '正文',
+  `fujian` text COMMENT '附件图片',
+  `canhui_renyuan` text COMMENT '参会人员',
+  `zhengzhi_shengri` int(11) DEFAULT NULL COMMENT '政治生日',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_meeting_time` (`meeting_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='政治生日';
+
+
+========================
+三、chengyuan.php 创建的表
+========================
+
+-- v9_banzi_chengyuan
+CREATE TABLE `v9_banzi_chengyuan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `fujing_id` int(11) NOT NULL DEFAULT '0' COMMENT '辅警ID，关联v9_fujing表',
+  `xingming` varchar(255) DEFAULT NULL,
+  `sex` char(10) DEFAULT NULL,
+  `sfz` varchar(20) DEFAULT NULL,
+  `shengri` varchar(32) DEFAULT NULL,
+  `age` int(3) DEFAULT NULL,
+  `tel` char(15) DEFAULT NULL,
+  `xueli` varchar(100) DEFAULT NULL,
+  `zhuanye` varchar(255) DEFAULT NULL,
+  `xuexiao` varchar(255) DEFAULT NULL,
+  `dwid` int(10) DEFAULT NULL,
+  `gangwei` int(10) DEFAULT NULL,
+  `zhiwu` int(10) DEFAULT NULL,
+  `cengji` int(10) DEFAULT NULL,
+  `rdzztime` int(10) DEFAULT NULL,
+  `scgztime` int(10) DEFAULT NULL,
+  `thumb` varchar(255) DEFAULT NULL,
+  `ddanwei` varchar(255) DEFAULT '' COMMENT '党关系所在支部',
+  `beizhu` text COMMENT '备注',
+  `addtime` int(11) DEFAULT '0' COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT '0' COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `fujing_id` (`fujing_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='班子成员党建信息表';
+
+-- v9_shuangchong_zuzhi
+CREATE TABLE `v9_shuangchong_zuzhi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `huiyi_type` varchar(100) DEFAULT '' COMMENT '会议类型',
+  `canhui_renyuan` text COMMENT '参会人员',
+  `title` varchar(255) DEFAULT '' COMMENT '标题',
+  `content` text COMMENT '正文',
+  `meeting_time` int(11) DEFAULT '0' COMMENT '会议时间',
+  `fujian` varchar(500) DEFAULT '' COMMENT '附件图片',
+  `addtime` int(11) DEFAULT '0' COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT '0' COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='双重组织生活情况';
+
+-- v9_tanxintanhua
+CREATE TABLE `v9_tanxintanhua` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `tanhua_renyuan` text COMMENT '谈话人员(逗号分隔)',
+  `theme` varchar(500) DEFAULT NULL COMMENT '谈话主题',
+  `location` varchar(255) DEFAULT NULL COMMENT '谈话地点',
+  `talk_time` int(11) DEFAULT NULL COMMENT '谈话时间(Unix时间戳)',
+  `fujian` text COMMENT '附件图片(JSON格式)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_talk_time` (`talk_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='谈心谈话记录表';
+
+-- v9_yigangshuangze
+CREATE TABLE `v9_yigangshuangze` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `theme` varchar(500) DEFAULT NULL COMMENT '主题',
+  `content_time` int(11) DEFAULT NULL COMMENT '时间(Unix时间戳)',
+  `content` text COMMENT '正文',
+  `fujian` text COMMENT '附件图片(JSON格式)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_content_time` (`content_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='一岗双责记录表';
+
+-- v9_sixiajiceng
+CREATE TABLE `v9_sixiajiceng` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `theme` varchar(500) DEFAULT NULL COMMENT '主题',
+  `activity_time` int(11) DEFAULT NULL COMMENT '时间(Unix时间戳)',
+  `location` varchar(255) DEFAULT NULL COMMENT '地点',
+  `problem_count` int(11) DEFAULT '0' COMMENT '解决问题个数',
+  `service_count` int(11) DEFAULT '0' COMMENT '服务群众人数',
+  `fujian` text COMMENT '附件图片(JSON格式)',
+  `addtime` int(11) DEFAULT NULL COMMENT '添加时间',
+  `updatetime` int(11) DEFAULT NULL COMMENT '更新时间',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_year` int(4) NOT NULL DEFAULT '0' COMMENT '创建年份',
+  `create_month` int(2) NOT NULL DEFAULT '0' COMMENT '创建月份',
+  `create_day` int(2) NOT NULL DEFAULT '0' COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `idx_activity_time` (`activity_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='践行四下基层情况记录表';
+
