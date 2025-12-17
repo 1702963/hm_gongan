@@ -332,7 +332,7 @@ $_fj_conn->close();
             <div class="modItemContent">
 
                 <!--本月表彰人数-->
-                <div class="DataHonour" data-scroll-reveal="enter right">
+                <div  onclick="location.href='index.php?m=peixunnew&c=fujingpeixun_person&a=init'"  style="cursor:pointer;"   class="DataHonour" data-scroll-reveal="enter right">
                     <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
                         <img src="statics/images/admin_img/2025/bz01.png">
                     </div>
@@ -343,7 +343,7 @@ $_fj_conn->close();
                 </div>
 
                 <!--文明标兵-->
-                <div class="DataHonour" data-scroll-reveal="enter right">
+                <div onclick="location.href='index.php?m=peixunnew&c=fujingpeixun_jilu&a=init'" style="cursor:pointer;"   class="DataHonour" data-scroll-reveal="enter right">
                     <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
                         <img src="statics/images/admin_img/2025/bz01.png">
                     </div>
@@ -354,7 +354,7 @@ $_fj_conn->close();
                 </div>
 
                 <!--微笑之星-->
-                <div class="DataHonour" data-scroll-reveal="enter right">
+                <div  onclick="location.href='index.php?m=peixunnew&c=zhuanyepeixun_jilu&a=init'" style="cursor:pointer;"   class="DataHonour" data-scroll-reveal="enter right">
                     <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
                         <img src="statics/images/admin_img/2025/bz01.png">
                     </div>
