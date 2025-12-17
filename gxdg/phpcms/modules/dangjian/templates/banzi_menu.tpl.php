@@ -58,7 +58,7 @@ include $this->admin_tpl('header_new', 'admin');
 
     <div class="pad-lr-10">
         <div class="renshiTitle">
-            高新分局党委
+            党委班子
         </div>
 
         <div style="clear:both"></div>

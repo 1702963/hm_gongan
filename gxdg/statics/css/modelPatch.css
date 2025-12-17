@@ -108,7 +108,7 @@ input[type="radio"]:checked::after {content: ''; display: inline-block; width: 8
 .thisnav a:hover img {filter:brightness(2.5)}
 
 .tabcon {width:1270px;padding-top:30px;position:relative}
-.tabcon .title {width:90px;height:24px;line-height:24px;text-align:center;background:#04de80;position:absolute;top:15px;left:35px;font-size:14px;font-weight:900;color:#333;border-radius:3px}
+.tabcon .title {width:auto;height:24px;line-height:24px;text-align:center;background:#04de80;position:absolute;top:15px;left:35px;font-size:14px;font-weight:900;color:#333;border-radius:3px;padding-left:2em;padding-right:2em}
 .tabcon input[type=submit] {width:120px;height:32px;line-height:24px;background:#06c;color:#fff;border:0;transition: all .2s ease-in-out}
 .tabcon input[type=submit]:hover {background:#0C6}
 .basetext {width:1150px;height:90px;background:#fff;border:1px solid #ddd;float:left;margin-left:5px;overflow:hidden}
