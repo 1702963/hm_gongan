@@ -1,6 +1,6 @@
 <?php
 // 安全修复: 线上环境禁止开启 display_errors，避免暴露错误信息和服务器路径
-// ini_set("display_errors", "On");
+ ini_set("display_errors", "On");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);
@@ -239,6 +239,9 @@ class chengyuan extends admin
             }
         }
 
+        if ($info['ismj'] == '1' && $info['zz_xueli'] > 0) {
+            $info['xueli'] = $info['zz_xueli'];
+        }
         echo json_encode(array('status' => 1, 'data' => $info));
         exit;
     }

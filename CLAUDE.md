@@ -290,6 +290,62 @@ juuser, juok, judt         // 局长审核
 - 私有方法(下划线开头)无法通过 URL 直接访问
 - m/c/a 参数自动过滤目录遍历字符
 
+## 安全编码规范（必读）
+
+### SQL 注入防护
+
+⚠️ **现有代码中存在大量 SQL 注入漏洞，新代码必须规避**：
+
+```php
+// ❌ 错误写法 - 直接拼接用户输入
+$id = $_GET['id'];
+$this->db->get_one("id=$id");
+
+// ✅ 正确写法 - 整数参数用 intval
+$id = intval($_GET['id']);
+$this->db->get_one("id=$id");
+
+// ✅ 正确写法 - 使用数组条件
+$this->db->get_one(array('id' => intval($_GET['id'])));
+
+// ❌ 错误写法 - LIKE 查询直接拼接
+$where .= " AND xingming LIKE '%$xingming%' ";
+
+// ✅ 正确写法
+$xingming = addslashes($_GET['xingming']);
+$where .= " AND xingming LIKE '%" . $xingming . "%' ";
+```
+
+### 变量初始化
+
+```php
+// ❌ 错误写法 - 未初始化直接追加
+$where .= " AND status=1";
+
+// ✅ 正确写法
+$where = "isok=1";
+$where .= " AND status=1";
+
+// ❌ 错误写法 - 数组未初始化
+$gangweifz[$aaa['id']] = $aaa['gwname'];
+
+// ✅ 正确写法
+$gangweifz = array();
+foreach ($rss as $aaa) {
+    $gangweifz[$aaa['id']] = $aaa['gwname'];
+}
+```
+
+### 生产环境禁用项
+
+```php
+// ❌ 禁止出现
+ini_set("display_errors", "On");
+error_reporting(E_ALL);
+
+// 调试代码提交前必须删除
+```
+
 ## 开发注意事项
 
 ### 代码修改原则
@@ -313,6 +369,9 @@ juuser, juok, judt         // 局长审核
 - [ ] 字段是否存在于实际表中
 - [ ] 字段类型是否匹配
 - [ ] 是否使用了正确的数据库连接(default/gxdgdb)
+- [ ] **GET/POST 整数参数是否用 intval() 处理**
+- [ ] **字符串参数是否用 addslashes() 或数组条件**
+- [ ] **WHERE 变量是否已初始化**
 
 ### 常用字段命名规范
 
