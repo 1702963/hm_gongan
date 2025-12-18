@@ -33,6 +33,12 @@ class jiaoyu extends admin
         exit;
         showmessage('模块建设中');
     }
+    public function gerennengzhi()
+    {
+        header("Location:?m=peixunnew&c=nengzhi&a=init");
+        exit;
+        showmessage('模块建设中');
+    }
 
 
 

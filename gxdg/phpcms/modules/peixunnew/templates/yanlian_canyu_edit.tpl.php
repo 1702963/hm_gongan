@@ -37,7 +37,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   <tr>
     <td align="right" class="infotitle">演练记录：</td>
     <td colspan="5">
-      <input type="text" value="<?php echo isset($this->yanlian_list[$this->info['yanlian_id']]) ? $this->yanlian_list[$this->info['yanlian_id']]['title'] : ''?>" readonly
+      <input type="text" value="<?php echo $this->info['yanlian_title']?>" readonly
              style="width:400px;height:20px;background:transparent;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
@@ -45,7 +45,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   <tr>
     <td align="right" class="infotitle">参与人员：</td>
     <td colspan="5">
-      <input type="text" value="<?php echo $this->info['fjname'] ?? ''?>" readonly
+      <input type="text" value="<?php echo $this->info['fjname']?>" readonly
              style="width:400px;height:20px;background:transparent;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>

@@ -274,30 +274,20 @@ class yanlian_canyu extends admin
         // 处理时间显示
         $info['inputtime_show'] = $info['inputtime'] ? date('Y-m-d H:i', $info['inputtime']) : '';
 
-        // 加载演练列表
-        $this->db->table_name = 'v9_duikang_yanlian';
-        $duikang_list = $this->db->select('isok=1', 'id,title');
-        $this->db->table_name = 'v9_zhuanxiang_yanlian';
-        $zhuanxiang_list = $this->db->select('isok=1', 'id,title');
-
-        $yanlian_map = array();
-        if ($duikang_list) {
-            foreach ($duikang_list as $item) {
-                $yanlian_map[$item['id']] = array('title' => $item['title'], 'type' => 1);
-            }
-        }
-        if ($zhuanxiang_list) {
-            foreach ($zhuanxiang_list as $item) {
-                $yanlian_map[$item['id']] = array('title' => $item['title'], 'type' => 2);
-            }
-        }
-
-        // 加载辅警列表
+        // 获取辅警姓名
         $this->db->table_name = 'v9_fujing';
-        $fjlist = $this->db->select('status=1 AND isok=1', 'id,xingming,gzz,dwid', '', 'xingming asc');
+        $fjinfo = $this->db->get_one(array('id' => $info['fjid']));
+        $info['fjname'] = $fjinfo ? $fjinfo['xingming'] : '';
 
-        $this->yanlian_list = $yanlian_map;
-        $this->fjlist = $fjlist;
+        // 获取演练记录标题
+        if ($info['yanlian_type'] == 1) {
+            $this->db->table_name = 'v9_duikang_yanlian';
+        } else {
+            $this->db->table_name = 'v9_zhuanxiang_yanlian';
+        }
+        $yanlian_info = $this->db->get_one(array('id' => $info['yanlian_id']));
+        $info['yanlian_title'] = $yanlian_info ? $yanlian_info['title'] : '';
+
         $this->fengzu_list = array(1 => '红方', 2 => '蓝方');
         $this->info = $info;
         include $this->admin_tpl('yanlian_canyu_edit');
