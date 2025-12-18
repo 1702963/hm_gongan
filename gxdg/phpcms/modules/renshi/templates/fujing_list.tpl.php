@@ -11,6 +11,24 @@ $zzmm[5]="群众";
 
 $tuiyi[1]="是";
 $tuiyi[2]="否";
+
+//民警职务
+		$this->db->table_name = 'v9_zhiwu_mj';
+		$rss = $this->db->select("",'id,zwname','','id asc');
+		$zhiwu_mj=array(0=>"无职务");
+		
+		foreach($rss as $aaa){
+			$zhiwu_mj[$aaa['id']]=$aaa['zwname'];
+			
+			}
+			
+		//民警学历
+		$this->db->table_name = 'v9_xueli';
+		$rss = $this->db->select("",'id,gwname_mj','','id asc');
+		
+		foreach($rss as $aaa){
+			$xueli_mj[$aaa['id']]=$aaa['gwname_mj'];
+			}			
 ?>
 
 <SCRIPT LANGUAGE="JavaScript">
@@ -418,7 +436,17 @@ if(is_array($fujing)){
       <td><?php echo $info['sfz']?></td>
 	  <td><?php echo $nianling?></td>
       <td><?php if($info['shengri']!=''){echo date("Y-m-d",$info['shengri']);}?></td>
-      <td><?php echo $xueli[$info['xueli']]?></td>
+      <td><?php 
+	  if($info['ismj']==0){
+	    echo $xueli[$info['xueli']];
+	  }else{
+		if($info['zz_xueli']==""){
+			echo $xueli_mj[$info['xueli']];
+			}else{
+			echo $xueli_mj[$info['zz_xueli']];	
+				}  
+	  }
+	  ?></td>
       <td><?php 
 			if($info['ismj']==0) { echo '<div class="sexyMale">辅警</div>'; }
 			if($info['ismj']==1) { echo '<div class="sexyFemale">民警</div>'; }
@@ -440,6 +468,7 @@ if(is_array($fujing)){
       <td><?php echo $gangweifz[$info['gangweifz']];?></td>
       <td>
 	  	<?php 
+		if($info['ismj']==0){
 			//echo $zhiwu[$info['zhiwu']];
 			$demoData=$zhiwu[$info['zhiwu']];
 			if($demoData=="辅警长") { 
@@ -448,6 +477,9 @@ if(is_array($fujing)){
 				echo '<div class="gmAa">'.$demoData.'</div>'; 
 			} else { 
 				 echo '<div class="gmAp">'.$demoData.'</div>'; 
+			}
+		}else{
+			echo '<div class="gmDaps">'.$zhiwu_mj[$info['zhiwu']].'</div>';
 			}
 		?>
       </td>

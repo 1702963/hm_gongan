@@ -16,7 +16,7 @@ return array (
     'description' => '',
     'parentdir' => '',
     'catdir' => 'about',
-    'url' => 'http://gongan.myphp.cn/gxdg/html/about/',
+    'url' => 'http://192.168.1.168/v9/html/about/',
     'items' => '0',
     'hits' => '0',
     'setting' => 'array (
@@ -59,7 +59,7 @@ return array (
     'description' => '',
     'parentdir' => 'about/',
     'catdir' => 'aboutus',
-    'url' => 'http://gongan.myphp.cn/gxdg/html/about/aboutus/',
+    'url' => 'http://192.168.1.168/v9/html/about/aboutus/',
     'items' => '0',
     'hits' => '0',
     'setting' => 'array (
@@ -102,7 +102,7 @@ return array (
     'description' => '',
     'parentdir' => '',
     'catdir' => 'guonei',
-    'url' => 'http://gongan.myphp.cn/gxdg',
+    'url' => 'http://192.168.1.168/v9',
     'items' => '4',
     'hits' => '0',
     'setting' => 'array (
@@ -153,7 +153,7 @@ return array (
     'description' => '',
     'parentdir' => 'about/',
     'catdir' => 'contactus',
-    'url' => 'http://gongan.myphp.cn/gxdg/html/about/contactus/',
+    'url' => 'http://192.168.1.168/v9/html/about/contactus/',
     'items' => '0',
     'hits' => '0',
     'setting' => 'array (
@@ -196,7 +196,7 @@ return array (
     'description' => '',
     'parentdir' => '',
     'catdir' => 'down',
-    'url' => 'http://gongan.myphp.cn/gxdg',
+    'url' => 'http://192.168.1.168/v9',
     'items' => '1',
     'hits' => '0',
     'setting' => 'array (
@@ -290,7 +290,7 @@ return array (
     'description' => '',
     'parentdir' => '',
     'catdir' => 'pps',
-    'url' => 'http://gongan.myphp.cn/gxdg',
+    'url' => 'http://192.168.1.168/v9',
     'items' => '2',
     'hits' => '0',
     'setting' => 'array (
@@ -341,7 +341,7 @@ return array (
     'description' => '',
     'parentdir' => 'about/',
     'catdir' => 'hr',
-    'url' => 'http://gongan.myphp.cn/gxdg/html/about/hr/',
+    'url' => 'http://192.168.1.168/v9/html/about/hr/',
     'items' => '0',
     'hits' => '0',
     'setting' => 'array (

@@ -448,7 +448,7 @@ class renshi extends admin {
 			}			
 						
 		//邦定职务
-		$this->db->table_name = 'v9_zhiwu';
+		$this->db->table_name = 'v9_zhiwu_mj';
 		$rss = $this->db->select("",'id,zwname','','id asc');
 		$zhiwu=array();
 		

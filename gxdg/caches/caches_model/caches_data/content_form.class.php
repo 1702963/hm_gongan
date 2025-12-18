@@ -155,7 +155,7 @@ class content_form {
 			break;
 
 			case 'multiple':
-				$string = form::select($option,$value,"name='info[$field][]' id='$field' size=2 multiple='multiple' style='height:60px;' $fieldinfo[formattribute]");
+				$string = form::select($option,$value,"name='info[$field][]' id='$field ' size=2 multiple='multiple' style='height:60px;' $fieldinfo[formattribute]");
 			break;
 		}
 		return $string;
@@ -211,7 +211,7 @@ class content_form {
 			define('IMAGES_INIT', 1);
 		}
 		$authkey = upload_key("$upload_number,$upload_allowext,$isselectimage");
-		$string .= $str."<div class='picBut cu'><a href='javascript:void(0);' onclick=\"javascript:flashupload('{$field}_images', '".L('attachment_upload')."','{$field}',change_images,'{$upload_number},{$upload_allowext},{$isselectimage}','content','$this->catid','{$authkey}')\"/> ".L('select_pic')." </a></div>";
+		$string .= $str."<div class='picBut cu'><a herf='javascript:void(0);' onclick=\"javascript:flashupload('{$field}_images', '".L('attachment_upload')."','{$field}',change_images,'{$upload_number},{$upload_allowext},{$isselectimage}','content','$this->catid','{$authkey}')\"/> ".L('select_pic')." </a></div>";
 		return $string;
 	}	function number($field, $value, $fieldinfo) {
 		extract($fieldinfo);

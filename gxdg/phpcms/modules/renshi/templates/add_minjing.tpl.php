@@ -1,6 +1,34 @@
 <?php
 defined('IN_ADMIN') or exit('No permission resources.');
 include $this->admin_tpl('header_new','admin');
+
+		$this->db->table_name = 'v9_zhiwu_mj';
+		$rss = $this->db->select("",'id,zwname','','id asc');
+		$zhiwu_mj=array();
+		
+		foreach($rss as $aaa){
+			$zhiwu_mj[$aaa['id']]=$aaa['zwname'];
+			
+			}
+			
+		$this->db->table_name = 'v9_zhiwu2_mj';
+		$rss = $this->db->select("",'id,zwname','','id asc');
+		$zhiwu2_mj=array();
+		
+		foreach($rss as $aaa){
+			$zhiwu2_mj[$aaa['id']]=$aaa['zwname'];
+			
+			}
+			
+		$this->db->table_name = 'v9_zhiwu_zymj';
+		$rss = $this->db->select("",'id,zwname','','id asc');
+		$zhiwu_zymj=array();
+		
+		foreach($rss as $aaa){
+			$zhiwu_zymj[$aaa['id']]=$aaa['zwname'];
+			
+			}						
+
 ?>
 <SCRIPT LANGUAGE="JavaScript">
 <!--
@@ -20,12 +48,13 @@ include $this->admin_tpl('header_new','admin');
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>content_addtop.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>colorpicker.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>hotkeys.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>dialog.js"></script>
 
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>swfupload/swf2ckeditor.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>formvalidator.js" charset="UTF-8"></script> 
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>formvalidatorregex.js" charset="UTF-8"></script> 
 <link href="statics/css/modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
-<form action="?m=renshi&c=renshi&a=addmj" method="POST" name="myform" id="myform">
+<form action="?m=renshi&c=renshi&a=edit" method="POST" name="myform" id="myform">
 
 
 <style type="text/css">
@@ -65,12 +94,26 @@ include $this->admin_tpl('header_new','admin');
 
 <div class="tableContent">
 
+<div class="topnav" style="width:1080px">
+	<div class="thisnav">
+    	<a href="javascript:;" onclick="jiashu(<?php echo $fujing['id'];?>);"><div><img src="statics/images/c01.png" /><em>家庭成员</em></div></a>
+        <a href="javascript:;" onclick="jiaoyu(<?php echo $fujing['id'];?>);"><div><img src="statics/images/a02.png" /><em>教育培训</em></div></a>
+        <a href="javascript:;" onclick="lvli(<?php echo $fujing['id'];?>);"><div><img src="statics/images/a03.png" /><em>履历记录</em></div></a>
+        <a href="javascript:;" onclick="techang(<?php echo $fujing['id'];?>);"><div><img src="statics/images/a03.png" /><em>特长记录</em></div></a>
+        <a href="javascript:;" onclick="biaozhang(<?php echo $fujing['id'];?>);"><div><img src="statics/images/a03.png" /><em>表彰记录</em></div></a>
+		 <a href="javascript:;" onclick="chengjie(<?php echo $fujing['id'];?>);"><div><img src="statics/images/a03.png" /><em>惩戒记录</em></div></a>
+         <a href="javascript:;" onclick="kaohe(<?php echo $fujing['id'];?>);"><div><img src="statics/images/a03.png" /><em>考核记录</em></div></a>
+        <a href="javascript:;" onclick="zhuangbei(<?php echo $fujing['id'];?>);" style="display:none"><div><img src="statics/images/a04.png" /><em>装备发放</em></div></a>
+        <a href="outfj.php?id=<?php echo $fujing['id'];?>" style="display:none"><div><img src="statics/images/a05.png" /><em>基础信息打印</em></div></a>
+    </div>
+</div>
+
 <div class="tabcon">
 <div class="title">基础信息</div>
 <table cellpadding="0" cellspacing="0" class="baseinfo" align="center">
   <tr>
-    <td width="100" align="right" class="infotitle"><span>姓名：</span></td>
-    <td width="263"><input type="text" id="myname2" name="info[xingming]" value="<?php echo $fujing['xingming'];?>" class="infoinput" /></td>
+    <td width="132" align="right" class="infotitle"><span>姓名：</span></td>
+    <td width="231"><input type="text" id="myname2" name="info[xingming]" value="<?php echo $fujing['xingming'];?>" class="infoinput" /></td>
     <td width="100" align="right" class="infotitle">性别：</td>
     <td width="263"><input type="radio" class="rad" <?php if($fujing['sex']=='男'){?>checked<?php }?>  name="info[sex]" value="男"/>男
         <input type="radio" class="rad"   name="info[sex]" <?php if($fujing['sex']=='女'){?>checked<?php }?> value="女"/>女</td>    
@@ -78,7 +121,7 @@ include $this->admin_tpl('header_new','admin');
     <td width="263" class="rb"><input type="text" name="info[sfz]" id="myname9" class="infoinput"  value="<?php echo $fujing['sfz'];?>"/>
 
     </td>
-    <td width="180" rowspan="5" valign="top">
+    <td width="180" rowspan="9" valign="top">
 	<input type='hidden' name='info[thumb]' id='thumb' value="<?php echo $fujing['thumb'];?>">
     	<div id="headpic"><img width="150" height="217" src="<?php if($fujing['thumb']==''){?>statics/images/demo.jpg<?php }else{?><?php echo $fujing['thumb'];?><?php }?>"  id='thumb_preview'/></div>
         <div class="upa"><a href='javascript:void(0);' onclick="flashupload('thumb_images', '附件上传','thumb',thumb_images,'1,jpg|jpeg|gif|png|bmp,1,,,0','content','7','<?php echo $authkey;?>');return false;"><img src="statics/images/a06.png" />上传</a></div>
@@ -87,7 +130,7 @@ include $this->admin_tpl('header_new','admin');
   </tr>
   <tr>
     <td align="right" class="infotitle">出生日期</td>
-    <td width="263">&nbsp;<?php echo form::date('shengri',date("Y-m-d",$fujing['shengri']),0,0,'false');?></td>
+    <td width="231">&nbsp;<?php echo form::date('shengri',date("Y-m-d",$fujing['shengri']),0,0,'false');?></td>
     <td width="100" align="right" class="infotitle">婚姻状况：</td>
     <td width="263">
       <select name="info[hun]" id="sexy3" class="infoselect">
@@ -96,25 +139,22 @@ include $this->admin_tpl('header_new','admin');
 		 <option value="已婚" <?php if($fujing['hun']=='已婚'){?>selected<?php }?>>已婚</option>
 		  <option value="丧偶 <?php if($fujing['hun']=='丧偶'){?>selected<?php }?>">丧偶</option>
       </select></td>
-    <td width="100" align="right" class="infotitle">学历：</td>
-    <td width="263" class="rb"><select name="info[xueli]">
-                                <?php foreach($xueli as $k=>$v){?>
-                                 <option value="<?php echo $k?>" <?php if($k==intval($fujing['xueli'])){?>selected="selected"<?php }?>><?php echo $v?></option>
-                                <?php }?> 
-                               </select>
-                               </td>
+    <td width="100" align="right" class="infotitle">年龄：</td>
+    <td width="263" class="rb"><input type="text" id="myname5" name="info[age]" value="<?php echo $fujing['age'];?>" class="infoinput" />
+
+    </td>
     </tr>
   <tr>
     <td align="right" class="infotitle"><span>家庭住址：</span></td>
-    <td width="263"><input type="text" name="info[jzd]" id="myname3" class="infoinput" value="<?php echo $fujing['jzd'];?>" /></td>
-    <td width="100" align="right" class="infotitle"><span>户籍地址：</span></td>
+    <td width="231"><input type="text" name="info[jzd]" id="myname3" class="infoinput" value="<?php echo $fujing['jzd'];?>" /></td>
+    <td width="100" align="right" class="infotitle">籍贯：</td>
     <td width="263"><input type="text" name="info[hjdizhi]" id="myname4" class="infoinput" value="<?php echo $fujing['hjdizhi'];?>" /></td>
-    <td width="100" align="right" class="infotitle">年龄：</td>
-    <td width="263" class="rb"><input type="text" id="myname5" name="info[age]" value="<?php echo $fujing['age'];?>" class="infoinput" /></td>
+    <td width="100" align="right" class="infotitle">出生地：</td>
+    <td width="263" class="rb"><input type="text" id="myname5" name="info[chushengdi]" value="<?php echo $fujing['chushengdi'];?>" class="infoinput" /></td>
     </tr>
   <tr>
     <td align="right" class="infotitle">联系电话：</td>
-    <td width="263"><input name="info[tel]" type="text" id="myname6" class="infoinput" value="<?php echo $fujing['tel'];?>" /></td>
+    <td width="231"><input name="info[tel]" type="text" id="myname6" class="infoinput" value="<?php echo $fujing['tel'];?>" /></td>
     <td width="100" align="right" class="infotitle">政治面貌：</td>
     <td width="263"><select name="info[zzmm]" id="sexy2" class="infoselect">
       <option value="1" <?php if($fujing['zzmm']==1){?>selected<?php }?>>中共党员</option>
@@ -125,28 +165,61 @@ include $this->admin_tpl('header_new','admin');
       <option value="6" <?php if($fujing['zzmm']==6){?>selected<?php }?>>中共预备党员</option>     
 	  
     </select></td>
-    <td width="100" align="right" class="infotitle">毕业院校：</td>
-    <td width="263" class="rb"><input type="text" id="myname7" name="info[xuexiao]" class="infoinput" value="<?php echo $fujing['xuexiao'];?>"/></td>
+    <td width="100" align="right" class="infotitle">是否退伍军人：</td>
+    <td width="263" class="rb"><select name="info[tuiwu]" id="info[tuiwu]" class="infoselect">
+      <option value="0"></option>
+      <option value="1" <?php if($fujing['tuiwu']==1){?>selected<?php }?>>否</option>
+      <option value="2" <?php if($fujing['tuiwu']==2){?>selected<?php }?>>是</option>
+    </select></td>
     </tr>
   <tr>
-    <td align="right" class="infotitle">所学专业：</td>
-    <td width="263"><input type="text" name="info[zhuanye]" id="myname8" class="infoinput" value="<?php echo $fujing['zhuanye'];?>" /></td>
-    <td width="100" align="right" class="infotitle">是否退伍军人：</td>
-    <td width="263"><select name="info[tuiwu]" id="sexy3" class="infoselect">
-        <option value="1" <?php if($fujing['tuiwu']==1){?>selected<?php }?>>是</option>
-		 <option value="2" <?php if($fujing['tuiwu']==2){?>selected<?php }?>>否</option>
-		
-      </select></td>
-    <td width="100" align="right" class="infotitle">是否警校毕业：</td>
-    <td width="263" class="rb"><select name="info[jingxiao]" id="sexy3" class="infoselect">
-        <option value="1" <?php if($fujing['jingxiao']==1){?>selected<?php }?>>是</option>
-		 <option value="2" <?php if($fujing['jingxiao']==2){?>selected<?php }?>>否</option>
-		
-      </select></td>
+    <td align="right" class="infotitle">熟悉专业</td>
+    <td width="231"><input name="info[zhuanchang]" type="text" id="myname6" class="infoinput" value="<?php echo $fujing['zhuanchang'];?>" /></td>
+    <td width="100" align="right" class="infotitle">健康情况：</td>
+    <td width="263">    <select name="info[tuiwu]" id="info[jiankang]" class="infoselect">
+      <option value="1" <?php if($fujing['jiankang']=="健康"){?>selected<?php }?>>健康</option>
+      <option value="2" <?php if($fujing['jiankang']=="疾病"){?>selected<?php }?>>疾病</option>
+    </select></td>
+    <td width="100" align="right" class="infotitle">&nbsp;</td>
+    <td width="263" class="rb">&nbsp;</td>
     </tr>
+  <tr>
+    <td rowspan="2" align="right" class="infotitle">全日制<br>毕业院校：</td>
+    <td width="231" rowspan="2"><span class="rb">
+      <input type="text" id="myname7" name="info[xuexiao]" class="infoinput" value="<?php echo $fujing['xuexiao'];?>"/>
+    </span></td>
+    <td width="100" rowspan="2" align="right" class="infotitle">所学专业：</td>
+    <td width="263" rowspan="2"><input type="text" name="info[zhuanye]" id="myname8" class="infoinput" value="<?php echo $fujing['zhuanye'];?>" /></td>
+    <td width="100" align="right" class="infotitle">学历：</td>
+    <td width="263" class="rb"><select name="info[xueli]">
+      <?php foreach($xueli as $k=>$v){?>
+      <option value="<?php echo $k?>" <?php if($k==intval($fujing['xueli'])){?>selected="selected"<?php }?>><?php echo $v?></option>
+      <?php }?>
+    </select>&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="right" class="infotitle">学位：</td>
+    <td width="263" class="rb"><input type="text" id="myname7" name="info[xuewei]" class="infoinput" value="<?php echo $fujing['xuewei'];?>"/></td>
+  </tr>
+  <tr>
+    <td rowspan="2" align="right" class="infotitle">在职教育<br>毕业院校：</td>
+    <td width="231" rowspan="2"><input type="text" id="myname7" name="info[zz_xuexiao]" class="infoinput" value="<?php echo $fujing['zz_xuexiao'];?>"/></td>
+    <td width="100" rowspan="2" align="right" class="infotitle">所学专业：</td>
+    <td width="263" rowspan="2"><input type="text" name="info[zz_zhuanye]" id="myname8" class="infoinput" value="<?php echo $fujing['zz_zhuanye'];?>" /></td>
+    <td width="100" align="right" class="infotitle">学历：</td>
+    <td width="263" class="rb"><select name="info[zz_xueli]">
+      <?php foreach($xueli as $k=>$v){?>
+      <option value="<?php echo $k?>" <?php if($k==intval($fujing['zz_xueli'])){?>selected="selected"<?php }?>><?php echo $v?></option>
+      <?php }?>
+    </select>&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="right" class="infotitle">学位：</td>
+    <td width="263" class="rb"><input type="text" id="myname7" name="info[zz_xuewei]" class="infoinput" value="<?php echo $fujing['zz_xuewei'];?>"/></td>
+  </tr>
    <tr>
     <td align="right" class="infotitle">民族：</td>
-    <td width="263"><select name="info[minzu]" id="sexy3" class="infoselect">
+    <td width="231"><select name="info[minzu]" id="sexy3" class="infoselect">
        <option <?php if($fujing['minzu']=='汉族'){?>selected<?php }?> value="汉族" >汉族</option>
               <option <?php if($fujing['minzu']=='蒙古族'){?>selected<?php }?> value="蒙古族">蒙古族</option>
               <option <?php if($fujing['minzu']=='彝族'){?>selected<?php }?> value="彝族">彝族</option>
@@ -236,60 +309,60 @@ include $this->admin_tpl('header_new','admin');
 <div class="clear"></div>
 
 <div class="tabcon">
-<div class="title">岗位信息</div>
+<div class="title">扩展信息</div>
 <table cellpadding="0" cellspacing="0" class="baseinfo">
   <tr>
     <td width="121" align="right" class="infotitle"><span>归属单位：</span></td>
     <td width="420"><select class="infoselect" name="info[dwid]" >       
 <?php echo $select_categorys;?>
 </select></td>
-    <td width="77" align="right" class="infotitle">&nbsp;</td>
-    <td width="192">&nbsp;</td>    
-    <td width="90" align="right" class="infotitle">&nbsp;</td>
-    <td width="242">&nbsp;</td>
-  </tr>
-  <tr>
-    <td width="121" align="right" class="infotitle">职务：</td>
-    <td width="420"><select class="infoselect" name="info[zhiwu]" > 
-                      <option value="0">待补录</option>
-                     <?php foreach($zhiwu as $k=>$v){?>
-                     <option value="<?php echo $k?>" <?php if($k==$fujing['zhiwu']){?>selected="selected"<?php }?>><?php echo $v?></option>
-                     <?php }?>
-                    </select></td>
     <td width="77" align="right" class="infotitle">入警时间：</td>
-    <td width="192"><?php echo form::date('rjtime',date("Y-m-d",$fujing['rjtime']),0,0,'false');?></td>    
-    <td width="90" align="right" class="infotitle">&nbsp;</td>
-    <td>&nbsp;</td>
-    </tr>
- 
-  <tr>
-    <td width="121" align="right" class="infotitle"><span>在职状态：</span></td>
-    <td width="420"><?php $sss=array(1=>'在职',2=>'离职',3=>'死亡',4=>'退休',5=>'其他');?>
+    <td width="168"><?php echo form::date('rjtime',date("Y-m-d",$fujing['rjtime']),0,0,'false');?></td>    
+    <td width="114" align="right" class="infotitle">在职状态：</td>
+    <td width="242"><?php $sss=array(1=>'在职',2=>'离职',3=>'死亡',4=>'退休',5=>'其他');?>
       <select class="infoselect" name="info[status]" >       
         <?php foreach($sss as $k=>$v){?>
         <option value="<?php echo $k?>" <?php if($k==$fujing['status']){?>selected="selected"<?php }?>><?php echo $v?></option>
         <?php }?>
         </select></td>
-    <td width="77" align="right" class="infotitle">&nbsp;</td>
-    <td width="192">&nbsp;</td>    
-    <td width="90" align="right" class="infotitle">&nbsp;</td>
-    <td>&nbsp;</td>
-    
-  </tr>  
+  </tr>
+  <tr>
+    <td width="121" align="right" class="infotitle">行政职务：</td>
+    <td width="420"><select class="infoselect" name="info[zhiwu]" > 
+                      <option value="0">无</option>
+                     <?php foreach($zhiwu_mj as $k=>$v){?>
+                     <option value="<?php echo $k?>" <?php if($k==$fujing['zhiwu']){?>selected="selected"<?php }?>><?php echo $v?></option>
+                     <?php }?>
+                    </select></td>
+    <td width="77" align="right" class="infotitle">警务职务：</td>
+    <td width="168"><select class="infoselect" name="info[zhiwu2]" > 
+                      <option value="0">无</option>
+                     <?php foreach($zhiwu2_mj as $k=>$v){?>
+                     <option value="<?php echo $k?>" <?php if($k==$fujing['zhiwu2']){?>selected="selected"<?php }?>><?php echo $v?></option>
+                     <?php }?>
+                    </select></td>    
+    <td width="114" align="right" class="infotitle">专业技术职务：</td>
+    <td><select class="infoselect" name="info[zy_zhiwu]" > 
+                      <option value="0">无</option>
+                     <?php foreach($zhiwu_zymj as $k=>$v){?>
+                     <option value="<?php echo $k?>" <?php if($k==$fujing['zy_zhiwu']){?>selected="selected"<?php }?>><?php echo $v?></option>
+                     <?php }?>
+                    </select></td>
+    </tr>  
   <tr>
     <td width="121" align="right" class="infotitle">入党时间：</td>
     <td width="420"><?php echo form::date('rdtime',date("Y-m-d",$fujing['rdtime']),0,0,'false');?></td>
     <td width="77" align="right" class="infotitle">入党转正时间：</td>
-    <td width="192"><?php echo form::date('rdzztime',date("Y-m-d",$fujing['rdzztime']),0,0,'false');?></td>    
-    <td width="90" align="right" class="infotitle">目前党组织所在单位：</td>
+    <td width="168"><?php echo form::date('rdzztime',date("Y-m-d",$fujing['rdzztime']),0,0,'false');?></td>    
+    <td width="114" align="right" class="infotitle">目前党组织所在单位：</td>
     <td><input type="text" id="myname2" name="info[ddanwei]" class="infoinput" value="<?php echo $fujing['ddanwei'];?>"/></td>
   </tr>
   <tr>
     <td width="121" align="right" class="infotitle">警号：</td>
     <td width="420"><input type="text" id="myname2" name="info[gzz]" class="infoinput" value="<?php echo $fujing['gzz'];?>"/></td>
     <td width="77" align="right" class="infotitle">&nbsp;</td>
-    <td width="192">&nbsp;</td>    
-    <td width="90" align="right" class="infotitle">&nbsp;</td>
+    <td width="168">&nbsp;</td>    
+    <td width="114" align="right" class="infotitle">&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -304,8 +377,8 @@ include $this->admin_tpl('header_new','admin');
     <td width="121" align="right" class="infotitle">登录密码：</td>
     <td width="420"><input type="text"  name="info[password]" class="infoinput" value="<?php echo $fujing['password'];?>"/></td>
     <td width="77" align="right" class="infotitle">钉钉ID</td>
-    <td width="192"><input type="text"  name="info[ddid]" class="infoinput" value="<?php echo $fujing['ddid'];?>"/></td>    
-    <td width="90" align="right" class="infotitle"></td>
+    <td width="168"><input type="text"  name="info[ddid]" class="infoinput" value="<?php echo $fujing['ddid'];?>"/></td>    
+    <td width="114" align="right" class="infotitle"></td>
     <td></td>
   </tr>
 </table>
@@ -316,7 +389,7 @@ include $this->admin_tpl('header_new','admin');
 <div class="tabcon">
 <input type="hidden" name="id" value="<?php echo $fujing['id'];?>" />
 <input type="hidden" name="status" value="<?php echo $_GET['status'];?>" />
-	<input type="submit" class="dowhat" name="dosubmit" value="保存信息" />
+	<input type="submit" class="dowhat" name="dosubmit" value="修改信息" />
 </div>
 <div class="clear"></div>
 <div class="null"></div>
@@ -333,8 +406,42 @@ function getbmi(){
 	  }
 	}
 </script>
-
 <div id="return_up" onclick="javascript:history.go(-1);"></div>
+<script type="text/javascript">
+function jiaoyu(id) {
+	window.top.art.dialog({title:'教育培训记录', id:'showme2', iframe:'?m=renshi&c=renshi&a=jiaoyu_mj&id='+id ,width:'1200px',height:'550px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+
+}
+function biaozhang(id) {
+	window.top.art.dialog({title:'表彰记录', id:'showme5', iframe:'?m=renshi&c=renshi&a=biaozhang_mj&id='+id ,width:'1200px',height:'550px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+function lvli(id) {
+	window.top.art.dialog({title:'履历记录', id:'showme6', iframe:'?m=renshi&c=renshi&a=lvli_mj&id='+id ,width:'1200px',height:'550px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+function techang(id) {
+	window.top.art.dialog({title:'特长记录', id:'showme7', iframe:'?m=renshi&c=renshi&a=techang_mj&id='+id ,width:'1200px',height:'550px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+
+function chengjie(id) {
+	window.top.art.dialog({title:'惩戒记录', id:'showme5', iframe:'?m=renshi&c=renshi&a=chengjie_mj&id='+id ,width:'1200px',height:'550px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+function kaohe(id) {
+	window.top.art.dialog({title:'考核记录', id:'showme5', iframe:'?m=renshi&c=renshi&a=kaohe_mj&id='+id ,width:'1200px',height:'500px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+function jiashu(id) {
+	window.top.art.dialog({title:'家属列表', id:'showme4', iframe:'?m=renshi&c=renshi&a=jiashu_mj&id='+id ,width:'1200px',height:'550px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+function zhuangbei(id) {
+	window.top.art.dialog({title:'装备发放记录', id:'showme3', iframe:'?m=renshi&c=renshi&a=zhuangbei&id='+id ,width:'800px',height:'550px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+function showxiang(id) {
+	window.top.art.dialog({title:'查看详情', id:'showme', iframe:'?m=bzcj&c=biaozhang&a=show&id='+id ,width:'900px',height:'650px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+function prints(id) {
+	window.top.art.dialog({title:'打印', id:'showme', iframe:'?m=renshi&c=renshi&a=dao2doc&id='+id ,width:'900px',height:'650px'},function(){alert("1")},function(){parent.document.getElementById('display_center_id').style.display='';});
+}
+</script>
+
 </body></html>
 
 

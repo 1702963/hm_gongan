@@ -21,17 +21,17 @@ return array(
 
 //附件相关配置
 'upload_path' => PHPCMS_PATH.'uploadfile/',
-'upload_url' => 'http://gongan.myphp.cn/gxdg/uploadfile/', //附件路径
+'upload_url' => 'http://192.168.1.190/gxdg/uploadfile/', //附件路径
 'attachment_stat' => '1',//是否记录附件使用状态 0 统计 1 统计， 注意: 本功能会加重服务器负担
 
-'js_path' => 'http://gongan.myphp.cn/gxdg/statics/js/', //CDN JS
-'css_path' => 'http://gongan.myphp.cn/gxdg/statics/css/', //CDN CSS
-'img_path' => 'http://gongan.myphp.cn/gxdg/statics/images/', //CDN img
-'app_path' => 'http://gongan.myphp.cn/gxdg/',//动态域名配置地址
+'js_path' => 'http://192.168.1.190/gxdg/statics/js/', //CDN JS
+'css_path' => 'http://192.168.1.190/gxdg/statics/css/', //CDN CSS
+'img_path' => 'http://192.168.1.190/gxdg/statics/images/', //CDN img
+'app_path' => 'http://192.168.1.190/gxdg/',//动态域名配置地址
 
 'charset' => 'utf-8', //网站字符集
 'timezone' => 'Etc/GMT-8', //网站时区（只对php 5.1以上版本有效），Etc/GMT-8 实际表示的是 GMT+8
-'debug' => 1, //是否显示调试信息
+'debug' => 0, //是否显示调试信息
 'admin_log' => 1, //是否记录后台操作日志
 'errorlog' => 1, //1、保存错误日志到 cache/error_log.php | 0、在页面直接显示
 'gzip' => 1, //是否Gzip压缩后输出
@@ -44,7 +44,7 @@ return array(
 
 'phpsso' => '1',	//是否使用phpsso
 'phpsso_appid' => '1',	//应用id	
-'phpsso_api_url' => 'http://gongan.myphp.cn/gxdg/phpsso_server',	//接口地址
+'phpsso_api_url' => 'http://192.168.1.190/gxdg/phpsso_server',	//接口地址
 'phpsso_auth_key' => '4BbgVsh0zTwQiqtOQKPVlrcyxd5n9429', //加密密钥
 'phpsso_version' => '1', //phpsso版本
 

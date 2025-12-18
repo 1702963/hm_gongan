@@ -67,34 +67,34 @@ include $this->admin_tpl('header_new', 'admin');
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=init&sxty=2" title="党支部简介"><img
-                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>党支部简介</span></a>
+                                    src="statics/images/admin_img/2025/tb/type05.png"/><span>党支部简介</span></a>
                     </div>
                 </div>
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=baseinfo&sxty=3" title="党支部成员基本信息"><img
-                                    src="statics/images/admin_img/2025/tb/type03.png"/><span>党支部成员基本信息</span></a>
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>党支部成员基本信息</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=three&sxty=4" title="三会一课"><img
-                                    src="statics/images/admin_img/2025/tb/type04.png"/><span>三会一课</span></a>
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>三会一课</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=brand&sxty=5" title="党支部品牌创建">
-                            <img src="statics/images/admin_img/2025/tb/type05.png"/><span>党支部品牌创建</span></a>
+                            <img src="statics/images/admin_img/2025/tb/type02.png"/><span>党支部品牌创建</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=shenghuohui&sxty=6" title='组织生活会'>
-                            <img src="statics/images/admin_img/2025/tb/type06.png"/><span>组织生活会</span></a>
+                            <img src="statics/images/admin_img/2025/tb/type02.png"/><span>组织生活会</span></a>
                     </div>
                 </div>
 
@@ -108,21 +108,21 @@ include $this->admin_tpl('header_new', 'admin');
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=peiyangfazhan&sxty=3" title="培养发展党员情况"><img
-                                    src="statics/images/admin_img/2025/tb/type03.png"/><span>培养发展党员情况</span></a>
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>培养发展党员情况</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=jingshijiaoyu&sxty=4" title="开展警示教育情况"><img
-                                    src="statics/images/admin_img/2025/tb/type04.png"/><span>开展警示教育情况</span></a>
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>开展警示教育情况</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=zhutidangri&sxty=6" title='开展主题党日情况'>
-                            <img src="statics/images/admin_img/2025/tb/type06.png"/><span>开展主题党日情况</span></a>
+                            <img src="statics/images/admin_img/2025/tb/type02.png"/><span>开展主题党日情况</span></a>
                     </div>
                 </div>
 
@@ -136,21 +136,21 @@ include $this->admin_tpl('header_new', 'admin');
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=zhengzhishengri&sxty=3" title="政治生日"><img
-                                    src="statics/images/admin_img/2025/tb/type03.png"/><span>政治生日</span></a>
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>政治生日</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=tanxintanhua&sxty=4" title="谈心谈话"><img
-                                    src="statics/images/admin_img/2025/tb/type04.png"/><span>谈心谈话</span></a>
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>谈心谈话</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=zhibu&a=zhuanxianggongzuo&sxty=5" title=“专项工作”>
-                            <img src="statics/images/admin_img/2025/tb/type05.png"/><span>专项工作</span></a>
+                            <img src="statics/images/admin_img/2025/tb/type02.png"/><span>专项工作</span></a>
                     </div>
                 </div>
 

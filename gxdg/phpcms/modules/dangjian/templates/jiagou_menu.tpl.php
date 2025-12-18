@@ -67,20 +67,20 @@ include $this->admin_tpl('header_new', 'admin');
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=jiagou&a=init&sxty=2" title="党员基本信息"><img
-                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>党员基本信息</span></a>
+                                    src="statics/images/admin_img/2025/tb/type05.png"/><span>党员基本信息</span></a>
                     </div>
                 </div>
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=jiagou&a=jijifenzi&sxty=3" title="入党积极分子"><img
-                                    src="statics/images/admin_img/2025/tb/type03.png"/><span>入党积极分子</span></a>
+                                    src="statics/images/admin_img/2025/tb/type05.png"/><span>入党积极分子</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=jiagou&a=fazhandangyuan&sxty=4" title="发展党员情况"><img
-                                    src="statics/images/admin_img/2025/tb/type04.png"/><span>发展党员情况</span></a>
+                                    src="statics/images/admin_img/2025/tb/type05.png"/><span>发展党员情况</span></a>
                     </div>
                 </div>
 
@@ -94,7 +94,7 @@ include $this->admin_tpl('header_new', 'admin');
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=jiagou&a=lilunxuexi&sxty=6" title='参加政治理论学习培训情况'>
-                            <img src="statics/images/admin_img/2025/tb/type06.png"/><span>参加政治理论学习培训情况</span></a>
+                            <img src="statics/images/admin_img/2025/tb/type05.png"/><span>参加政治理论学习培训情况</span></a>
                     </div>
                 </div>
 
@@ -102,20 +102,20 @@ include $this->admin_tpl('header_new', 'admin');
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=jiagou&a=dangzhibu&sxty=2" title="参加党支部活动情况"><img
-                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>参加党支部活动情况</span></a>
+                                    src="statics/images/admin_img/2025/tb/type05.png"/><span>参加党支部活动情况</span></a>
                     </div>
                 </div>
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=jiagou&a=guanxibiandong&sxty=3" title="党关系变动情况"><img
-                                    src="statics/images/admin_img/2025/tb/type03.png"/><span>党关系变动情况</span></a>
+                                    src="statics/images/admin_img/2025/tb/type05.png"/><span>党关系变动情况</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=jiagou&a=dangfei&sxty=4" title="党员个人党费缴纳情况"><img
-                                    src="statics/images/admin_img/2025/tb/type04.png"/><span>党员个人党费缴纳情况</span></a>
+                                    src="statics/images/admin_img/2025/tb/type05.png"/><span>党员个人党费缴纳情况</span></a>
                     </div>
                 </div>
 

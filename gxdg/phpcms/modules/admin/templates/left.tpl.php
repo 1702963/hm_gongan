@@ -2,10 +2,10 @@
 //var_dump($_GET);exit;
  $db_c=require 'caches/configs/database.php';
  //引入语言包
- require 'phpcms/languages/zh-cn/system_menu.lang.php';
- require 'phpcms/languages/zh-cn/admin.lang.php';
+ include 'gxdg/phpcms/languages/zh-cn/system_menu.lang.php';
+ include 'gxdg/phpcms/languages/zh-cn/admin.lang.php';
 //var_dump($_GET);
-
+ 
  $con = mysqli_connect($db_c['default']['hostname'],$db_c['default']['username'],$db_c['default']['password']);	
  if (!$con){
 	 die(json_encode(array('error'=>"系统异常",'str'=>"系统异常")));
@@ -115,11 +115,8 @@ if(intval($_GET['menuid'])<1){
     <div class="navContent">
     <?php 
 	   $sqla="SELECT * FROM `mj_menu` where parentid=".$row['id']." and display=1 order by listorder";  
-
 	   $rsa=mysqli_query($con,$sqla);
-	   
-
-	   while($rowa = mysqli_fetch_array($rsa)) {	
+	   while($rowa = mysqli_fetch_array($rsa)){	
 	?>
         <div class="Collapsing">
         	<a href="#"><?php echo $LANG[$rowa['name']]?></a>

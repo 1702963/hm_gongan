@@ -67,7 +67,7 @@ function editor($field, $value) {
 	function keyword ($field, $value) {
 		//获取post过来的关键字，关键字用空格或者‘,’分割的
 		$data = array();
-		$data = preg_split("/[ ,]+/", $value);
+		$data = split('[ ,]', $value);
 		//加载关键字的数据模型
 		$keyword_db = pc_base::load_model('keyword_model');
 		$keyword_data_db = pc_base::load_model('keyword_data_model');

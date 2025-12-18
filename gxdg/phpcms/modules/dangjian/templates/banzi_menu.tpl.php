@@ -67,9 +67,9 @@ include $this->admin_tpl('header_new', 'admin');
 
                 <div class="triCon" style="width:96%">
                     <div class="triConBox">
-                        <a href="?m=renshi&c=geren&a=addsx&sxty=1" title="护照"><img src="statics/images/admin_img/2025/tb/type01.png"/><span>分局党委介绍</span></a>
+                        <a href="?m=dangjian&c=geren&a=addsx&sxty=1" title=""><img src="statics/images/admin_img/2025/tb/type05.png"/><span>分局党委介绍</span></a>
                     </div>
-                </div>
+                </div>         
                 <!--        -->
                 <!--    	<div class="triCon">-->
                 <!--        	<div class="triConBox">-->
@@ -85,26 +85,26 @@ include $this->admin_tpl('header_new', 'admin');
 
                 <div class="triCon">
                     <div class="triConBox">
-                        <a href="?m=renshi&c=geren&a=addsx2&sxty=4" title="落实全面从严治党工作"><img
-                                    src="statics/images/admin_img/2025/tb/type04.png"/><span>落实全面从严治党工作</span></a>
+                        <a href="?m=dangjian&c=geren&a=addsx2&sxty=4" title="落实全面从严治党工作"><img
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>落实全面从严治党工作</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
-                        <a href="?m=renshi&c=geren&a=addsx3&sxty=5" title="意识形态工作"><img src="statics/images/admin_img/2025/tb/type05.png"/><span>意识形态工作</span></a>
+                        <a href="?m=dangjian&c=geren&a=addsx3&sxty=5" title="意识形态工作"><img src="statics/images/admin_img/2025/tb/type02.png"/><span>意识形态工作</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
-                        <a href="?m=renshi&c=geren&a=addsx4&sxty=6" title="主题活动"><img src="statics/images/admin_img/2025/tb/type06.png"/><span>主题活动</span></a>
+                        <a href="?m=dangjian&c=geren&a=addsx4&sxty=6" title="主题活动"><img src="statics/images/admin_img/2025/tb/type02.png"/><span>主题活动</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
-                        <a href="?m=renshi&c=geren&a=addsx5&sxty=7" title="专项工作"><img src="statics/images/admin_img/2025/tb/type07.png"/><span>专项工作</span></a>
+                        <a href="?m=dangjian&c=geren&a=addsx5&sxty=7" title="专项工作"><img src="statics/images/admin_img/2025/tb/type02.png"/><span>专项工作</span></a>
                     </div>
                 </div>
 

@@ -5,7 +5,7 @@ class update {
 	var $http;
 
 	function __construct() {
-		$this->update_url = 'http://gongan.myphp.cn/gxdg/index.php';
+		$this->update_url = 'http://127.0.0.1/index.php';
 		$this->http = pc_base::load_sys_class('http','',1);
 		$this->uuid = $this->check_uuid();
 	}

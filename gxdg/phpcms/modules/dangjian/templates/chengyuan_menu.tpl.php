@@ -67,34 +67,34 @@ include $this->admin_tpl('header_new', 'admin');
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=chengyuan&a=init&sxty=2" title="党委班子成员情况"><img
-                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>党委班子成员情况</span></a>
+                                    src="statics/images/admin_img/2025/tb/type05.png"/><span>党委班子成员情况</span></a>
                     </div>
                 </div>
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=chengyuan&a=shuangchongzuzhi&sxty=3" title="双重组织生活情况"><img
-                                    src="statics/images/admin_img/2025/tb/type03.png"/><span>双重组织生活情况</span></a>
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>双重组织生活情况</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=chengyuan&a=tanxintanhua&sxty=4" title="谈心谈话"><img
-                                    src="statics/images/admin_img/2025/tb/type04.png"/><span>谈心谈话</span></a>
+                                    src="statics/images/admin_img/2025/tb/type02.png"/><span>谈心谈话</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=chengyuan&a=yigangshuangze&sxty=5" title="一岗双责">
-                            <img src="statics/images/admin_img/2025/tb/type05.png"/><span>一岗双责</span></a>
+                            <img src="statics/images/admin_img/2025/tb/type02.png"/><span>一岗双责</span></a>
                     </div>
                 </div>
 
                 <div class="triCon">
                     <div class="triConBox">
                         <a href="?m=dangjian&c=chengyuan&a=sixiajiceng&sxty=6" title='践行"四下基层"情况'>
-                            <img src="statics/images/admin_img/2025/tb/type06.png"/><span>践行"四下基层"情况</span></a>
+                            <img src="statics/images/admin_img/2025/tb/type02.png"/><span>践行"四下基层"情况</span></a>
                     </div>
                 </div>
             </div>

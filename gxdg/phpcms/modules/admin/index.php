@@ -21,9 +21,6 @@ class index extends admin {
 		/*管理员收藏栏*/
 		$adminpanel = $this->panel_db->select(array('userid'=>$userid), "*",20 , 'datetime');
 		$site_model = param::get_cookie('site_model');
-		// session_start();
-		// echo "当前 pc_hash: " . $_SESSION['pc_hash'];
-		// exit;
 		include $this->admin_tpl('index');
 	}
 	
