@@ -27,6 +27,12 @@ class jiaoyu extends admin
         exit;
         showmessage('模块建设中');
     }
+    public function duikangyanlian()
+    {
+        header("Location:?m=peixunnew&c=honglan&a=init");
+        exit;
+        showmessage('模块建设中');
+    }
 
 
 
