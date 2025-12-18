@@ -21,6 +21,13 @@ class jiaoyu extends admin
         exit;
         showmessage('模块建设中');
     }
+    public function jinengshixun()
+    {
+        header("Location:?m=peixunnew&c=shixun&a=init");
+        exit;
+        showmessage('模块建设中');
+    }
+
 
 
     public function init()
