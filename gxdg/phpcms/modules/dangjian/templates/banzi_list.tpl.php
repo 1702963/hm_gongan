@@ -144,10 +144,10 @@ if(is_array($this->list)){
       <td><?php echo $xueli_arr[$info['xueli']]?></td>
       <td><?php echo $info['zhuanye']?></td>
       <td><?php echo $gangwei[$info['gangwei']]?></td>
-      <td><?php if($info['rdzztime']!=0){echo date("Y-m-d",$info['rdzztime']);}?></td>
+      <td><?php echo isset($info['rdzztime_show']) ? $info['rdzztime_show'] : ''; ?></td>
       <td><?php echo $cengji[$info['cengji']]?></td>
       <td><?php echo $zhiwu[$info['zhiwu']]?></td>
-      <td><?php if($info['scgztime']!=0){echo date("Y-m-d",$info['scgztime']);}?></td>
+      <td><?php echo isset($info['scgztime_show']) ? $info['scgztime_show'] : ''; ?></td>
       <td><?php echo $info['ddanwei']?></td>
       <td>
         &nbsp;<a href="index.php?m=dangjian&c=chengyuan&a=edit&id=<?php echo $info['id']?>">编辑</a>

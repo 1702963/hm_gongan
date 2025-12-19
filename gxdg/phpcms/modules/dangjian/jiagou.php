@@ -68,15 +68,28 @@ class jiagou extends admin
                 }
             }
 
-            // 处理时间格式
-            if ($row['shengri'] != '') {
-                $row['shengri_show'] = $row['shengri'];
+            // 处理时间格式（过滤异常数据）
+            if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
+                $timestamp = intval($row['shengri']);
+                if ($timestamp > -631152000) { // 1950-01-01
+                    $row['shengri'] = date("Y-m-d", $timestamp);
+                } else {
+                    $row['shengri'] = '';
+                }
             }
             if ($row['rdzztime'] > 0) {
-                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+                if ($row['rdzztime'] > -631152000) { // 1950-01-01
+                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+                } else {
+                    $row['rdzztime_show'] = '';
+                }
             }
             if ($row['scgztime'] > 0) {
-                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+                if ($row['scgztime'] > -631152000) { // 1950-01-01
+                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+                } else {
+                    $row['scgztime_show'] = '';
+                }
             }
 
             $this->list[] = $row;
@@ -526,15 +539,28 @@ class jiagou extends admin
                 }
             }
 
-            // 处理时间格式
-            if ($row['shengri'] != '') {
-                $row['shengri_show'] = $row['shengri'];
+            // 处理时间格式（过滤异常数据）
+            if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
+                $timestamp = intval($row['shengri']);
+                if ($timestamp > -631152000) { // 1950-01-01
+                    $row['shengri'] = date("Y-m-d", $timestamp);
+                } else {
+                    $row['shengri'] = '';
+                }
             }
             if ($row['rdzztime'] > 0) {
-                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+                if ($row['rdzztime'] > -631152000) { // 1950-01-01
+                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+                } else {
+                    $row['rdzztime_show'] = '';
+                }
             }
             if ($row['scgztime'] > 0) {
-                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+                if ($row['scgztime'] > -631152000) { // 1950-01-01
+                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+                } else {
+                    $row['scgztime_show'] = '';
+                }
             }
 
             $this->list[] = $row;
@@ -856,15 +882,28 @@ class jiagou extends admin
                 }
             }
 
-            // 处理时间格式
-            if ($row['shengri'] != '') {
-                $row['shengri_show'] = $row['shengri'];
+            // 处理时间格式（过滤异常数据）
+            if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
+                $timestamp = intval($row['shengri']);
+                if ($timestamp > -631152000) { // 1950-01-01
+                    $row['shengri'] = date("Y-m-d", $timestamp);
+                } else {
+                    $row['shengri'] = '';
+                }
             }
             if ($row['rdzztime'] > 0) {
-                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+                if ($row['rdzztime'] > -631152000) { // 1950-01-01
+                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+                } else {
+                    $row['rdzztime_show'] = '';
+                }
             }
             if ($row['scgztime'] > 0) {
-                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+                if ($row['scgztime'] > -631152000) { // 1950-01-01
+                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+                } else {
+                    $row['scgztime_show'] = '';
+                }
             }
 
             $this->list[] = $row;
@@ -1182,15 +1221,28 @@ class jiagou extends admin
                 }
             }
 
-            // 处理时间格式
-            if ($row['shengri'] != '') {
-                $row['shengri_show'] = $row['shengri'];
+            // 处理时间格式（过滤异常数据）
+            if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
+                $timestamp = intval($row['shengri']);
+                if ($timestamp > -631152000) { // 1950-01-01
+                    $row['shengri'] = date("Y-m-d", $timestamp);
+                } else {
+                    $row['shengri'] = '';
+                }
             }
             if ($row['rdzztime'] > 0) {
-                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+                if ($row['rdzztime'] > -631152000) { // 1950-01-01
+                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+                } else {
+                    $row['rdzztime_show'] = '';
+                }
             }
             if ($row['scgztime'] > 0) {
-                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+                if ($row['scgztime'] > -631152000) { // 1950-01-01
+                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+                } else {
+                    $row['scgztime_show'] = '';
+                }
             }
 
             $this->list[] = $row;
