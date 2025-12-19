@@ -2,7 +2,7 @@
 
 return array (
 	'default' => array (
-		'hostname' => 'localhost',
+		'hostname' => '192.168.1.66',
 		'port' => 3306,
 		'database' => 'gxdg',
 		'username' => 'root',
@@ -15,7 +15,7 @@ return array (
 		'autoconnect' => 0
 		),
 	'gxdgdb' => array (
-		'hostname' => 'localhost',
+		'hostname' => '192.168.1.66',
 		'port' => 3306,
 		'database' => 'fujing',
 		'username' => 'root',
