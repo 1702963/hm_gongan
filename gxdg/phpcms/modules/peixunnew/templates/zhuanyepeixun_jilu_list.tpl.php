@@ -105,6 +105,9 @@ html{_overflow-y:scroll}
       <th width="120">所属单位</th>
       <th width="100">成绩</th>
       <th width="80">是否通过</th>
+      <th width="80">出勤状态</th>
+      <th width="80">评价</th>
+      <th width="100">评语</th>
       <th width="80">证书</th>
       <th width="100">填报时间</th>
       <th width="120">记录时间</th>
@@ -126,6 +129,9 @@ if(is_array($this->list)){
       <td><?php echo isset($this->bumen_map[$info['bmid']]) ? $this->bumen_map[$info['bmid']] : '-'?></td>
       <td><?php echo $info['chengji'] ? $info['chengji'] : '-'?></td>
       <td><?php echo $info['guo'] == 1 ? '<span style="color:#00ff00">通过</span>' : '<span style="color:#ff6666">未通过</span>'?></td>
+      <td><?php echo $info['chuqin'] == 1 ? '<span style="color:#00ff00">是</span>' : '<span style="color:#999">否</span>'?></td>
+      <td><?php echo $info['pingjia'] ? $info['pingjia'] : '-'?></td>
+      <td><?php echo $info['pingyu'] ? '<a href="javascript:void(0)" onclick="alert(\''.htmlspecialchars(str_replace("'", "\\'", $info['pingyu']), ENT_QUOTES).'\')" title="'.htmlspecialchars($info['pingyu'], ENT_QUOTES).'">查看</a>' : '-'?></td>
       <td>
         <?php
         if($info['files']){

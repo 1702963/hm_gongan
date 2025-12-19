@@ -80,6 +80,40 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   </tr>
 
   <tr>
+    <td align="right" class="infotitle">是否出勤：</td>
+    <td colspan="5">
+      <select name="info[chuqin]" id="chuqin"
+              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+        <option value="0" <?php echo $this->info['chuqin'] == 0 ? 'selected' : ''?>>否</option>
+        <option value="1" <?php echo $this->info['chuqin'] == 1 ? 'selected' : ''?>>是</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="right" class="infotitle">评价等级：</td>
+    <td colspan="5">
+      <select name="info[pingjia]" id="pingjia"
+              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+        <option value="">请选择</option>
+        <option value="优" <?php echo $this->info['pingjia'] == '优' ? 'selected' : ''?>>优</option>
+        <option value="良" <?php echo $this->info['pingjia'] == '良' ? 'selected' : ''?>>良</option>
+        <option value="中" <?php echo $this->info['pingjia'] == '中' ? 'selected' : ''?>>中</option>
+        <option value="差" <?php echo $this->info['pingjia'] == '差' ? 'selected' : ''?>>差</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="right" class="infotitle">评语：</td>
+    <td colspan="5">
+      <textarea name="info[pingyu]" id="pingyu" rows="3"
+                style="width:500px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                placeholder="请输入评语（评价为差时必填）"><?php echo htmlspecialchars($this->info['pingyu'])?></textarea>
+    </td>
+  </tr>
+
+  <tr>
     <td align="right" class="infotitle">填报时间：</td>
     <td colspan="5">
       <input type="date" name="info[tianbao_time]" id="tianbao_time" value="<?php echo $this->info['tianbao_time_show']?>"

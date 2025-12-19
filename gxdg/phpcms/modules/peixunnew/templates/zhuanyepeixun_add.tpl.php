@@ -50,6 +50,22 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   </tr>
 
   <tr>
+    <td align="right" class="infotitle"><span style="color:red">*</span>培训类型：</td>
+    <td colspan="5">
+      <select name="info[type]" id="type"
+              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+        <option value="">请选择</option>
+        <option value="业务培训">业务培训</option>
+        <option value="应急演练">应急演练</option>
+        <option value="制度培训">制度培训</option>
+        <option value="实战培训">实战培训</option>
+        <option value="理论培训">理论培训</option>
+        <option value="专业培训">专业培训</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
     <td align="right" class="infotitle"><span style="color:red">*</span>培训标题：</td>
     <td colspan="5">
       <input type="text" name="info[title]" id="title" value="" required

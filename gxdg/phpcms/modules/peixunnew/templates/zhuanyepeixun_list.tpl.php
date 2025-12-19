@@ -73,6 +73,17 @@ html{_overflow-y:scroll}
             <option value="2" <?php echo $this->status == 2 ? 'selected' : ''?>>已完成</option>
         </select>
 
+        <label style="margin-left:15px;">培训类型：</label>
+        <select name="type" style="width:120px;">
+            <option value="">全部</option>
+            <option value="业务培训" <?php echo $this->type == '业务培训' ? 'selected' : ''?>>业务培训</option>
+            <option value="应急演练" <?php echo $this->type == '应急演练' ? 'selected' : ''?>>应急演练</option>
+            <option value="制度培训" <?php echo $this->type == '制度培训' ? 'selected' : ''?>>制度培训</option>
+            <option value="实战培训" <?php echo $this->type == '实战培训' ? 'selected' : ''?>>实战培训</option>
+            <option value="理论培训" <?php echo $this->type == '理论培训' ? 'selected' : ''?>>理论培训</option>
+            <option value="专业培训" <?php echo $this->type == '专业培训' ? 'selected' : ''?>>专业培训</option>
+        </select>
+
         <label style="margin-left:15px;">关键词：</label>
         <input type="text" name="keyword" value="<?php echo htmlspecialchars($this->keyword)?>" placeholder="培训标题" style="width:120px;">
 
@@ -101,6 +112,7 @@ html{_overflow-y:scroll}
       <th width='50'>序号</th>
       <th width="150">所属警种</th>
       <th width="200">培训标题</th>
+      <th width="100">培训类型</th>
       <th width="100">培训来源</th>
       <th width="100">开始时间</th>
       <th width="100">结束时间</th>
@@ -122,6 +134,7 @@ if(is_array($this->list)){
       <td><?php echo $i?></td>
       <td><?php echo isset($this->bumen_map[$info['bmid']]) ? $this->bumen_map[$info['bmid']] : '-'?></td>
       <td><?php echo mb_substr($info['title'], 0, 20, 'utf-8') . (mb_strlen($info['title'], 'utf-8') > 20 ? '...' : '')?></td>
+      <td><?php echo $info['type'] ? $info['type'] : '-'?></td>
       <td><?php echo $info['pxly'] ? $info['pxly'] : '-'?></td>
       <td><?php echo $info['btime_show']?></td>
       <td><?php echo $info['etime_show']?></td>

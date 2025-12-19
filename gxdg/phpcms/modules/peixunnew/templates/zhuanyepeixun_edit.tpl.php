@@ -51,6 +51,22 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   </tr>
 
   <tr>
+    <td align="right" class="infotitle"><span style="color:red">*</span>培训类型：</td>
+    <td colspan="5">
+      <select name="info[type]" id="type"
+              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+        <option value="">请选择</option>
+        <option value="业务培训" <?php echo $this->info['type'] == '业务培训' ? 'selected' : ''?>>业务培训</option>
+        <option value="应急演练" <?php echo $this->info['type'] == '应急演练' ? 'selected' : ''?>>应急演练</option>
+        <option value="制度培训" <?php echo $this->info['type'] == '制度培训' ? 'selected' : ''?>>制度培训</option>
+        <option value="实战培训" <?php echo $this->info['type'] == '实战培训' ? 'selected' : ''?>>实战培训</option>
+        <option value="理论培训" <?php echo $this->info['type'] == '理论培训' ? 'selected' : ''?>>理论培训</option>
+        <option value="专业培训" <?php echo $this->info['type'] == '专业培训' ? 'selected' : ''?>>专业培训</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
     <td align="right" class="infotitle"><span style="color:red">*</span>培训标题：</td>
     <td colspan="5">
       <input type="text" name="info[title]" id="title" value="<?php echo htmlspecialchars($this->info['title'])?>" required
