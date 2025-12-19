@@ -192,6 +192,8 @@ class yanlian_canyu extends admin
             exit;
         }
 
+        $keyword = safe_replace($keyword);
+
         $keyword = addslashes($keyword);
 
         $this->db->table_name = 'v9_fujing';

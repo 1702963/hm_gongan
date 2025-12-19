@@ -166,7 +166,8 @@ class jiagou extends admin
             exit;
         }
 
-        // 安全修复: 对用户输入进行转义，防止 SQL 注入
+        // 安全修复: 对用户输入进行过滤和转义，降低 SQL 注入风险
+        $keyword = safe_replace($keyword);
         $keyword = addslashes($keyword);
 
         // 搜索辅警（按姓名或身份证号）

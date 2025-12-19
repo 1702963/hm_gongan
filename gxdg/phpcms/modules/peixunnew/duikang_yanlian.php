@@ -36,6 +36,7 @@ class duikang_yanlian extends admin
             $conditions[] = "status = $status";
         }
         if ($keyword != '') {
+            $keyword = safe_replace($keyword);
             $keyword = addslashes($keyword);
             $conditions[] = "(title LIKE '%{$keyword}%' OR pingjia LIKE '%{$keyword}%')";
         }

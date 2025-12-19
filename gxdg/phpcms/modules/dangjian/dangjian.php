@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);
@@ -139,7 +139,7 @@ class dangjian extends admin
     function edit()
     {
 
-        $id = $_REQUEST['id'];
+        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
         if (isset($_POST['dosubmit'])) {
             $_POST['info']['rjtime'] = strtotime($_POST['rjtime']);
             $_POST['info']['rdtime'] = strtotime($_POST['rdtime']);
@@ -252,7 +252,7 @@ class dangjian extends admin
 
     function show()
     {
-        $id = $_REQUEST['id'];
+        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
         $fujing = $this->db->get_one("id=$id", '*');
 
@@ -326,7 +326,7 @@ class dangjian extends admin
     ///////////////////////////////////////////////////////////////////
     function lvli()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
 
         $this->db->table_name = 'mj_lvlib';
 
@@ -352,7 +352,7 @@ class dangjian extends admin
 
     function techang()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
 
         //取出类别
         $this->db->table_name = 'mj_techangclass';
@@ -389,7 +389,7 @@ class dangjian extends admin
     ///////////////////////////////////////////////////////////////////
     function jiaoyu()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
 
         $this->db->table_name = 'mj_peixun';
         $peixun = $this->db->select(" fjid=$id and status=9", '*', '', 'id asc');
@@ -399,7 +399,7 @@ class dangjian extends admin
 
     function jiashu()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
 
         $this->db->table_name = 'mj_jiashu';
         //$jiashu = $this->db->select(" fjid=$id ",'*','','id asc');
@@ -413,10 +413,11 @@ class dangjian extends admin
     {
         if (isset($_POST['dosubmit'])) {
 
+            $fjid = intval($_POST['id']);
             $this->db->table_name = 'mj_fujing';
-            $fj = $this->db->get_one("id=" . $_POST['id'], '*');
+            $fj = $this->db->get_one("id=$fjid", '*');
             $_POST['info']['fjname'] = $fj['xingming'];
-            $_POST['info']['fjid'] = $_POST['id'];
+            $_POST['info']['fjid'] = $fjid;
             $_POST['info']['userid'] = $_SESSION['userid'];
             $_POST['info']['inputtime'] = time();
 
@@ -424,16 +425,16 @@ class dangjian extends admin
             $this->db->insert($_POST['info']);
 
 
-            showmessage('操作完毕', 'index.php?m=fujing&c=fujing&a=jiashu&id=' . $_POST['id']);
+            showmessage('操作完毕', 'index.php?m=fujing&c=fujing&a=jiashu&id=' . $fjid);
         }
 
     }
 
     function deletejiashu()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
         $this->db->table_name = 'mj_jiashu';
-        if ($this->db->delete(array('id' => $_GET['id']))) {
+        if ($this->db->delete(array('id' => $id))) {
 
             exit('1');
         } else {
@@ -443,7 +444,7 @@ class dangjian extends admin
 
     function biaozhang()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
 
         $this->db->table_name = 'mj_biaozhang';
         $biaozhang = $this->db->select(" fjid=$id and status=9  ", '*', '', 'id asc');
@@ -453,7 +454,7 @@ class dangjian extends admin
 
     function chengjie()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
 
         $this->db->table_name = 'mj_chengjie';
         $chengjie = $this->db->select(" fjid=$id and status=9  ", '*', '', 'id asc');
@@ -463,7 +464,7 @@ class dangjian extends admin
 
     function zhuangbei()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
 
         $this->db->table_name = 'mj_zhuangbei';
         $zhuangbei = $this->db->select(" fjid=$id ", '*', '', 'id asc');
@@ -494,9 +495,9 @@ class dangjian extends admin
 
     function delete()
     {
-        $id = $_GET['id'];
+        $id = intval($_GET['id']);
 
-        if ($this->db->delete(array('id' => $_GET['id']))) {
+        if ($this->db->delete(array('id' => $id))) {
 
             exit('1');
         } else {
@@ -1075,5 +1076,3 @@ class dangjian extends admin
     }
 
 }
-
-

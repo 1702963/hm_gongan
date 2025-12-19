@@ -7,7 +7,7 @@ use PHPExcel_IOFactory;
 use PHPExcel_Style_Alignment;
 use PHPWord;
 
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);

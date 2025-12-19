@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", "On"); 
+ini_set("display_errors", "Off");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);
@@ -134,6 +134,30 @@ class geren extends admin {
 		if ($file['size'] > 5 * 1024 * 1024) {
 			echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
 			exit;
+		}
+
+		// 校验图片真实内容
+		if (function_exists('getimagesize')) {
+			$image_info = @getimagesize($file['tmp_name']);
+			if ($image_info === false) {
+				echo json_encode(array('status' => 0, 'msg' => '文件内容校验失败，请上传有效图片'));
+				exit;
+			}
+			if (!empty($image_info['mime']) && !in_array($image_info['mime'], $allowed_types)) {
+				echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+				exit;
+			}
+		}
+		if (function_exists('finfo_open')) {
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			if ($finfo) {
+				$real_mime = finfo_file($finfo, $file['tmp_name']);
+				finfo_close($finfo);
+				if ($real_mime && !in_array($real_mime, $allowed_types)) {
+					echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+					exit;
+				}
+			}
 		}
 
 		// 生成保存路径
@@ -406,6 +430,30 @@ class geren extends admin {
 			exit;
 		}
 
+		// 校验图片真实内容
+		if (function_exists('getimagesize')) {
+			$image_info = @getimagesize($file['tmp_name']);
+			if ($image_info === false) {
+				echo json_encode(array('status' => 0, 'msg' => '文件内容校验失败，请上传有效图片'));
+				exit;
+			}
+			if (!empty($image_info['mime']) && !in_array($image_info['mime'], $allowed_types)) {
+				echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+				exit;
+			}
+		}
+		if (function_exists('finfo_open')) {
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			if ($finfo) {
+				$real_mime = finfo_file($finfo, $file['tmp_name']);
+				finfo_close($finfo);
+				if ($real_mime && !in_array($real_mime, $allowed_types)) {
+					echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+					exit;
+				}
+			}
+		}
+
 		// 生成保存路径
 		$upload_path = 'uploadfile/renshi/congyanzhidang/' . date('Y/md') . '/';
 		if (!is_dir($upload_path)) {
@@ -441,7 +489,9 @@ class geren extends admin {
 		}
 
 		$this->db->table_name = 'v9_fujing';
-		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . addslashes($keyword) . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
+		$keyword = safe_replace($keyword);
+		$keyword = addslashes($keyword);
+		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . $keyword . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
 
 		$result = array();
 		if (is_array($list)) {
@@ -699,6 +749,30 @@ class geren extends admin {
 			exit;
 		}
 
+		// 校验图片真实内容
+		if (function_exists('getimagesize')) {
+			$image_info = @getimagesize($file['tmp_name']);
+			if ($image_info === false) {
+				echo json_encode(array('status' => 0, 'msg' => '文件内容校验失败，请上传有效图片'));
+				exit;
+			}
+			if (!empty($image_info['mime']) && !in_array($image_info['mime'], $allowed_types)) {
+				echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+				exit;
+			}
+		}
+		if (function_exists('finfo_open')) {
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			if ($finfo) {
+				$real_mime = finfo_file($finfo, $file['tmp_name']);
+				finfo_close($finfo);
+				if ($real_mime && !in_array($real_mime, $allowed_types)) {
+					echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+					exit;
+				}
+			}
+		}
+
 		$upload_path = 'uploadfile/renshi/yishixingtai/' . date('Y/md') . '/';
 		if (!is_dir($upload_path)) {
 			mkdir($upload_path, 0755, true);
@@ -731,7 +805,9 @@ class geren extends admin {
 		}
 
 		$this->db->table_name = 'v9_fujing';
-		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . addslashes($keyword) . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
+		$keyword = safe_replace($keyword);
+		$keyword = addslashes($keyword);
+		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . $keyword . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
 
 		$result = array();
 		if (is_array($list)) {
@@ -945,6 +1021,30 @@ class geren extends admin {
 			exit;
 		}
 
+		// 校验图片真实内容
+		if (function_exists('getimagesize')) {
+			$image_info = @getimagesize($file['tmp_name']);
+			if ($image_info === false) {
+				echo json_encode(array('status' => 0, 'msg' => '文件内容校验失败，请上传有效图片'));
+				exit;
+			}
+			if (!empty($image_info['mime']) && !in_array($image_info['mime'], $allowed_types)) {
+				echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+				exit;
+			}
+		}
+		if (function_exists('finfo_open')) {
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			if ($finfo) {
+				$real_mime = finfo_file($finfo, $file['tmp_name']);
+				finfo_close($finfo);
+				if ($real_mime && !in_array($real_mime, $allowed_types)) {
+					echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+					exit;
+				}
+			}
+		}
+
 		$upload_path = 'uploadfile/renshi/zhutihuodong/' . date('Y/md') . '/';
 		if (!is_dir($upload_path)) {
 			mkdir($upload_path, 0755, true);
@@ -972,7 +1072,9 @@ class geren extends admin {
 		}
 
 		$this->db->table_name = 'v9_fujing';
-		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . addslashes($keyword) . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
+		$keyword = safe_replace($keyword);
+		$keyword = addslashes($keyword);
+		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . $keyword . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
 
 		$result = array();
 		if (is_array($list)) {
@@ -1148,6 +1250,21 @@ class geren extends admin {
 
 		if ($file['size'] > 5 * 1024 * 1024) { echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB')); exit; }
 
+		// 校验图片真实内容
+		if (function_exists('getimagesize')) {
+			$image_info = @getimagesize($file['tmp_name']);
+			if ($image_info === false) { echo json_encode(array('status' => 0, 'msg' => '文件内容校验失败，请上传有效图片')); exit; }
+			if (!empty($image_info['mime']) && !in_array($image_info['mime'], $allowed_types)) { echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求')); exit; }
+		}
+		if (function_exists('finfo_open')) {
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			if ($finfo) {
+				$real_mime = finfo_file($finfo, $file['tmp_name']);
+				finfo_close($finfo);
+				if ($real_mime && !in_array($real_mime, $allowed_types)) { echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求')); exit; }
+			}
+		}
+
 		$upload_path = 'uploadfile/renshi/zhuanxianggongzuo/' . date('Y/md') . '/';
 		if (!is_dir($upload_path)) { mkdir($upload_path, 0755, true); }
 
@@ -1169,7 +1286,9 @@ class geren extends admin {
 		if (empty($keyword)) { echo json_encode(array('status' => 0, 'data' => array())); exit; }
 
 		$this->db->table_name = 'v9_fujing';
-		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . addslashes($keyword) . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
+		$keyword = safe_replace($keyword);
+		$keyword = addslashes($keyword);
+		$list = $this->db->select(" status=1 AND isok=1 AND xingming LIKE '%" . $keyword . "%' ", 'id,xingming,sfz,sex,ddanwei', 20, 'xingming asc');
 
 		$result = array();
 		if (is_array($list)) {
@@ -1279,7 +1398,7 @@ class geren extends admin {
 	function edit()
 	{
 		
-		$id=$_REQUEST['id'];
+		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 		if(isset($_POST['dosubmit'])) {
 			$_POST['info']['rjtime']=strtotime($_POST['rjtime']);
 			$_POST['info']['rdtime']=strtotime($_POST['rdtime']);
@@ -1402,7 +1521,7 @@ class geren extends admin {
 	
 	function dels()
 	{
-		$id = $_GET['id'];
+		$id = intval($_GET['id']);
 		$this->db->table_name = 'v9_renshi_sx';
 		$this->db->update("isok=0",array('id'=>$id));
 		showmessage('操作完成','index.php?m=renshi&c=geren&a=init');	
@@ -1410,7 +1529,7 @@ class geren extends admin {
 	///////////////////////////////////////////////////////////////////
 	function lvli()
 	{
-		$id=$_GET['id'];
+		$id = intval($_GET['id']);
 		
 		$this->db->table_name = 'v9_lvlib';
 		
@@ -1436,7 +1555,7 @@ class geren extends admin {
 	
 	function techang()
 	{
-		$id=$_GET['id'];
+		$id = intval($_GET['id']);
 		
 		//取出类别
 		$this->db->table_name = 'v9_techangclass';
@@ -1472,7 +1591,7 @@ class geren extends admin {
 	///////////////////////////////////////////////////////////////////
 	function jiaoyu()
 	{
-		$id=$_GET['id'];
+		$id = intval($_GET['id']);
 		
 		$this->db->table_name = 'v9_peixun';
 		$peixun = $this->db->select(" fjid=$id and status=9",'*','','id asc');
@@ -1481,7 +1600,7 @@ class geren extends admin {
 	}
 	function jiashu()
 	{
-		$id=$_GET['id'];
+		$id = intval($_GET['id']);
 		
 		$this->db->table_name = 'v9_jiashu';
 		//$jiashu = $this->db->select(" fjid=$id ",'*','','id asc');
@@ -1494,10 +1613,11 @@ class geren extends admin {
 	{
 		if(isset($_POST['dosubmit'])) {
 			
+			$fjid = intval($_POST['id']);
 			$this->db->table_name = 'v9_fujing';
-			$fj = $this->db->get_one("id=".$_POST['id'],'*');
+			$fj = $this->db->get_one("id=".$fjid,'*');
 			$_POST['info']['fjname']=$fj['xingming'];
-			$_POST['info']['fjid']=$_POST['id'];
+			$_POST['info']['fjid']=$fjid;
 			$_POST['info']['userid']=$_SESSION['userid'];
 			$_POST['info']['inputtime']=time();
 			
@@ -1505,15 +1625,15 @@ class geren extends admin {
 		$this->db->insert($_POST['info']);
 			
 			
-			showmessage('操作完毕','index.php?m=fujing&c=fujing&a=jiashu&id='.$_POST['id']);
+			showmessage('操作完毕','index.php?m=fujing&c=fujing&a=jiashu&id='.$fjid);
 		}
 		
 	}
 	function deletejiashu()
 	{
-		$id = $_GET['id'];
+		$id = intval($_GET['id']);
 		$this->db->table_name = 'v9_jiashu';
-		if($this->db->delete(array('id'=>$_GET['id']))) {
+		if($this->db->delete(array('id'=>$id))) {
 			
 			exit('1');
 		} else {
@@ -1522,7 +1642,7 @@ class geren extends admin {
 	}
 	function biaozhang()
 	{
-		$id=$_GET['id'];
+		$id = intval($_GET['id']);
 		
 		$this->db->table_name = 'v9_biaozhang';
 		$biaozhang = $this->db->select(" fjid=$id and status=9  ",'*','','id asc');
@@ -1531,7 +1651,7 @@ class geren extends admin {
 	}
 	function chengjie()
 	{
-		$id=$_GET['id'];
+		$id = intval($_GET['id']);
 		
 		$this->db->table_name = 'v9_chengjie';
 		$chengjie = $this->db->select(" fjid=$id and status=9  ",'*','','id asc');
@@ -1540,7 +1660,7 @@ class geren extends admin {
 	}
 	function zhuangbei()
 	{
-		$id=$_GET['id'];
+		$id = intval($_GET['id']);
 		
 		$this->db->table_name = 'v9_zhuangbei';
 		$zhuangbei = $this->db->select(" fjid=$id ",'*','','id asc');
@@ -1570,9 +1690,9 @@ class geren extends admin {
 	
 	function delete()
 	{
-		$id = $_GET['id'];
+		$id = intval($_GET['id']);
 		
-		if($this->db->delete(array('id'=>$_GET['id']))) {
+		if($this->db->delete(array('id'=>$id))) {
 			
 			exit('1');
 		} else {

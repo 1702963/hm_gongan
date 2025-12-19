@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);
@@ -28,7 +28,8 @@ class nengli_zhengshu extends admin
         $pagesize = 20;
 
         $fjid = isset($_GET['fjid']) ? intval($_GET['fjid']) : 0;
-        $fjname = isset($_GET['fjname']) ? addslashes(trim($_GET['fjname'])) : '';
+        $fjname = isset($_GET['fjname']) ? safe_replace(trim($_GET['fjname'])) : '';
+        $fjname = addslashes($fjname);
         $type_id = isset($_GET['type_id']) ? intval($_GET['type_id']) : 0;
         $status = isset($_GET['status']) ? intval($_GET['status']) : -1;
 
@@ -340,6 +341,8 @@ class nengli_zhengshu extends admin
             echo json_encode(array('status' => 0, 'msg' => '请输入搜索关键词'));
             exit;
         }
+
+        $keyword = safe_replace($keyword);
 
         $keyword = addslashes($keyword);
 

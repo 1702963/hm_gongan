@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);
@@ -34,17 +34,20 @@ class zhuanyepeixun extends admin
             $conditions[] = "bmid = $bmid";
         }
         if ($pxly != '') {
-            $pxly_safe = addslashes($pxly);
+            $pxly_safe = safe_replace($pxly);
+            $pxly_safe = addslashes($pxly_safe);
             $conditions[] = "pxly = '$pxly_safe'";
         }
         if ($type != '') {
-            $type_safe = addslashes($type);
+            $type_safe = safe_replace($type);
+            $type_safe = addslashes($type_safe);
             $conditions[] = "type = '$type_safe'";
         }
         if ($status >= 0) {
             $conditions[] = "status = $status";
         }
         if ($keyword != '') {
+            $keyword = safe_replace($keyword);
             $keyword = addslashes($keyword);
             $conditions[] = "(title LIKE '%{$keyword}%' OR ly_title LIKE '%{$keyword}%')";
         }

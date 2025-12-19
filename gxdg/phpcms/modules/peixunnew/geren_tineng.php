@@ -115,6 +115,8 @@ class geren_tineng extends admin
             exit;
         }
 
+        $keyword = safe_replace($keyword);
+
         $keyword = addslashes($keyword);
         $this->db->table_name = 'v9_fujing';
         $where = " (xingming LIKE '%{$keyword}%' OR sfz LIKE '%{$keyword}%') AND status=1 AND isok=1 ";

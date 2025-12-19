@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 defined('IN_PHPCMS') or exit('No permission resources.');
 
 pc_base::load_app_class('admin', 'admin', 0);
@@ -51,7 +51,8 @@ class geren_bmi extends admin
             $count_where .= " AND addyear=$year";
         }
         if ($ceyue != '') {
-            $ceyue_safe = addslashes($ceyue);
+            $ceyue_safe = safe_replace($ceyue);
+            $ceyue_safe = addslashes($ceyue_safe);
             $where .= " AND c.ceyue='$ceyue_safe'";
             $count_where .= " AND ceyue='$ceyue_safe'";
         }
@@ -119,6 +120,8 @@ class geren_bmi extends admin
             echo json_encode(array('status' => 0, 'msg' => '请输入搜索关键词'));
             exit;
         }
+
+        $keyword = safe_replace($keyword);
 
         $keyword = addslashes($keyword);
         $this->db->table_name = 'v9_fujing';

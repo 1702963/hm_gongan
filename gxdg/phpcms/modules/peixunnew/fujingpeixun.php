@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);
@@ -35,6 +35,7 @@ class fujingpeixun extends admin
             $conditions[] = "status = $status";
         }
         if ($keyword != '') {
+            $keyword = safe_replace($keyword);
             $keyword = addslashes($keyword);
             $conditions[] = "(title LIKE '%{$keyword}%' OR ly_title LIKE '%{$keyword}%')";
         }

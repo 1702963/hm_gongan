@@ -34,6 +34,7 @@ class tinen_xunlian_jihua extends admin
             $conditions[] = "status = $status";
         }
         if ($keyword != '') {
+            $keyword = safe_replace($keyword);
             $keyword = addslashes($keyword);
             $conditions[] = "(title LIKE '%{$keyword}%' OR ly_title LIKE '%{$keyword}%')";
         }

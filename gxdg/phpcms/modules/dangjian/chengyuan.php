@@ -1,6 +1,6 @@
 <?php
 // 安全修复: 线上环境禁止开启 display_errors，避免暴露错误信息和服务器路径
- ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 defined('IN_PHPCMS') or exit('No permission resources.');
 pc_base::load_app_class('admin', 'admin', 0);
 pc_base::load_sys_class('form', '', 0);
@@ -165,7 +165,8 @@ class chengyuan extends admin
             exit;
         }
 
-        // 安全修复: 对用户输入进行转义，防止 SQL 注入
+        // 安全修复: 对用户输入进行过滤和转义，降低 SQL 注入风险
+        $keyword = safe_replace($keyword);
         $keyword = addslashes($keyword);
 
         // 搜索辅警（按姓名或身份证号）
@@ -773,6 +774,30 @@ class chengyuan extends admin
         if ($file['size'] > 5 * 1024 * 1024) {
             echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
             exit;
+        }
+
+        // 校验图片真实内容
+        if (function_exists('getimagesize')) {
+            $image_info = @getimagesize($file['tmp_name']);
+            if ($image_info === false) {
+                echo json_encode(array('status' => 0, 'msg' => '文件内容校验失败，请上传有效图片'));
+                exit;
+            }
+            if (!empty($image_info['mime']) && !in_array($image_info['mime'], $allowed_types)) {
+                echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+                exit;
+            }
+        }
+        if (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            if ($finfo) {
+                $real_mime = finfo_file($finfo, $file['tmp_name']);
+                finfo_close($finfo);
+                if ($real_mime && !in_array($real_mime, $allowed_types)) {
+                    echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+                    exit;
+                }
+            }
         }
 
         // 生成保存路径
@@ -1418,4 +1443,3 @@ class chengyuan extends admin
     }
 
 }
-

@@ -38,6 +38,7 @@ class zhuanyepeixun_jilu extends admin
             $conditions[] = "guo = $guo";
         }
         if ($keyword != '') {
+            $keyword = safe_replace($keyword);
             $keyword = addslashes($keyword);
             $conditions[] = "fjname LIKE '%{$keyword}%'";
         }
@@ -137,6 +138,8 @@ class zhuanyepeixun_jilu extends admin
             echo json_encode(array('status' => 0, 'msg' => '请输入搜索关键词'));
             exit;
         }
+
+        $keyword = safe_replace($keyword);
 
         $keyword = addslashes($keyword);
 
@@ -373,6 +376,30 @@ class zhuanyepeixun_jilu extends admin
         if ($file['size'] > 5 * 1024 * 1024) {
             echo json_encode(array('status' => 0, 'msg' => '文件大小不能超过5MB'));
             exit;
+        }
+
+        // 校验图片真实内容
+        if (function_exists('getimagesize')) {
+            $image_info = @getimagesize($file['tmp_name']);
+            if ($image_info === false) {
+                echo json_encode(array('status' => 0, 'msg' => '文件内容校验失败，请上传有效图片'));
+                exit;
+            }
+            if (!empty($image_info['mime']) && !in_array($image_info['mime'], $allowed_types)) {
+                echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+                exit;
+            }
+        }
+        if (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            if ($finfo) {
+                $real_mime = finfo_file($finfo, $file['tmp_name']);
+                finfo_close($finfo);
+                if ($real_mime && !in_array($real_mime, $allowed_types)) {
+                    echo json_encode(array('status' => 0, 'msg' => '图片类型不符合要求'));
+                    exit;
+                }
+            }
         }
 
         $upload_path = 'uploadfile/peixun/zhuanye_zhengshu/' . date('Y/md') . '/';

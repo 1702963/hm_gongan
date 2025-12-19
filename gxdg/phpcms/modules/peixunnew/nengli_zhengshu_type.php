@@ -23,9 +23,11 @@ class nengli_zhengshu_type extends admin
     public function init()
     {
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-        $leibie = isset($_GET['leibie']) ? addslashes(trim($_GET['leibie'])) : '';
+        $leibie = isset($_GET['leibie']) ? safe_replace(trim($_GET['leibie'])) : '';
+        $leibie = addslashes($leibie);
         $status = isset($_GET['status']) ? intval($_GET['status']) : -1;
-        $keyword = isset($_GET['keyword']) ? addslashes(trim($_GET['keyword'])) : '';
+        $keyword = isset($_GET['keyword']) ? safe_replace(trim($_GET['keyword'])) : '';
+        $keyword = addslashes($keyword);
 
         $conditions = array();
         if ($leibie !== '') {
