@@ -174,6 +174,9 @@ class zhuanyepeixun_jilu extends admin
             $guo = intval($_POST['info']['guo']);
             $files = trim($_POST['info']['files']);
             $tianbao_time = !empty($_POST['info']['tianbao_time']) ? strtotime($_POST['info']['tianbao_time']) : 0;
+            $chuqin = intval($_POST['info']['chuqin']);
+            $pingjia = trim($_POST['info']['pingjia']);
+            $pingyu = trim($_POST['info']['pingyu']);
 
             if (!$jihua_id) {
                 showmessage('请选择培训计划', HTTP_REFERER);
@@ -198,6 +201,9 @@ class zhuanyepeixun_jilu extends admin
                 'inputtime' => time(),
                 'chengji' => $chengji,
                 'guo' => $guo,
+                'chuqin' => $chuqin,
+                'pingjia' => $pingjia,
+                'pingyu' => $pingyu,
                 'files' => $files,
                 'tianbao_time' => $tianbao_time,
                 'adddate' => date('Y-m-d H:i:s'),
@@ -285,6 +291,9 @@ class zhuanyepeixun_jilu extends admin
             $guo = intval($_POST['info']['guo']);
             $files = trim($_POST['info']['files']);
             $tianbao_time = !empty($_POST['info']['tianbao_time']) ? strtotime($_POST['info']['tianbao_time']) : 0;
+            $chuqin = intval($_POST['info']['chuqin']);
+            $pingjia = trim($_POST['info']['pingjia']);
+            $pingyu = trim($_POST['info']['pingyu']);
 
             if (!$id) {
                 showmessage('参数错误', HTTP_REFERER);
@@ -297,6 +306,9 @@ class zhuanyepeixun_jilu extends admin
                 'bmid' => $bmid,
                 'chengji' => $chengji,
                 'guo' => $guo,
+                'chuqin' => $chuqin,
+                'pingjia' => $pingjia,
+                'pingyu' => $pingyu,
                 'files' => $files,
                 'tianbao_time' => $tianbao_time
             );

@@ -25,6 +25,7 @@ class zhuanyepeixun extends admin
         // 筛选条件
         $bmid = isset($_GET['bmid']) ? intval($_GET['bmid']) : 0;
         $pxly = isset($_GET['pxly']) ? trim($_GET['pxly']) : '';
+        $type = isset($_GET['type']) ? trim($_GET['type']) : '';
         $status = isset($_GET['status']) ? intval($_GET['status']) : -1;
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 
@@ -35,6 +36,10 @@ class zhuanyepeixun extends admin
         if ($pxly != '') {
             $pxly_safe = addslashes($pxly);
             $conditions[] = "pxly = '$pxly_safe'";
+        }
+        if ($type != '') {
+            $type_safe = addslashes($type);
+            $conditions[] = "type = '$type_safe'";
         }
         if ($status >= 0) {
             $conditions[] = "status = $status";
@@ -47,6 +52,7 @@ class zhuanyepeixun extends admin
 
         $this->bmid = $bmid;
         $this->pxly = $pxly;
+        $this->type = $type;
         $this->status = $status;
         $this->keyword = $keyword;
 
@@ -129,6 +135,7 @@ class zhuanyepeixun extends admin
             $btime = !empty($_POST['info']['btime']) ? strtotime($_POST['info']['btime']) : 0;
             $etime = !empty($_POST['info']['etime']) ? strtotime($_POST['info']['etime']) : 0;
             $bixu = intval($_POST['info']['bixu']);
+            $type = trim($_POST['info']['type']);
             $status = intval($_POST['info']['status']);
 
             if (!$title) {
@@ -149,6 +156,7 @@ class zhuanyepeixun extends admin
                 'userid' => $_SESSION['userid'],
                 'inputtime' => time(),
                 'status' => $status,
+                'type' => $type,
                 'adddate' => date('Y-m-d H:i:s'),
                 'addyear' => intval(date('Y')),
                 'addmonth' => intval(date('m')),
@@ -220,6 +228,7 @@ class zhuanyepeixun extends admin
             $btime = !empty($_POST['info']['btime']) ? strtotime($_POST['info']['btime']) : 0;
             $etime = !empty($_POST['info']['etime']) ? strtotime($_POST['info']['etime']) : 0;
             $bixu = intval($_POST['info']['bixu']);
+            $type = trim($_POST['info']['type']);
             $status = intval($_POST['info']['status']);
 
             if (!$id) {
@@ -241,7 +250,8 @@ class zhuanyepeixun extends admin
                 'btime' => $btime,
                 'etime' => $etime,
                 'bixu' => $bixu,
-                'status' => $status
+                'status' => $status,
+                'type' => $type
             );
 
             $result = $this->db->update($data, " id=$id ");
