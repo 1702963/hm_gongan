@@ -214,25 +214,21 @@ class zhibu extends admin
             // 处理时间格式（过滤异常数据）
             if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
                 $timestamp = intval($row['shengri']);
-                if ($timestamp > -631152000) { // 1950-01-01
+                if ($timestamp != 0) {
                     $row['shengri'] = date("Y-m-d", $timestamp);
                 } else {
                     $row['shengri'] = '';
                 }
             }
-            if ($row['rdzztime'] > 0) {
-                if ($row['rdzztime'] > -631152000) { // 1950-01-01
-                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
-                } else {
-                    $row['rdzztime_show'] = '';
-                }
+            if ($row['rdzztime'] != 0) {
+                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+            } else {
+                $row['rdzztime_show'] = '';
             }
-            if ($row['scgztime'] > 0) {
-                if ($row['scgztime'] > -631152000) { // 1950-01-01
-                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
-                } else {
-                    $row['scgztime_show'] = '';
-                }
+            if ($row['scgztime'] != 0) {
+                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+            } else {
+                $row['scgztime_show'] = '';
             }
 
             $this->list[] = $row;
@@ -516,25 +512,21 @@ class zhibu extends admin
         // 处理时间格式（过滤异常数据）
         if ($info['shengri'] != '' && is_numeric($info['shengri'])) {
             $timestamp = intval($info['shengri']);
-            if ($timestamp > -631152000) { // 1950-01-01
+            if ($timestamp != 0) {
                 $info['shengri'] = date("Y-m-d", $timestamp);
             } else {
                 $info['shengri'] = '';
             }
         }
-        if ($info['rdzztime'] > 0) {
-            if ($info['rdzztime'] > -631152000) { // 1950-01-01
-                $info['rdzztime_show'] = date("Y-m-d", $info['rdzztime']);
-            } else {
-                $info['rdzztime_show'] = '';
-            }
+        if ($info['rdzztime'] != 0) {
+            $info['rdzztime_show'] = date("Y-m-d", $info['rdzztime']);
+        } else {
+            $info['rdzztime_show'] = '';
         }
-        if ($info['scgztime'] > 0) {
-            if ($info['scgztime'] > -631152000) { // 1950-01-01
-                $info['scgztime_show'] = date("Y-m-d", $info['scgztime']);
-            } else {
-                $info['scgztime_show'] = '';
-            }
+        if ($info['scgztime'] != 0) {
+            $info['scgztime_show'] = date("Y-m-d", $info['scgztime']);
+        } else {
+            $info['scgztime_show'] = '';
         }
 
         // 处理照片URL

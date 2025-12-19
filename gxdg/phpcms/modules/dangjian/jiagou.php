@@ -71,25 +71,21 @@ class jiagou extends admin
             // 处理时间格式（过滤异常数据）
             if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
                 $timestamp = intval($row['shengri']);
-                if ($timestamp > -631152000) { // 1950-01-01
+                if ($timestamp != 0) {
                     $row['shengri'] = date("Y-m-d", $timestamp);
                 } else {
                     $row['shengri'] = '';
                 }
             }
-            if ($row['rdzztime'] > 0) {
-                if ($row['rdzztime'] > -631152000) { // 1950-01-01
-                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
-                } else {
-                    $row['rdzztime_show'] = '';
-                }
+            if ($row['rdzztime'] != 0) {
+                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+            } else {
+                $row['rdzztime_show'] = '';
             }
-            if ($row['scgztime'] > 0) {
-                if ($row['scgztime'] > -631152000) { // 1950-01-01
-                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
-                } else {
-                    $row['scgztime_show'] = '';
-                }
+            if ($row['scgztime'] != 0) {
+                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+            } else {
+                $row['scgztime_show'] = '';
             }
 
             $this->list[] = $row;
@@ -229,13 +225,13 @@ class jiagou extends admin
             }
         }
 
-        if (!empty($info['rdzztime']) && $info['rdzztime'] > 0) {
+        if (!empty($info['rdzztime']) && $info['rdzztime'] != 0) {
             $info['rdzztime'] = date('Y-m-d', $info['rdzztime']);
         } else {
             $info['rdzztime'] = '';
         }
 
-        if (!empty($info['scgztime']) && $info['scgztime'] > 0) {
+        if (!empty($info['scgztime']) && $info['scgztime'] != 0) {
             $info['scgztime'] = date('Y-m-d', $info['scgztime']);
         } else {
             $info['scgztime'] = '';
@@ -542,25 +538,21 @@ class jiagou extends admin
             // 处理时间格式（过滤异常数据）
             if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
                 $timestamp = intval($row['shengri']);
-                if ($timestamp > -631152000) { // 1950-01-01
+                if ($timestamp != 0) {
                     $row['shengri'] = date("Y-m-d", $timestamp);
                 } else {
                     $row['shengri'] = '';
                 }
             }
-            if ($row['rdzztime'] > 0) {
-                if ($row['rdzztime'] > -631152000) { // 1950-01-01
-                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
-                } else {
-                    $row['rdzztime_show'] = '';
-                }
+            if ($row['rdzztime'] != 0) {
+                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+            } else {
+                $row['rdzztime_show'] = '';
             }
-            if ($row['scgztime'] > 0) {
-                if ($row['scgztime'] > -631152000) { // 1950-01-01
-                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
-                } else {
-                    $row['scgztime_show'] = '';
-                }
+            if ($row['scgztime'] != 0) {
+                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+            } else {
+                $row['scgztime_show'] = '';
             }
 
             $this->list[] = $row;
@@ -885,25 +877,21 @@ class jiagou extends admin
             // 处理时间格式（过滤异常数据）
             if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
                 $timestamp = intval($row['shengri']);
-                if ($timestamp > -631152000) { // 1950-01-01
+                if ($timestamp != 0) {
                     $row['shengri'] = date("Y-m-d", $timestamp);
                 } else {
                     $row['shengri'] = '';
                 }
             }
-            if ($row['rdzztime'] > 0) {
-                if ($row['rdzztime'] > -631152000) { // 1950-01-01
-                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
-                } else {
-                    $row['rdzztime_show'] = '';
-                }
+            if ($row['rdzztime'] != 0) {
+                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+            } else {
+                $row['rdzztime_show'] = '';
             }
-            if ($row['scgztime'] > 0) {
-                if ($row['scgztime'] > -631152000) { // 1950-01-01
-                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
-                } else {
-                    $row['scgztime_show'] = '';
-                }
+            if ($row['scgztime'] != 0) {
+                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+            } else {
+                $row['scgztime_show'] = '';
             }
 
             $this->list[] = $row;
@@ -1224,25 +1212,21 @@ class jiagou extends admin
             // 处理时间格式（过滤异常数据）
             if ($row['shengri'] != '' && is_numeric($row['shengri'])) {
                 $timestamp = intval($row['shengri']);
-                if ($timestamp > -631152000) { // 1950-01-01
+                if ($timestamp != 0) {
                     $row['shengri'] = date("Y-m-d", $timestamp);
                 } else {
                     $row['shengri'] = '';
                 }
             }
-            if ($row['rdzztime'] > 0) {
-                if ($row['rdzztime'] > -631152000) { // 1950-01-01
-                    $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
-                } else {
-                    $row['rdzztime_show'] = '';
-                }
+            if ($row['rdzztime'] != 0) {
+                $row['rdzztime_show'] = date("Y-m-d", $row['rdzztime']);
+            } else {
+                $row['rdzztime_show'] = '';
             }
-            if ($row['scgztime'] > 0) {
-                if ($row['scgztime'] > -631152000) { // 1950-01-01
-                    $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
-                } else {
-                    $row['scgztime_show'] = '';
-                }
+            if ($row['scgztime'] != 0) {
+                $row['scgztime_show'] = date("Y-m-d", $row['scgztime']);
+            } else {
+                $row['scgztime_show'] = '';
             }
 
             $this->list[] = $row;
