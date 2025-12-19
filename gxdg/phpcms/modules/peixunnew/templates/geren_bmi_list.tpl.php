@@ -37,7 +37,14 @@ html{_overflow-y:scroll}
         <input type="hidden" name="a" value="init">
 
         <label>测量月份：</label>
-        <input type="text" name="ceyue" value="<?php echo htmlspecialchars($this->ceyue)?>" placeholder="如：2024年6月" style="width:120px;background:transparent;color:#fff;border:1px solid #ddd;padding:5px 10px;margin-right:10px;">
+        <input type="month" name="ceyue" value="<?php
+            // 将 "2025年6月" 转换为 "2025-06"
+            if($this->ceyue) {
+                if(preg_match('/(\d{4})年(\d{1,2})月/', $this->ceyue, $matches)) {
+                    echo $matches[1] . '-' . str_pad($matches[2], 2, '0', STR_PAD_LEFT);
+                }
+            }
+        ?>" style="width:150px;background:transparent;color:#fff;border:1px solid #ddd;padding:5px 10px;margin-right:10px;">
 
         <input type="submit" value="搜索" class="doLock" style="margin-left:10px;">
         <a href="index.php?m=peixunnew&c=geren_bmi&a=init"><input type="button" value="重置" class="doLock"></a>

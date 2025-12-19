@@ -33,6 +33,11 @@ class geren_bmi extends admin
         $year = isset($_GET['year']) ? intval($_GET['year']) : 0;
         $ceyue = isset($_GET['ceyue']) ? trim($_GET['ceyue']) : '';
 
+        // 将前端的 YYYY-MM 格式转换为 YYYY年M月 格式
+        if ($ceyue != '' && preg_match('/^(\d{4})-(\d{2})$/', $ceyue, $matches)) {
+            $ceyue = $matches[1] . '年' . intval($matches[2]) . '月';
+        }
+
         if ($fjid > 0) {
             $where .= " AND c.fjid=$fjid";
             $count_where .= " AND fjid=$fjid";
@@ -153,6 +158,12 @@ class geren_bmi extends admin
             $tunwei = isset($_POST['info']['tunwei']) ? floatval($_POST['info']['tunwei']) : null;
             $beizhu = isset($_POST['info']['beizhu']) ? addslashes($_POST['info']['beizhu']) : '';
             $ceyue = isset($_POST['info']['ceyue']) ? trim($_POST['info']['ceyue']) : '';
+
+            // 将前端的 YYYY-MM 格式转换为 YYYY年M月 格式
+            if ($ceyue != '' && preg_match('/^(\d{4})-(\d{2})$/', $ceyue, $matches)) {
+                $ceyue = $matches[1] . '年' . intval($matches[2]) . '月';
+            }
+
             $xingbie = isset($_POST['info']['xingbie']) ? trim($_POST['info']['xingbie']) : '';
             $dabiao_tizhong = isset($_POST['info']['dabiao_tizhong']) ? floatval($_POST['info']['dabiao_tizhong']) : null;
             $zengzhong = isset($_POST['info']['zengzhong']) ? floatval($_POST['info']['zengzhong']) : null;
@@ -252,6 +263,12 @@ class geren_bmi extends admin
             $tunwei = isset($_POST['info']['tunwei']) ? floatval($_POST['info']['tunwei']) : null;
             $beizhu = isset($_POST['info']['beizhu']) ? addslashes($_POST['info']['beizhu']) : '';
             $ceyue = isset($_POST['info']['ceyue']) ? trim($_POST['info']['ceyue']) : '';
+
+            // 将前端的 YYYY-MM 格式转换为 YYYY年M月 格式
+            if ($ceyue != '' && preg_match('/^(\d{4})-(\d{2})$/', $ceyue, $matches)) {
+                $ceyue = $matches[1] . '年' . intval($matches[2]) . '月';
+            }
+
             $xingbie = isset($_POST['info']['xingbie']) ? trim($_POST['info']['xingbie']) : '';
             $dabiao_tizhong = isset($_POST['info']['dabiao_tizhong']) ? floatval($_POST['info']['dabiao_tizhong']) : null;
             $zengzhong = isset($_POST['info']['zengzhong']) ? floatval($_POST['info']['zengzhong']) : null;

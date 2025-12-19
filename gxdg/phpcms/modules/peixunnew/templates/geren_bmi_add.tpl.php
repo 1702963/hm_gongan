@@ -109,9 +109,9 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   <tr>
     <td align="right" class="infotitle">测量月份：</td>
     <td colspan="5">
-      <input type="text" name="info[ceyue]" id="ceyue" value=""
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
-             placeholder="如：2024年6月"/>
+      <input type="month" name="info[ceyue]" id="ceyue" value=""
+             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+      <span style="color:#999;font-size:12px;margin-left:10px">选择年月</span>
     </td>
   </tr>
 

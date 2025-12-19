@@ -100,9 +100,13 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   <tr>
     <td align="right" class="infotitle">测量月份：</td>
     <td colspan="5">
-      <input type="text" name="info[ceyue]" id="ceyue" value="<?php echo $this->info['ceyue']?>"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
-             placeholder="如：2024年6月"/>
+      <input type="month" name="info[ceyue]" id="ceyue" value="<?php
+        // 将 "2025年6月" 转换为 "2025-06"
+        if($this->info['ceyue'] && preg_match('/(\d{4})年(\d{1,2})月/', $this->info['ceyue'], $matches)) {
+            echo $matches[1] . '-' . str_pad($matches[2], 2, '0', STR_PAD_LEFT);
+        }
+      ?>" style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+      <span style="color:#999;font-size:12px;margin-left:10px">选择年月</span>
     </td>
   </tr>
 
