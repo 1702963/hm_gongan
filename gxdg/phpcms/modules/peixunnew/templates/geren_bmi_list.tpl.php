@@ -30,6 +30,20 @@ html{_overflow-y:scroll}
 <a href="index.php?m=peixunnew&c=geren_bmi&a=add"><input type="button" value="添加记录" style="margin-left:10px; width:80px" class="doLock" name="dook"></a>
 </div>
 
+<div class="search-box" style="margin:10px 0;padding:10px;background:#1e1f5e;border-radius:5px;">
+    <form method="GET" action="index.php">
+        <input type="hidden" name="m" value="peixunnew">
+        <input type="hidden" name="c" value="geren_bmi">
+        <input type="hidden" name="a" value="init">
+
+        <label>测量月份：</label>
+        <input type="text" name="ceyue" value="<?php echo htmlspecialchars($this->ceyue)?>" placeholder="如：2024年6月" style="width:120px;background:transparent;color:#fff;border:1px solid #ddd;padding:5px 10px;margin-right:10px;">
+
+        <input type="submit" value="搜索" class="doLock" style="margin-left:10px;">
+        <a href="index.php?m=peixunnew&c=geren_bmi&a=init"><input type="button" value="重置" class="doLock"></a>
+    </form>
+</div>
+
 <div class="table-list">
 <form name="myform" id="myform">
 <script type="text/javascript" >
@@ -55,6 +69,12 @@ html{_overflow-y:scroll}
       <th width="80">体脂率(%)</th>
       <th width="80">腰围(cm)</th>
       <th width="80">臀围(cm)</th>
+      <th width="100">测量月份</th>
+      <th width="60">性别</th>
+      <th width="80">达标体重(kg)</th>
+      <th width="80">增重(kg)</th>
+      <th width="100">与达标差额(kg)</th>
+      <th width="60">排名</th>
       <th width="120">录入时间</th>
       <th width="120">操作</th>
     </tr>
@@ -84,6 +104,20 @@ if(is_array($this->list)){
       <td><?php echo $info['tizhilv'] ? $info['tizhilv'] : '-'?></td>
       <td><?php echo $info['yaowei'] ? $info['yaowei'] : '-'?></td>
       <td><?php echo $info['tunwei'] ? $info['tunwei'] : '-'?></td>
+      <td><?php echo $info['ceyue'] ? $info['ceyue'] : '-'?></td>
+      <td><?php echo $info['xingbie'] ? $info['xingbie'] : '-'?></td>
+      <td><?php echo $info['dabiao_tizhong'] ? $info['dabiao_tizhong'] : '-'?></td>
+      <td><?php echo $info['zengzhong'] ? $info['zengzhong'] : '-'?></td>
+      <td><?php
+        if ($info['yu_dabiao_chae']) {
+            $chae = floatval($info['yu_dabiao_chae']);
+            $color = $chae > 0 ? '#d9534f' : ($chae < 0 ? '#5cb85c' : '#fff');
+            echo "<span style='color:$color'>" . $info['yu_dabiao_chae'] . "</span>";
+        } else {
+            echo '-';
+        }
+      ?></td>
+      <td><?php echo $info['paiming'] ? $info['paiming'] : '-'?></td>
       <td><?php echo $info['inputtime_show']?></td>
       <td>
         &nbsp;<a href="index.php?m=peixunnew&c=geren_bmi&a=edit&id=<?php echo $info['id']?>">编辑</a>

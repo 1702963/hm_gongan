@@ -98,6 +98,63 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   </tr>
 
   <tr>
+    <td align="right" class="infotitle">测量月份：</td>
+    <td colspan="5">
+      <input type="text" name="info[ceyue]" id="ceyue" value="<?php echo $this->info['ceyue']?>"
+             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             placeholder="如：2024年6月"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="right" class="infotitle">性别：</td>
+    <td colspan="5">
+      <select name="info[xingbie]" id="xingbie"
+              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+        <option value="">请选择</option>
+        <option value="男" <?php echo $this->info['xingbie'] == '男' ? 'selected' : ''?>>男</option>
+        <option value="女" <?php echo $this->info['xingbie'] == '女' ? 'selected' : ''?>>女</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="right" class="infotitle">达标体重(kg)：</td>
+    <td colspan="5">
+      <input type="number" name="info[dabiao_tizhong]" id="dabiao_tizhong" value="<?php echo $this->info['dabiao_tizhong']?>" step="0.01" min="0" max="200"
+             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             placeholder="请输入达标体重"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="right" class="infotitle">增重(kg)：</td>
+    <td colspan="5">
+      <input type="number" name="info[zengzhong]" id="zengzhong" value="<?php echo $this->info['zengzhong']?>" step="0.01" min="-100" max="100"
+             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             placeholder="请输入增重数量（正数为增重，负数为减重）"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="right" class="infotitle">与达标差额(kg)：</td>
+    <td colspan="5">
+      <input type="number" name="info[yu_dabiao_chae]" id="yu_dabiao_chae" value="<?php echo $this->info['yu_dabiao_chae']?>" step="0.01" min="-100" max="100"
+             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             placeholder="请输入与达标差额（正数为超重，负数为偏轻）"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="right" class="infotitle">排名：</td>
+    <td colspan="5">
+      <input type="number" name="info[paiming]" id="paiming" value="<?php echo $this->info['paiming']?>" step="1" min="1"
+             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             placeholder="请输入BMI排名"/>
+    </td>
+  </tr>
+
+  <tr>
     <td align="right" class="infotitle">录入时间：</td>
     <td colspan="5">
       <input type="text" value="<?php echo $this->info['inputtime_show']?>" readonly

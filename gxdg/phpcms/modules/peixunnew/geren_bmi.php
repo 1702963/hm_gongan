@@ -31,6 +31,7 @@ class geren_bmi extends admin
         $fjid = isset($_GET['fjid']) ? intval($_GET['fjid']) : 0;
         $dwid = isset($_GET['dwid']) ? intval($_GET['dwid']) : 0;
         $year = isset($_GET['year']) ? intval($_GET['year']) : 0;
+        $ceyue = isset($_GET['ceyue']) ? trim($_GET['ceyue']) : '';
 
         if ($fjid > 0) {
             $where .= " AND c.fjid=$fjid";
@@ -44,10 +45,16 @@ class geren_bmi extends admin
             $where .= " AND c.addyear=$year";
             $count_where .= " AND addyear=$year";
         }
+        if ($ceyue != '') {
+            $ceyue_safe = addslashes($ceyue);
+            $where .= " AND c.ceyue='$ceyue_safe'";
+            $count_where .= " AND ceyue='$ceyue_safe'";
+        }
 
         $this->fjid = $fjid;
         $this->dwid = $dwid;
         $this->year = $year;
+        $this->ceyue = $ceyue;
 
         // 查询总数
         $this->db->table_name = 'v9_geren_bmi';
@@ -145,6 +152,12 @@ class geren_bmi extends admin
             $yaowei = isset($_POST['info']['yaowei']) ? floatval($_POST['info']['yaowei']) : null;
             $tunwei = isset($_POST['info']['tunwei']) ? floatval($_POST['info']['tunwei']) : null;
             $beizhu = isset($_POST['info']['beizhu']) ? addslashes($_POST['info']['beizhu']) : '';
+            $ceyue = isset($_POST['info']['ceyue']) ? trim($_POST['info']['ceyue']) : '';
+            $xingbie = isset($_POST['info']['xingbie']) ? trim($_POST['info']['xingbie']) : '';
+            $dabiao_tizhong = isset($_POST['info']['dabiao_tizhong']) ? floatval($_POST['info']['dabiao_tizhong']) : null;
+            $zengzhong = isset($_POST['info']['zengzhong']) ? floatval($_POST['info']['zengzhong']) : null;
+            $yu_dabiao_chae = isset($_POST['info']['yu_dabiao_chae']) ? floatval($_POST['info']['yu_dabiao_chae']) : null;
+            $paiming = isset($_POST['info']['paiming']) ? intval($_POST['info']['paiming']) : null;
 
             if (!$fjid || !$shengao || !$tizhong) {
                 showmessage('辅警、身高和体重不能为空', 'index.php?m=peixunnew&c=geren_bmi&a=add');
@@ -165,6 +178,12 @@ class geren_bmi extends admin
                 'yaowei' => $yaowei,
                 'tunwei' => $tunwei,
                 'beizhu' => $beizhu,
+                'ceyue' => $ceyue,
+                'xingbie' => $xingbie,
+                'dabiao_tizhong' => $dabiao_tizhong,
+                'zengzhong' => $zengzhong,
+                'yu_dabiao_chae' => $yu_dabiao_chae,
+                'paiming' => $paiming,
                 'inputtime' => time(),
                 'adddate' => date('Y-m-d'),
                 'addyear' => intval(date('Y')),
@@ -232,6 +251,12 @@ class geren_bmi extends admin
             $yaowei = isset($_POST['info']['yaowei']) ? floatval($_POST['info']['yaowei']) : null;
             $tunwei = isset($_POST['info']['tunwei']) ? floatval($_POST['info']['tunwei']) : null;
             $beizhu = isset($_POST['info']['beizhu']) ? addslashes($_POST['info']['beizhu']) : '';
+            $ceyue = isset($_POST['info']['ceyue']) ? trim($_POST['info']['ceyue']) : '';
+            $xingbie = isset($_POST['info']['xingbie']) ? trim($_POST['info']['xingbie']) : '';
+            $dabiao_tizhong = isset($_POST['info']['dabiao_tizhong']) ? floatval($_POST['info']['dabiao_tizhong']) : null;
+            $zengzhong = isset($_POST['info']['zengzhong']) ? floatval($_POST['info']['zengzhong']) : null;
+            $yu_dabiao_chae = isset($_POST['info']['yu_dabiao_chae']) ? floatval($_POST['info']['yu_dabiao_chae']) : null;
+            $paiming = isset($_POST['info']['paiming']) ? intval($_POST['info']['paiming']) : null;
 
             if (!$shengao || !$tizhong) {
                 showmessage('身高和体重不能为空', "index.php?m=peixunnew&c=geren_bmi&a=edit&id=$id");
@@ -249,7 +274,13 @@ class geren_bmi extends admin
                 'tizhilv' => $tizhilv,
                 'yaowei' => $yaowei,
                 'tunwei' => $tunwei,
-                'beizhu' => $beizhu
+                'beizhu' => $beizhu,
+                'ceyue' => $ceyue,
+                'xingbie' => $xingbie,
+                'dabiao_tizhong' => $dabiao_tizhong,
+                'zengzhong' => $zengzhong,
+                'yu_dabiao_chae' => $yu_dabiao_chae,
+                'paiming' => $paiming
             );
 
             $result = $this->db->update($data, array('id' => $id));
