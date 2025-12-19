@@ -16,6 +16,14 @@ $bmi_count = intval($_row['cnt']);
 $_result = $_fj_conn->query("SELECT COUNT(*) as cnt FROM v9_geren_tineng where isok<>'0'");
 $_row = $_result->fetch_assoc();
 $tineng_count = intval($_row['cnt']);
+// 专项演练数量
+$_result = $_fj_conn->query("SELECT COUNT(*) as cnt FROM v9_nengli_zhengshu");
+$_row = $_result->fetch_assoc();
+$nengli_zhengshu_count = intval($_row['cnt']);
+// 专项演练数量
+$_result = $_fj_conn->query("SELECT COUNT(*) as cnt FROM v9_nengli_zhengshu_type");
+$_row = $_result->fetch_assoc();
+$nengli_zhengshu_type_count = intval($_row['cnt']);
 
 //// 参与人员数量
 //$_result = $_fj_conn->query("SELECT COUNT(*) as cnt FROM v9_geren_tineng where isok<>'0'");
@@ -36,7 +44,8 @@ $_fj_conn->close();
         var ArrayWrapData = [
             ['bmi_count', <?php echo $bmi_count?>],        // 对抗演练
             ['tineng_count', <?php echo $tineng_count?>],  // 专项演练
-            //['canyu_count', <?php //echo $canyu_count?>//],            // 参与人
+            ['nengli_zhengshu_count', <?php echo $nengli_zhengshu_count?>],            // 参与人
+            ['nengli_zhengshu_type_count', <?php echo $nengli_zhengshu_type_count?>],            // 参与人
         ];
 
         //数字过渡效果
@@ -226,7 +235,7 @@ $_fj_conn->close();
             <div class="modItemContent">
 
                 <!--对抗演练-->
-                <div  onclick="location.href='index.php?m=peixunnew&c=geren_bmi&a=init'"  style="cursor:pointer;" class="DataItem" data-scroll-reveal="enter right">
+                <div onclick="location.href='index.php?m=peixunnew&c=geren_bmi&a=init'" style="cursor:pointer;" class="DataItem" data-scroll-reveal="enter right">
                     <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
                         <img src="statics/images/admin_img/2025/rs03.png">
                         <div class="DataItemLight"></div>
@@ -238,7 +247,7 @@ $_fj_conn->close();
                 </div>
 
                 <!--专项演练-->
-                <div onclick="location.href='index.php?m=peixunnew&c=geren_tineng&a=init'"  style="cursor:pointer;" class="DataItem" data-scroll-reveal="enter right">
+                <div onclick="location.href='index.php?m=peixunnew&c=geren_tineng&a=init'" style="cursor:pointer;" class="DataItem" data-scroll-reveal="enter right">
                     <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
                         <img src="statics/images/admin_img/2025/rs03.png">
                         <div class="DataItemLight"></div>
@@ -246,6 +255,28 @@ $_fj_conn->close();
                     <div class="DataItems" data-scroll-reveal="wait .4s enter right">
                         <div class="DataItemName">个人体能</div>
                         <div class="DataItemNumber" id="tineng_count">0</div>
+                    </div>
+                </div>
+                <!--专项演练-->
+                <div onclick="location.href='index.php?m=peixunnew&c=nengli_zhengshu&a=init'" style="cursor:pointer;" class="DataItem" data-scroll-reveal="enter right">
+                    <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
+                        <img src="statics/images/admin_img/2025/rs03.png">
+                        <div class="DataItemLight"></div>
+                    </div>
+                    <div class="DataItems" data-scroll-reveal="wait .4s enter right">
+                        <div class="DataItemName">个人能力证书</div>
+                        <div class="DataItemNumber" id="nengli_zhengshu_count">0</div>
+                    </div>
+                </div>
+                <!--专项演练-->
+                <div onclick="location.href='index.php?m=peixunnew&c=nengli_zhengshu_type&a=init'" style="cursor:pointer;" class="DataItem" data-scroll-reveal="enter right">
+                    <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
+                        <img src="statics/images/admin_img/2025/rs03.png">
+                        <div class="DataItemLight"></div>
+                    </div>
+                    <div class="DataItems" data-scroll-reveal="wait .4s enter right">
+                        <div class="DataItemName">个人证书字典</div>
+                        <div class="DataItemNumber" id="nengli_zhengshu_type_count">0</div>
                     </div>
                 </div>
 
