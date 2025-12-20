@@ -247,6 +247,71 @@ $where = array('status' => 1, 'isok' => 1);
 $where = "status=1 AND isok=1";
 ```
 
+### 手写 SQL 与数据库选择（重要）
+
+**关键概念**：MySQLi 连接在初始化时会指定一个默认数据库。不同的 Model 通过 `$this->db_setting` 切换连接，会改变默认数据库。
+
+#### 框架方法 vs 手写 SQL
+
+**框架提供的方法**（✅ 自动处理数据库）
+- `select()`, `get_one()`, `insert()`, `update()`, `delete()`
+- 这些方法会自动在表名前添加 `config['database']`
+- 例如：`SELECT * FROM gxdg.mj_fujing WHERE ...` 或 `SELECT * FROM fujing.v9_fujing WHERE ...`
+
+**手写 SQL 方法**（❌ 需要手动处理）
+- `query()` 直接执行 SQL，不做任何修改
+- 使用连接的默认数据库（由 `$this->db_setting` 决定）
+- 如果要查其他数据库的表，必须在 SQL 中明确指定数据库名
+
+#### 为什么手写 SQL 需要指定数据库名
+
+```php
+// Model 初始化使用 default 连接
+class fujing_model extends model {
+    public function __construct() {
+        $this->db_config = pc_base::load_config('database');
+        $this->db_setting = 'default';  // ← 默认数据库 = gxdg
+        parent::__construct();
+    }
+
+    public function get_data() {
+        // ❌ 错误！会在 gxdg 数据库中查找 v9_fujing（不存在）
+        $sql = "SELECT * FROM v9_fujing WHERE id=1";
+        return $this->query($sql);
+
+        // ✅ 正确！明确指定 fujing 数据库
+        $sql = "SELECT * FROM fujing.v9_fujing WHERE id=1";
+        return $this->query($sql);
+    }
+}
+```
+
+#### 三种解决方案
+
+**方案 1**：手写 SQL 时明确指定数据库名（如需访问其他库）
+```php
+$sql = "SELECT * FROM fujing.v9_fujing WHERE id=1";
+$this->query($sql);
+```
+
+**方案 2**：切换到正确的 db_setting（推荐）
+```php
+// 如果要查 fujing 数据库，在 Model 中这样写
+$this->db_setting = 'gxdgdb';  // 切换到 fujing 数据库
+// 现在 query() 的默认数据库是 fujing
+$sql = "SELECT * FROM v9_fujing WHERE id=1";
+$this->query($sql);
+```
+
+**方案 3**：优先使用框架封装方法（最推荐）
+```php
+// 使用框架方法，自动处理数据库名
+$this->select("id=1");        // 自动使用 $this->table_name
+$this->get_one(array('id' => 1));
+$this->insert($data);
+$this->update($data, "id=1");
+```
+
 ## Controller 层开发规范
 
 ```php
