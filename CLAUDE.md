@@ -6,26 +6,75 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 基于 PHPCMS V9 框架开发的公安辅警管理系统，使用 **PHP 5.6** 标准开发。
 
-主要功能: 辅警档案、工资绩效、考勤、培训、奖惩、装备、监督、招录考试、优抚管理。
+主要功能: 辅警档案、工资绩效、考勤、培训、奖惩、装备、监督、招录考试、优抚管理、党建管理。
 
-## 开发命令
+## 快速开始
+
+### 本地开发环境初始化
+
+1. **克隆项目并进入目录**
+   ```bash
+   cd /Volumes/DATA/host/gongan/hm_gongan
+   ```
+
+2. **创建数据库配置**
+   - 编辑 `gxdg/caches/configs/database.php`
+   - 配置 default 连接（`gxdg` 数据库，前缀 `mj_`）
+   - 配置 gxdgdb 连接（`fujing` 数据库，前缀 `v9_`）
+   - ⚠️ 勿提交真实数据库凭据到 Git
+
+3. **初始化数据库表**
+   ```bash
+   # 使用 DDL.txt 创建所有表结构
+   mysql -h 192.168.1.66 -u root -proot < DDL.txt
+   ```
+
+### 常用开发命令
 
 ```bash
-# 本地开发服务器
+# 启动本地开发服务器
 php -S 0.0.0.0:8000 -t gxdg
 
-# 数据库连接
+# 连接数据库
 mysql -h 192.168.1.66 -u root -proot
 
-# 清理模板缓存
+# 清理模板编译缓存（修改模板后需运行）
 rm -rf gxdg/caches/caches_template/*
+
+# 清理数据缓存
+rm -rf gxdg/caches/caches_commons/caches_data/*
+
+# 清理全部缓存（需谨慎，操作前备份）
+rm -rf gxdg/caches/*
 ```
 
-## API 入口
+## 项目结构与文件组织
+
+### 核心入口与路由
 
 - **前台入口**: `gxdg/index.php?m=模块&c=控制器&a=方法`
 - **后台入口**: `gxdg/admin.php?m=模块&c=控制器&a=方法`
 - **API 入口**: `gxdg/api.php?op=操作名`
+
+### 目录说明
+
+| 目录 | 用途 |
+|------|------|
+| `gxdg/phpcms/modules/` | 业务模块（50+ 个，包括 fujing、gongzi、renshi、peixun 等） |
+| `gxdg/phpcms/templates/` | 模板文件（默认主题在 `default/`） |
+| `gxdg/phpcms/libs/classes/` | 框架核心类库（application、model、param 等） |
+| `gxdg/phpcms/model/` | 数据模型基类 |
+| `gxdg/api/` | 业务接口脚本（上传、短信、视频等） |
+| `gxdg/caches/` | 缓存目录，包含配置、编译、数据缓存 |
+| `gxdg/caches/configs/` | 配置文件（database.php、system.php） |
+| `gxdg/caches/caches_template/` | 模板编译缓存 |
+| `gxdg/uploadfile/` | 上传文件存储（访问路径） |
+| `gxdg/uploads/` | 按月份组织的上传文件（`uploads/<YYYYMM>/`） |
+| `gxdg/cron/` | 定时任务脚本 |
+| `gxdg/statics/` | 静态资源（JS、CSS、图片） |
+| `DDL.txt` | 数据库表结构 SQL（用于初始化） |
+| `GXDG.md` | gxdg 数据库文档（mj_ 前缀表结构） |
+| `FUJING.md` | fujing 数据库文档（v9_ 前缀表结构） |
 
 ## 数据库架构
 
@@ -215,6 +264,51 @@ class controller_name {
     }
 }
 ```
+
+## 代码风格与命名规范
+
+- **缩进**: PHP 使用 4 空格缩进，不使用制表符
+- **标签**: 使用完整 `<?php ?>` 标签，不使用短标签
+- **花括号**: 函数/控制结构与左花括号同一行
+- **变量命名**: snake_case（如 `$user_name`，`$is_active`）
+- **函数命名**: snake_case（如 `get_user_info()`）
+- **文件命名**: 小写 + 下划线（如 `my_feature.php`）
+- **常量**: UPPER_SNAKE_CASE
+- **类名**: PascalCase
+- **保持兼容**: 避免使用 PHP 7+ 特性，维持 PHP 5.6 兼容性
+
+## 测试与验证
+
+### 手工测试流程
+
+当前无自动化测试框架。对关键接口进行手工验证：
+
+```bash
+# 测试 API 接口
+curl -X POST http://localhost:8000/api/ajax.php -d "param=value"
+
+# 验证数据库写入
+mysql -h 192.168.1.66 -u root -proot -e "SELECT * FROM database.table LIMIT 1;"
+```
+
+### 测试检查清单
+
+- [ ] **上传功能**: 检查文件大小限制、扩展名白名单、存储路径 `uploads/<YYYYMM>/`
+- [ ] **数据变更**: 验证数据库记录是否正确写入/更新
+- [ ] **权限控制**: 确保只有授权用户可访问受限功能
+- [ ] **边界条件**: 测试空值、极值、特殊字符输入
+- [ ] **错误处理**: 验证异常情况下的错误消息和日志记录
+
+### 提交与 PR 要求
+
+- **Commit 信息**: 使用祈使句，例如 `Fix upload type checks` 或 `Add BMI calculation feature`
+- **PR 说明**: 包含以下内容
+  - 功能描述与改动意图
+  - 涉及的模块/接口/配置
+  - 手工测试步骤与结果
+  - UI 变更需附截图（`phpcms/templates/` 相关）
+  - 数据库表结构变更需说明
+- **勿提交**: 真实数据库凭据、API 密钥、调试代码
 
 ## 核心业务模块说明
 
@@ -461,6 +555,87 @@ $table_name = 'kq' . date('Ym'); // 如: kq202412
 $this->table_name = $table_name;
 ```
 
+## 定时任务与后台脚本
+
+### 定时任务架构
+
+定时任务脚本位于 `gxdg/cron/` 目录：
+
+- **cron.php**: 纯 PHP 定时器（常驻进程），定时触发业务脚本
+- **tasktime.php**: 具体业务逻辑执行脚本
+
+### 定时任务开发规范
+
+1. **业务逻辑分离**: 定时器只做触发，业务逻辑放在单独脚本中
+2. **时隙管理**: `sleep()` 控制执行间隔
+3. **错误处理**: 记录执行日志，便于调试和监控
+4. **性能考虑**: 避免在定时任务中执行长时间操作
+
+## API 接口开发
+
+### 接口目录组织
+
+所有业务接口脚本放在 `gxdg/api/` 目录，按功能分类：
+
+- **上传接口**: 文件上传、图片处理
+- **短信接口**: 短信发送、验证
+- **视频接口**: 视频处理、转码
+- **数据接口**: 数据导入、导出
+
+### API 接口安全要求
+
+⚠️ **关键安全规范**：
+
+1. **输入校验**
+   - 参数类型检查（整数用 `intval()`，字符串用 `addslashes()`）
+   - 长度限制检查
+   - 文件扩展名白名单验证
+
+2. **文件上传安全**
+   - 再次验证文件大小
+   - 再次验证 MIME 类型
+   - 严格限制上传路径（仅允许 `uploads/<YYYYMM>/`）
+
+3. **输出安全**
+   - JSON 响应使用 `json_encode()` 防止 XSS
+   - 避免直接输出用户输入
+
+4. **敏感信息保护**
+   - 数据库凭据仅在 `gxdg/caches/configs/database.php` 中
+   - 第三方 API 密钥不入库
+   - 勿在日志中输出敏感信息
+
+## 常见开发场景
+
+### 添加新的业务表
+
+1. 在 `DDL.txt` 中添加 CREATE TABLE 语句
+2. 执行 SQL 在数据库中创建表
+3. 创建对应的 Model 类
+4. 创建 Controller 和视图（如需要）
+5. 更新 `GXDG.md` 或 `FUJING.md` 文档
+
+### 修改动态月度表
+
+工资表、考勤表等按月动态创建：
+
+```php
+// 动态表名示例
+$table_name = 'gz' . date('Ym');  // 如: gz202412
+$table_name = 'kq' . date('Ym');  // 如: kq202412
+
+$this->table_name = $table_name;
+```
+
+### 处理文件上传
+
+上传文件自动按年月组织：
+
+```php
+// 上传文件存储路径
+$upload_dir = 'uploads/' . date('Ym') . '/';  // 如: uploads/202412/
+```
+
 ## 自定义 Agents
 
 项目配置了专用 agents (`.claude/agents/`):
@@ -473,4 +648,4 @@ $this->table_name = $table_name;
 
 - `GXDG.md` - gxdg 数据库结构 (mj_ 前缀, 180张表)
 - `FUJING.md` - fujing 数据库结构 (v9_ 前缀, 337张表)
-- `AGENTS.md` - 开发规范和提交要求
+- `AGENTS.md` - 项目结构指南
