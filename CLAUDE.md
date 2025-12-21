@@ -56,26 +56,6 @@ rm -rf gxdg/caches/*
 - **后台入口**: `gxdg/admin.php?m=模块&c=控制器&a=方法`
 - **API 入口**: `gxdg/api.php?op=操作名`
 
-### 目录说明
-
-| 目录 | 用途 |
-|------|------|
-| `gxdg/phpcms/modules/` | 业务模块（50+ 个，包括 fujing、gongzi、renshi、peixun 等） |
-| `gxdg/phpcms/templates/` | 模板文件（默认主题在 `default/`） |
-| `gxdg/phpcms/libs/classes/` | 框架核心类库（application、model、param 等） |
-| `gxdg/phpcms/model/` | 数据模型基类 |
-| `gxdg/api/` | 业务接口脚本（上传、短信、视频等） |
-| `gxdg/caches/` | 缓存目录，包含配置、编译、数据缓存 |
-| `gxdg/caches/configs/` | 配置文件（database.php、system.php） |
-| `gxdg/caches/caches_template/` | 模板编译缓存 |
-| `gxdg/uploadfile/` | 上传文件存储（访问路径） |
-| `gxdg/uploads/` | 按月份组织的上传文件（`uploads/<YYYYMM>/`） |
-| `gxdg/cron/` | 定时任务脚本 |
-| `gxdg/statics/` | 静态资源（JS、CSS、图片） |
-| `DDL.txt` | 数据库表结构 SQL（用于初始化） |
-| `GXDG.md` | gxdg 数据库文档（mj_ 前缀表结构） |
-| `FUJING.md` | fujing 数据库文档（v9_ 前缀表结构） |
-
 ## 数据库架构
 
 ### 数据库连接配置
@@ -110,8 +90,8 @@ rm -rf gxdg/caches/*
 
 详细的数据表结构请参考:
 
-- `GXDG数据库结构和功能说明文档.md` - gxdg 数据库(mj_前缀)
-- `数据库结构和功能说明文档.md` - fujing 数据库(v9_前缀)
+- `GXDG.md` - gxdg 数据库(mj_前缀, 180张表)
+- `FUJING.md` - fujing 数据库(v9_前缀, 337张表)
 
 ## PHPCMS V9 框架核心架构
 
@@ -585,41 +565,6 @@ error_reporting(E_ALL);
 - 配置缓存: `caches/configs/`
 - 数据缓存: `caches/caches_commons/caches_data/`
 
-## 常见开发任务
-
-### 创建新的业务模块
-
-1. 在 `phpcms/modules/` 创建模块目录
-2. 创建控制器文件(继承自相应的基类)
-3. 创建 Model 类(继承 `model`)
-4. 在数据库创建对应的表(注意表前缀)
-
-### 添加新字段到现有表
-
-1. 先在数据库中添加字段
-2. 更新对应的 Model 类(如需要)
-3. 修改控制器逻辑处理新字段
-4. 更新模板显示新字段
-
-### 修改审批流程
-
-1. 检查表中是否已有审批字段组
-2. 按照标准格式添加: {角色}user, {角色}ok, {角色}dt
-3. 在控制器中实现审批逻辑
-4. 更新前端显示审批状态
-
-### 查询动态月度表
-
-```php
-// 工资表
-$table_name = 'gz' . date('Ym'); // 如: gz202412
-$this->table_name = $table_name;
-
-// 考勤表
-$table_name = 'kq' . date('Ym'); // 如: kq202412
-$this->table_name = $table_name;
-```
-
 ## 定时任务与后台脚本
 
 ### 定时任务架构
@@ -670,36 +615,36 @@ $this->table_name = $table_name;
    - 第三方 API 密钥不入库
    - 勿在日志中输出敏感信息
 
-## 常见开发场景
+## 数据库查询性能优化
 
-### 添加新的业务表
+### 核心原则
 
-1. 在 `DDL.txt` 中添加 CREATE TABLE 语句
-2. 执行 SQL 在数据库中创建表
-3. 创建对应的 Model 类
-4. 创建 Controller 和视图（如需要）
-5. 更新 `GXDG.md` 或 `FUJING.md` 文档
+**抽取数据库数据时，要做到性能最优。**
 
-### 修改动态月度表
-
-工资表、考勤表等按月动态创建：
+### 性能优化要点
 
 ```php
-// 动态表名示例
-$table_name = 'gz' . date('Ym');  // 如: gz202412
-$table_name = 'kq' . date('Ym');  // 如: kq202412
+// ❌ 性能差的写法
+$data = $this->select("", "*");                    // 查询全部字段
+$data = $this->select("");                         // 全表扫描
+$data = $this->select("", "*", "50000, 20");       // 大 OFFSET
+foreach ($ids as $id) {
+    $item = $this->get_one("id=$id");              // N+1 问题
+}
 
-$this->table_name = $table_name;
+// ✅ 性能优的写法
+$data = $this->select("status=1", "id, name");     // 只查需要的字段
+$data = $this->select("status=1", "id, name", "0, 20");  // 合理分页
+$data = $this->select("id IN (".implode(',', $ids).")", "id, name");  // 批量查询
 ```
 
-### 处理文件上传
+### 检查清单
 
-上传文件自动按年月组织：
-
-```php
-// 上传文件存储路径
-$upload_dir = 'uploads/' . date('Ym') . '/';  // 如: uploads/202412/
-```
+- 只查询需要的字段，不用 `SELECT *`
+- 使用合适的 WHERE 条件，避免全表扫描
+- 大数据量查询必须分页，避免 OFFSET 过大
+- 避免在循环中执行数据库查询（N+1 问题）
+- 使用 IN() 代替多个 OR 条件
 
 ## 自定义 Agents
 
