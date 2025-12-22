@@ -1,3 +1,4 @@
 {
-    "php.version": "5.6"
+    "php.version": "5.6",
+    "editorjumper.selectedIDE": "PhpStorm"
 }
