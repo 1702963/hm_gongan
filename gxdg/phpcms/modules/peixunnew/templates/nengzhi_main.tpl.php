@@ -229,7 +229,7 @@ $_fj_conn->close();
         <!--红蓝对抗演练模块-->
         <div id="modHonglan">
             <div class="modTitle">
-                <div class="modName">红蓝对抗演练</div>
+                <div class="modName" style="display: none">红蓝对抗演练</div>
                 <div class="modLine"></div>
             </div>
             <div class="modItemContent">
