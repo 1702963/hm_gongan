@@ -56,6 +56,31 @@ $_fj_conn->close();
             numberAnimate(subArray[0], subArray[1]);
         });
 
+        // 栏目点击跳转配置
+        var linkConfig = {
+            'lilunpeixun': {name: '理论培训', url: '?m=peixunnew&c=peixunnew&a=init'},
+            'jinengshixun': {name: '技能实训', url: '?m=peixunnew&c=shixun&a=init'},
+            'honglanduikang': {name: '红蓝对抗', url: '?m=peixunnew&c=honglan&a=init'},
+            'genrennengzhi': {name: '个人能值', url: '?m=peixunnew&c=nengzhi&a=init'}
+        };
+
+        // 为每个统计卡片绑定点击事件
+        $('.DataItem').each(function(){
+            var $item = $(this);
+            var $numEl = $item.find('.DataItemNumber');
+            if($numEl.length > 0){
+                var id = $numEl.attr('id');
+                if(linkConfig[id]){
+                    $item.attr('data-link', id);
+                    $item.on('click', function(){
+                        var cfg = linkConfig[id];
+                        $("#rightMain", window.parent.document).attr('src', cfg.url + '&pc_hash=' + pc_hash);
+                        $("#current_pos", window.parent.document).html(cfg.name);
+                    });
+                }
+            }
+        });
+
     })
 </script>
 <style type="text/css">
@@ -194,6 +219,12 @@ $_fj_conn->close();
         display: flex;
         align-items: center;
         border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .DataItem:hover, .DataHonour:hover, .DataReport:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 15px rgba(0,150,255,0.5);
     }
 
     .DataItem {

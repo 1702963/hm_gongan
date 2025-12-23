@@ -8,23 +8,23 @@ $_fj_conn = new mysqli($_db_config['hostname'], $_db_config['username'], $_db_co
 $_fj_conn->set_charset($_db_config['charset']);
 
 // 党员数量
-$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangyuan_info");
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_zhibu_chengyuan");
 $_row = $_rs->fetch_assoc();
 $_dangyuan_count = intval($_row['hj']);
 
 // 预备党员 - zzmm=2
-$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangyuan_info WHERE zzmm=2");
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_yubeidangyuan");
 $_row = $_rs->fetch_assoc();
 $_yubei_count = intval($_row['hj']);
 
 // 入党积极分子 - zzmm=3
-$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangyuan_info WHERE zzmm=3");
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_jijifenzi");
 $_row = $_rs->fetch_assoc();
 $_jijifenzi_count = intval($_row['hj']);
 
 // 政治生日 - 本月入党周年
 $_benyue = date("m");
-$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangyuan_info WHERE rdzztime > 0 AND FROM_UNIXTIME(rdzztime, '%m') = '$_benyue'");
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_zhengzhishengri");
 $_row = $_rs->fetch_assoc();
 $_zhengzhishengri_count = intval($_row['hj']);
 
@@ -49,7 +49,7 @@ $_row = $_rs->fetch_assoc();
 $_shenghuo_count = intval($_row['hj']);
 
 // 党费缴纳
-$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangfei");
+$_rs = $_fj_conn->query("SELECT COUNT(*) as hj FROM fujing.v9_dangfeishoujiao");
 $_row = $_rs->fetch_assoc();
 $_dangfei_count = intval($_row['hj']);
 
@@ -106,9 +106,40 @@ $(function(){
 	}
 	//遍历数组并执行过渡效果
 	$.each(ArrayWrapData, function(index, subArray) {
-		numberAnimate(subArray[0],subArray[1]); 
-	});	
- 
+		numberAnimate(subArray[0],subArray[1]);
+	});
+
+	// 栏目点击跳转配置
+	var linkConfig = {
+		'minjingrenshu': {name: '党员数量', url: '?m=dangjian&c=chengyuan&a=init'},
+		'fujingrenshu': {name: '预备党员', url: '?m=dangjian&c=jiagou&a=yubeidangyuan'},
+		'shishikaoqin': {name: '入党积极分子', url: '?m=dangjian&c=jiagou&a=jijifenzi'},
+		'xiujiarenshu': {name: '政治生日', url: '?m=dangjian&c=zhibu&a=zhengzhishengri'},
+		'gerenshixiangtianbao': {name: '党费缴纳', url: '?m=dangjian&c=zhibu&a=dangfeishoujiao'},
+		'benyuebiaozhang': {name: '专项工作', url: '?m=dangjian&c=zhibu&a=zhuanxianggongzuo'},
+		'wenmingbiaobing': {name: '谈心谈话', url: '?m=dangjian&c=zhibu&a=tanxintanhua'},
+		'weixiaozhixing': {name: '党课', url: '?m=dangjian&c=zhibu&a=dangke'},
+		'youxiuwanggeyuan': {name: '组织生活会', url: '?m=dangjian&c=zhibu&a=shenghuohui'},
+		'benyuetongbaorenshu': {name: '一岗双责', url: '?m=dangjian&c=chengyuan&a=yigangshuangze'}
+	};
+
+	// 为每个统计卡片绑定点击事件
+	$('.DataItem, .DataHonour').each(function(){
+		var $item = $(this);
+		var $numEl = $item.find('.DataItemNumber');
+		if($numEl.length > 0){
+			var id = $numEl.attr('id');
+			if(linkConfig[id]){
+				$item.attr('data-link', id);
+				$item.on('click', function(){
+					var cfg = linkConfig[id];
+					$("#rightMain", window.parent.document).attr('src', cfg.url + '&pc_hash=' + pc_hash);
+					$("#current_pos", window.parent.document).html(cfg.name);
+				});
+			}
+		}
+	});
+
 })
 </script>
 <style type="text/css">
@@ -147,7 +178,8 @@ div { box-sizing: border-box }
 .DataItemName {width:100%;font-size:14px;margin-top:0px}
 .DataItemNumber {font-size:30px;font-family:AcensFont;margin-top:0;letter-spacing:3px}
 
-.DataItem , .DataHonour , .DataReport {display:flex; align-items:center; border-radius:3px; }
+.DataItem , .DataHonour , .DataReport {display:flex; align-items:center; border-radius:3px; cursor:pointer; transition:all 0.3s ease; }
+.DataItem:hover , .DataHonour:hover , .DataReport:hover {transform:scale(1.02); box-shadow:0 0 15px rgba(0,150,255,0.5);}
 .DataItem {width:20%;height:calc( 100vh - 90vh ); min-height:100px;  background:rgba(10,80,180,0.2);  border:1px solid rgba(10,60,160,0.5); margin:30px 30px 30px 0;}
 .DataHonour  {width:20%;height:calc( 100vh - 90vh ); min-height:100px; background:rgba(10,150,180,0.2); border:1px solid rgba(10,160,160,0.5); margin:0 30px 30px 0;}
 .DataReport {width:20%;height:calc( 100vh - 90vh );  min-height:100px; background:rgba(255,100,0,0.2); border:1px solid rgba(255,100,0,0.5); margin:0 30px 30px 0;}
