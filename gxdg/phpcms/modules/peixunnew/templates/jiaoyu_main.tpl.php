@@ -65,14 +65,14 @@ $_fj_conn->close();
         };
 
         // 为每个统计卡片绑定点击事件
-        $('.DataItem').each(function(){
+        $('.DataItem').each(function () {
             var $item = $(this);
             var $numEl = $item.find('.DataItemNumber');
-            if($numEl.length > 0){
+            if ($numEl.length > 0) {
                 var id = $numEl.attr('id');
-                if(linkConfig[id]){
+                if (linkConfig[id]) {
                     $item.attr('data-link', id);
-                    $item.on('click', function(){
+                    $item.on('click', function () {
                         var cfg = linkConfig[id];
                         $("#rightMain", window.parent.document).attr('src', cfg.url + '&pc_hash=' + pc_hash);
                         $("#current_pos", window.parent.document).html(cfg.name);
@@ -222,9 +222,10 @@ $_fj_conn->close();
         cursor: pointer;
         transition: all 0.3s ease;
     }
+
     .DataItem:hover, .DataHonour:hover, .DataReport:hover {
         transform: scale(1.02);
-        box-shadow: 0 0 15px rgba(0,150,255,0.5);
+        box-shadow: 0 0 15px rgba(0, 150, 255, 0.5);
     }
 
     .DataItem {
@@ -334,7 +335,17 @@ $_fj_conn->close();
                     </div>
                 </div>
                 <!--数据组结束-->
-
+            </div>
+            <div class="modItemContent">
+                <div onclick="location.href='http://192.168.1.190/gxdg/index.php?m=content&c=sitemodel&a=init&menuid=59&pc_hash=<?php echo $_SESSION['pc_hash'] ?>'" style="cursor:pointer" class="DataItem" data-scroll-reveal="enter right">
+                    <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
+                        <img src="statics/images/admin_img/2025/rs03.png">
+                        <div class="DataItemLight"></div>
+                    </div>
+                    <div class="DataItems" data-scroll-reveal="wait .4s enter right">
+                        <div class="DataItemName">模型管理</div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--人事模块-->
