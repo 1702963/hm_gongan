@@ -10,8 +10,8 @@ class sitemodel_field extends admin {
 	public $siteid;
 	function __construct() {
 		parent::__construct();
-		$this->db = pc_base::load_model('sitemodel_field_model_fujing');
-		$this->model_db = pc_base::load_model('sitemodel_model_fujing');
+		$this->db = pc_base::load_model('sitemodel_fujing_field_model');
+		$this->model_db = pc_base::load_model('sitemodel_fujing_model');
 		$this->siteid = $this->get_siteid();
 	}
 	

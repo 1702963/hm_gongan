@@ -11,7 +11,7 @@ class sitemodel extends admin {
 	public $siteid;
 	function __construct() {
 		parent::__construct();
-		$this->db = pc_base::load_model('sitemodel_model_fujing');
+		$this->db = pc_base::load_model('sitemodel_fujing_model');
 		$this->siteid = $this->get_siteid();
 		if(!$this->siteid) $this->siteid = 1;
 	}
@@ -116,7 +116,7 @@ class sitemodel extends admin {
 		}
 	}
 	public function delete() {
-		$this->sitemodel_field_db = pc_base::load_model('sitemodel_field_model');
+		$this->sitemodel_field_db = pc_base::load_model('sitemodel_fujing_field_model');
 		$modelid = intval($_GET['modelid']);
 		$model_cache = getcache('model','commons');
 		$model_table = $model_cache[$modelid]['tablename'];
@@ -177,7 +177,7 @@ class sitemodel extends admin {
 		$modelarr = getcache('model', 'commons');
 		//定义系统字段排除
 		//$system_field = array('id','title','style','catid','url','listorder','status','userid','username','inputtime','updatetime','pages','readpoint','template','groupids_view','posids','content','keywords','description','thumb','typeid','relation','islink','allow_comment');
-		$this->sitemodel_field_db = pc_base::load_model('sitemodel_field_model');
+		$this->sitemodel_field_db = pc_base::load_model('sitemodel_fujing_field_model');
 		$modelinfo = $this->sitemodel_field_db->select(array('modelid'=>$modelid));
 		foreach($modelinfo as $k=>$v) {
 			//if(in_array($v['field'],$system_field)) continue;
@@ -229,7 +229,7 @@ class sitemodel extends admin {
 				$this->db->sql_execute($model_sql);
 				
 				if(!empty($model_import_data)) {
-					$this->sitemodel_field_db = pc_base::load_model('sitemodel_field_model');
+					$this->sitemodel_field_db = pc_base::load_model('sitemodel_fujing_field_model');
 					$system_field = array('title','style','catid','url','listorder','status','userid','username','inputtime','updatetime','pages','readpoint','template','groupids_view','posids','content','keywords','description','thumb','typeid','relation','islink','allow_comment');
 					foreach($model_import_data as $v) {
 						$field = $v['field'];
@@ -292,7 +292,7 @@ class sitemodel extends admin {
 	 * @param $modelid 模型id
 	 */
 	public function cache_field($modelid = 0) {
-		$this->field_db = pc_base::load_model('sitemodel_field_model');
+		$this->field_db = pc_base::load_model('sitemodel_fujing_field_model');
 		$field_array = array();
 		$fields = $this->field_db->select(array('modelid'=>$modelid,'disabled'=>$disabled),'*',100,'listorder ASC');
 		foreach($fields as $_value) {
