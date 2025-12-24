@@ -1,9 +1,47 @@
 <?php
 defined('IN_ADMIN') or exit('No permission resources.');
 include $this->admin_tpl('header_new', 'admin');?>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+parent.document.getElementById('display_center_id').style.display='none';
+//-->
+</SCRIPT>
+
+<style type="text/css">
+html{_overflow-y:scroll}
+.explain-col {
+    border: 1px solid #3132a4;
+    zoom: 1;
+    background: #252682;
+    padding: 8px 10px;
+    line-height: 20px;
+    color:#bbd8f1
+}
+</style>
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+
+<div class="tableContent">
 <div class="pad-lr-10">
+
+<div class="explain-col">
+  快速工具:
+  <a href="?m=content&c=sitemodel&a=add&menuid=<?php echo $_GET['menuid']?>"><input type="button" value="添加模型" style="margin-left:10px; width:100px" class="doLock" name="dook"></a>
+</div>
+
 <div class="table-list">
-    <table width="100%" cellspacing="0" >
+<script type="text/javascript" >
+  $(document).ready(function() {
+    $(".kotable tbody tr:odd").addClass("odd");
+    $(".kotable tbody tr:even").addClass("even");
+    $(".kotable tbody tr").mouseover(function() {
+      $(this).addClass("iover");
+    }).mouseout(function() {
+      $(this).removeClass("iover");
+    });
+  })
+</script>
+
+    <table width="100%" cellspacing="4" cellpadding="4" class="kotable" style="margin-top:0;">
         <thead>
             <tr>
 			 <th width="100">modelid</th>
@@ -34,6 +72,7 @@ include $this->admin_tpl('header_new', 'admin');?>
     </table>
    <div id="pages"><?php echo $pages;?>
   </div>
+</div>
 </div>
 <script type="text/javascript"> 
 <!--

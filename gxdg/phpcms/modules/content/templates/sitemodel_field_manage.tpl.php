@@ -1,15 +1,50 @@
 <?php
 defined('IN_ADMIN') or exit('No permission resources.');
 include $this->admin_tpl('header_new','admin');?>
-<div class="subnav">
-  <h2 class="title-1 line-x f14 fb blue lh28"><?php echo L('model_manage');?>--<?php echo $r['name'];?><?php echo L('field_manage');?></h2>
-<div class="content-menu ib-a blue line-x"><a class="add fb" href="?m=content&c=sitemodel_field&a=add&modelid=<?php echo $modelid?>&menuid=<?php echo $_GET['menuid']?>"><em><?php echo L('add_field');?></em></a>
-　<a class="on" href="?m=content&c=sitemodel_field&a=init&modelid=<?php echo $modelid?>&menuid=<?php echo $_GET['menuid']?>"><em><?php echo L('manage_field');?></em></a><span>|</span><a href="?m=content&c=sitemodel_field&a=public_priview&modelid=<?php echo $modelid?>&menuid=<?php echo $_GET['menuid']?>" target="_blank"><em><?php echo L('priview_modelfield');?></em></a>
-</div></div>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+parent.document.getElementById('display_center_id').style.display='none';
+//-->
+</SCRIPT>
+
+<style type="text/css">
+html{_overflow-y:scroll}
+.explain-col {
+    border: 1px solid #3132a4;
+    zoom: 1;
+    background: #252682;
+    padding: 8px 10px;
+    line-height: 20px;
+    color:#bbd8f1
+}
+</style>
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+
+<div class="tableContent">
 <div class="pad-lr-10">
+
+<div class="explain-col">
+  快速工具:
+  <a href="?m=content&c=sitemodel_field&a=add&modelid=<?php echo $modelid?>&menuid=<?php echo $_GET['menuid']?>"><input type="button" value="<?php echo L('add_field');?>" style="margin-left:10px; width:100px" class="doLock" name="dook"></a>
+  <a href="?m=content&c=sitemodel_field&a=init&modelid=<?php echo $modelid?>&menuid=<?php echo $_GET['menuid']?>"><input type="button" value="<?php echo L('manage_field');?>" style="margin-left:10px; width:100px" class="doLock" name="dook"></a>
+  <a href="?m=content&c=sitemodel_field&a=public_priview&modelid=<?php echo $modelid?>&menuid=<?php echo $_GET['menuid']?>" target="_blank"><input type="button" value="<?php echo L('priview_modelfield');?>" style="margin-left:10px; width:120px" class="doLock" name="dook"></a>
+</div>
+
 <form name="myform" action="?m=content&c=sitemodel_field&a=listorder" method="post">
 <div class="table-list">
-    <table width="100%" cellspacing="0" >
+<script type="text/javascript" >
+  $(document).ready(function() {
+    $(".kotable tbody tr:odd").addClass("odd");
+    $(".kotable tbody tr:even").addClass("even");
+    $(".kotable tbody tr").mouseover(function() {
+      $(this).addClass("iover");
+    }).mouseout(function() {
+      $(this).removeClass("iover");
+    });
+  })
+</script>
+
+    <table width="100%" cellspacing="4" cellpadding="4" class="kotable" style="margin-top:0;">
         <thead>
             <tr>
 			 <th width="70"><?php echo L('listorder')?></th>
@@ -50,6 +85,7 @@ include $this->admin_tpl('header_new','admin');?>
     </table>
    <div class="btn"><input type="submit" class="button" name="dosubmit" value="<?php echo L('listorder');?>" /></div></div>
 </form>
+</div>
 </div>
 </body>
 </html>

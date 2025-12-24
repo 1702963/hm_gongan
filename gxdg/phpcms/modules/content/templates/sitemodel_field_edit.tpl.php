@@ -1,6 +1,12 @@
 <?php
 defined('IN_ADMIN') or exit('No permission resources.');
 include $this->admin_tpl('header_new','admin');?>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+parent.document.getElementById('display_center_id').style.display='none';
+//-->
+</SCRIPT>
+
 <script type="text/javascript">
 <!--
 $(function(){
@@ -33,12 +39,15 @@ $(function(){
 
 //-->
 </script>
-<div class="pad_10">
-<div class="subnav">
-  <h2 class="title-1 line-x f14 fb blue lh28"><?php echo L('model_manage');?>--<?php echo $m_r['name'].L('field_manage');?></h2>
-<div class="content-menu ib-a blue line-x">
-<a href="javascript:;" class="on"><em><?php echo L('edit_field');?></em></a><span>|</span><a href="?m=content&c=sitemodel_field&a=init&modelid=<?php echo $modelid?>&menuid=<?php echo $_GET['menuid']?>"><em><?php echo L('manage_field');?></em></a><span>|</span></div>
-  <div class="bk10"></div>
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+
+<div class="tableContent">
+<div class="tabcon" style="padding-top: 50px;">
+<div class="title" style="width:auto;">模型字段编辑</div>
+<div class="pad-lr-10">
+<div class="explain-col" style="margin-top:10px;">
+  快速工具:
+  <a href="?m=content&c=sitemodel_field&a=init&modelid=<?php echo $modelid?>&menuid=<?php echo $_GET['menuid']?>"><input type="button" value="<?php echo L('manage_field');?>" style="margin-left:10px; width:100px" class="doLock" name="dook"></a>
 </div>
 <form name="myform" id="myform" action="?m=content&c=sitemodel_field&a=edit" method="post">
 <div class="common-form">
@@ -155,9 +164,12 @@ $(function(){
     <input name="info[modelid]" type="hidden" value="<?php echo $modelid?>">
     <input name="fieldid" type="hidden" value="<?php echo $fieldid?>">
     <input name="oldfield" type="hidden" value="<?php echo $field?>">
-    <div class="btn"><input name="dosubmit" type="submit" value="<?php echo L('submit')?>" class="button"></div>
+    <div class="btn"><input  style="font-size:14px;"  name="dosubmit" type="submit" value="<?php echo L('submit')?>" class="button"></div>
 	</form>
 
+</div>
+</div>
+</div>
 </div>
 </body>
 </html>

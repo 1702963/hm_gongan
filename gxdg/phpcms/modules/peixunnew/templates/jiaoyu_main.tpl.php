@@ -336,17 +336,6 @@ $_fj_conn->close();
                 </div>
                 <!--数据组结束-->
             </div>
-            <div class="modItemContent">
-                <div onclick="location.href='http://192.168.1.190/gxdg/index.php?m=content&c=sitemodel&a=init&menuid=59&pc_hash=<?php echo $_SESSION['pc_hash'] ?>'" style="cursor:pointer" class="DataItem" data-scroll-reveal="enter right">
-                    <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
-                        <img src="statics/images/admin_img/2025/rs03.png">
-                        <div class="DataItemLight"></div>
-                    </div>
-                    <div class="DataItems" data-scroll-reveal="wait .4s enter right">
-                        <div class="DataItemName">模型管理</div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!--人事模块-->
         <div class="modItemContent">

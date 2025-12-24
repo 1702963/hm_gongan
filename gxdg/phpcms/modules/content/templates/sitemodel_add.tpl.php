@@ -2,6 +2,12 @@
 defined('IN_ADMIN') or exit('No permission resources.');
 include $this->admin_tpl('header_new','admin');
 ?>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+parent.document.getElementById('display_center_id').style.display='none';
+//-->
+</SCRIPT>
+
 <script type="text/javascript">
 <!--
 	$(function(){
@@ -11,6 +17,11 @@ include $this->admin_tpl('header_new','admin');
 	})
 //-->
 </script>
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
+
+<div class="tableContent">
+<div class="tabcon" style="padding-top: 50px;">
+<div class="title" style="width:auto;">模型添加</div>
 <div class="pad-lr-10">
 <form action="?m=content&c=sitemodel&a=add" method="post" id="myform">
 <fieldset>
@@ -74,8 +85,10 @@ include $this->admin_tpl('header_new','admin');
 </table>
 </fieldset>
 <div class="bk15"></div>
-    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="<?php echo L('submit');?>" />
+    <input type="submit" style="font-size:14px;" class="dialog" id="dosubmit" name="dosubmit" value="<?php echo L('submit');?>" />
 </form>
+</div>
+</div>
 </div>
 <script language="JavaScript">
 <!--

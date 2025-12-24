@@ -1,4 +1,5 @@
 <?php
+ini_set("display_errors",'On');
 defined('IN_PHPCMS') or exit('No permission resources.');
 //模型原型存储路径
 define('MODEL_PATH',PC_PATH.'modules'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'fields'.DIRECTORY_SEPARATOR);
@@ -10,7 +11,7 @@ class sitemodel extends admin {
 	public $siteid;
 	function __construct() {
 		parent::__construct();
-		$this->db = pc_base::load_model('sitemodel_model');
+		$this->db = pc_base::load_model('sitemodel_model_fujing');
 		$this->siteid = $this->get_siteid();
 		if(!$this->siteid) $this->siteid = 1;
 	}
@@ -60,7 +61,7 @@ class sitemodel extends admin {
 			$model_sql = str_replace('$table_model_field',$tablepre.'model_field', $model_sql);
 			$model_sql = str_replace('$modelid',$modelid,$model_sql);
 			$model_sql = str_replace('$siteid',$this->siteid,$model_sql);
-			
+
 			$this->db->sql_execute($model_sql);
 			$this->cache_field($modelid);
 			//调用全站搜索类别接口
