@@ -38,11 +38,11 @@ class category extends admin {
 				if(!$show_detail) {
 					if($r['parentid']!=$parentid) continue;
 					$r['parentid'] = 0;
-					$r['str_manage'] .= '<a href="?m=admin&c=category&a=init&parentid='.$r['catid'].'&menuid='.$_GET['menuid'].'&s='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('manage_sub_category').'</a> | ';
+//					$r['str_manage'] .= '<a href="?m=admin&c=category&a=init&parentid='.$r['catid'].'&menuid='.$_GET['menuid'].'&s='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('manage_sub_category').'</a> | ';
 				}
-				$r['str_manage'] .= '<a href="?m=admin&c=category&a=add&parentid='.$r['catid'].'&menuid='.$_GET['menuid'].'&s='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('add_sub_category').'</a> | ';
+//				$r['str_manage'] .= '<a href="?m=admin&c=category&a=add&parentid='.$r['catid'].'&menuid='.$_GET['menuid'].'&s='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('add_sub_category').'</a> | ';
 				
-				$r['str_manage'] .= '<a href="?m=admin&c=category&a=edit&catid='.$r['catid'].'&menuid='.$_GET['menuid'].'&type='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('edit').'</a> | <a href="javascript:confirmurl(\'?m=admin&c=category&a=delete&catid='.$r['catid'].'&menuid='.$_GET['menuid'].'\',\''.L('confirm',array('message'=>addslashes($r['catname']))).'\')">'.L('delete').'</a> | <a href="?m=admin&c=category&a=remove&catid='.$r['catid'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('remove','','content').'</a>';
+				$r['str_manage'] .= '<a href="?m=admin&c=category&a=edit&catid='.$r['catid'].'&menuid='.$_GET['menuid'].'&type='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('edit').'</a> | <a href="javascript:confirmurl(\'?m=admin&c=category&a=delete&catid='.$r['catid'].'&menuid='.$_GET['menuid'].'\',\''.L('confirm',array('message'=>addslashes($r['catname']))).'\')">'.L('delete').'</a> | <!-- <a href="?m=admin&c=category&a=remove&catid='.$r['catid'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('remove','','content').'</a>-->';
 				$r['typename'] = $types[$r['type']];
 				$r['display_icon'] = $r['ismenu'] ? '' : ' <img src ="'.IMG_PATH.'icon/gear_disable.png" title="'.L('not_display_in_menu').'">';
 				if($r['type'] || $r['child']) {
