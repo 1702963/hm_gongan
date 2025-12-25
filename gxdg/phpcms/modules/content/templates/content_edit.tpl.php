@@ -33,12 +33,17 @@ body, html {
 }
 
 /* 左右列样式 */
-.col-right, .col-auto {
+.col-right {
+    display: none !important;
+}
+.col-auto {
     background: transparent !important;
     border: none;
     border-radius: 0;
     padding: 15px 0;
     margin-bottom: 15px;
+    width: 100% !important;
+    float: none !important;
 }
 
 .col-1 {
@@ -370,6 +375,8 @@ if(is_array($forminfos['base'])) {
 	<?php if($can_edit) { ?>
     <div class="button"><input value="<?php echo L('save_close');?>" type="submit" name="dosubmit" class="cu" onclick="refersh_window()"></div>
     <div class="button"><input value="<?php echo L('save_continue');?>" type="submit" name="dosubmit_continue" class="cu" onclick="refersh_window()"></div>
+    <?php } elseif($show_level1_approval || $show_level2_approval) { ?>
+    <div class="button"><input value="提交审批" type="submit" name="dosubmit" class="cu" onclick="refersh_window()"></div>
     <?php } ?>
     <div class="button"><input value="<?php echo L('c_close');?>" type="button" name="close" onclick="refersh_window();close_window();" class="cu" title="Alt+X"></div>
       </div>

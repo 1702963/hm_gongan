@@ -70,6 +70,21 @@ class content extends admin
             $status = $steps ? $steps : 99;
             if (isset($_GET['reject'])) $status = 0;
             $where = 'catid=' . $catid . ' AND status=' . $status;
+
+            // 只显示：我提交的 或 我是审批员的
+            $current_userid = intval($_SESSION['userid']);
+            $approval_db = pc_base::load_model('content_approval_model');
+            $table_name = $MODEL['tablename'];
+            $my_approvals = $approval_db->select("table_name='$table_name' AND (submit_user=$current_userid OR level1_user=$current_userid OR level2_user=$current_userid)", 'record_id');
+            if ($my_approvals) {
+                $my_ids = array();
+                foreach ($my_approvals as $ap) {
+                    $my_ids[] = intval($ap['record_id']);
+                }
+                $where .= ' AND id IN (' . implode(',', $my_ids) . ')';
+            } else {
+                $where .= ' AND 1=0'; // 没有相关数据
+            }
             //搜索
 
             if (isset($_GET['start_time']) && $_GET['start_time']) {
@@ -268,21 +283,47 @@ class content extends admin
             $approval_level = isset($_POST['approval_level']) ? intval($_POST['approval_level']) : 0;
             $current_userid = intval($_SESSION['userid']);
 
-            if ($approval && $approval_action > 0 && $approval_level > 0) {
-                $update_data = array();
-                if ($approval_level == 1 && $approval['level1_user'] == $current_userid && $approval['level1_status'] == 0) {
-                    // 一级审批
-                    $update_data['level1_status'] = $approval_action;
-                } elseif ($approval_level == 2 && $approval['level2_user'] == $current_userid && $approval['level1_status'] == 1 && $approval['level2_status'] == 0) {
-                    // 二级审批（需要一级已通过）
-                    $update_data['level2_status'] = $approval_action;
+            // 如果是审批员提交（有approval_level参数）
+            if ($approval_level > 0) {
+                if ($approval_action == 0) {
+                    showmessage('请选择审批结果（通过或拒绝）！');
                 }
-                if (!empty($update_data)) {
-                    $approval_db->update($update_data, array('id' => $approval['id']));
-                    showmessage('审批操作成功！', HTTP_REFERER);
+                if ($approval) {
+                    $update_data = array();
+                    if ($approval_level == 1 && $approval['level1_user'] == $current_userid && $approval['level1_status'] == 0) {
+                        // 一级审批
+                        $update_data['level1_status'] = $approval_action;
+                    } elseif ($approval_level == 2 && $approval['level2_user'] == $current_userid && $approval['level1_status'] == 1 && $approval['level2_status'] == 0) {
+                        // 二级审批（需要一级已通过）
+                        $update_data['level2_status'] = $approval_action;
+                    }
+                    if (!empty($update_data)) {
+                        $approval_db->update($update_data, array('id' => $approval['id']));
+                        // 记录审批日志
+                        $log_db = pc_base::load_model('content_approval_log_model');
+                        $log_data = array(
+                            'approver_id' => $current_userid,
+                            'approval_level' => $approval_level,
+                            'approval_result' => $approval_action,
+                            'table_name' => $table_name,
+                            'record_id' => $id,
+                            'submit_user' => $approval['submit_user'],
+                            'approval_time' => SYS_TIME,
+                            'approval_year' => date('Y'),
+                            'approval_month' => date('n'),
+                            'approval_day' => date('j')
+                        );
+                        $log_db->insert($log_data);
+                        showmessage('审批操作成功！', 'blank', '', '', 'function set_time() {$("#secondid").html(1);}setTimeout("set_time()", 500);setTimeout("window.close()", 1200);');
+                    } else {
+                        showmessage('无权限进行此审批操作！');
+                    }
+                } else {
+                    showmessage('审批记录不存在！');
                 }
             }
 
+            // 内容编辑提交
             $can_edit = false;
             if ($approval) {
                 // 只有其中一个为拒绝(2)才能编辑，其他都只读
@@ -296,6 +337,12 @@ class content extends admin
             if (trim($_POST['info']['title']) == '') showmessage(L('title_is_empty'));
             $this->db->set_model($modelid);
             $this->db->edit_content($_POST['info'], $id);
+
+            // 提交者重新提交后，如果有拒绝状态则重置审批状态为未审核
+            if ($approval && ($approval['level1_status'] == 2 || $approval['level2_status'] == 2)) {
+                $approval_db->update(array('level1_status' => 0, 'level2_status' => 0), array('id' => $approval['id']));
+            }
+
             if (isset($_POST['dosubmit'])) {
                 showmessage(L('update_success') . L('2s_close'), 'blank', '', '', 'function set_time() {$("#secondid").html(1);}setTimeout("set_time()", 500);setTimeout("window.close()", 1200);');
             } else {
@@ -329,13 +376,17 @@ class content extends admin
             $level1_status = 0;
             $level2_status = 0;
             if ($approval) {
-                // 只有其中一个为拒绝(2)才能编辑，其他都只读
-                $can_edit = ($approval['level1_status'] == 2 || $approval['level2_status'] == 2);
                 $level1_status = intval($approval['level1_status']);
                 $level2_status = intval($approval['level2_status']);
                 // 判断当前用户是否是审批员
                 $is_level1_approver = ($approval['level1_user'] == $current_userid);
                 $is_level2_approver = ($approval['level2_user'] == $current_userid);
+                // 审批员查看时始终只读，非审批员且有拒绝状态时才能编辑
+                if ($is_level1_approver || $is_level2_approver) {
+                    $can_edit = false;
+                } else {
+                    $can_edit = ($level1_status == 2 || $level2_status == 2);
+                }
                 // 一级审批员：未审批(status=0)时显示审批按钮
                 $show_level1_approval = ($is_level1_approver && $level1_status == 0);
                 // 二级审批员：一级通过(status=1)且二级未审批(status=0)时显示审批按钮

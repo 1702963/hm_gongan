@@ -33,12 +33,17 @@ body, html {
 }
 
 /* 左右列样式 */
-.col-right, .col-auto {
+.col-right {
+    display: none !important;
+}
+.col-auto {
     background: transparent !important;
     border: none;
     border-radius: 0;
     padding: 15px 0;
     margin-bottom: 15px;
+    width: 100% !important;
+    float: none !important;
 }
 
 .col-1 {

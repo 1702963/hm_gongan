@@ -657,4 +657,12 @@ $LANG['chengzhangss'] = '成长路径';
 $LANG['tjhuaxiangs'] = '统计端个人画像';
 $LANG['categoryManage'] = '栏目管理';
 $LANG['shengpiguanli'] = '审批管理';
+$LANG['moxingguanli'] = '模型管理';
+$LANG['lanmuguanli'] = '栏目管理';
+$LANG['lanmuguanli'] = '栏目管理';
+$LANG['shenpiguanli'] = '审批管理';
+$LANG['cadd'] = '删除审批';
+$LANG['cdelete'] = '删除审批';
+$LANG['cedit'] = '修改审批';
+$LANG['cadd'] = '添加审批';
 ?>
