@@ -19,6 +19,15 @@ html{_overflow-y:scroll}
 
 <div class="tableContent">
 <div class="pad-lr-10">
+
+<div class="explain-col">
+  快速工具:
+  <a href="?m=admin&c=category&a=add&menuid=<?php echo $_GET['menuid']?>&pc_hash=<?php echo $_SESSION['pc_hash']?>"><input type="button" value="添加栏目" style="margin-left:10px; width:80px" class="doLock" name="dook"></a>
+<!--  <a href="?m=admin&c=category&a=add_page&menuid=--><?php //echo $_GET['menuid']?><!--&pc_hash=--><?php //echo $_SESSION['pc_hash']?><!--"><input type="button" value="添加单网页" style="margin-left:10px; width:80px" class="doLock" name="dook"></a>-->
+<!--  <a href="?m=admin&c=category&a=add_link&menuid=--><?php //echo $_GET['menuid']?><!--&pc_hash=--><?php //echo $_SESSION['pc_hash']?><!--"><input type="button" value="添加外部链接" style="margin-left:10px; width:100px" class="doLock" name="dook"></a>-->
+  <a href="?m=admin&c=category&a=public_cache&menuid=<?php echo $_GET['menuid']?>&module=admin"><input type="button" value="更新栏目缓存" style="margin-left:10px; width:100px" class="doLock" name="dook"></a>
+</div>
+
 <form name="myform" action="?m=admin&c=category&a=listorder" method="post">
 <div class="pad_10">
 <div class="explain-col">

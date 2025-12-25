@@ -20,6 +20,27 @@ parent.document.getElementById('display_center_id').style.display='none';
 	})
 //-->
 </script>
+<style type="text/css">
+.table-list thead tr th {
+    background: #252682;
+    color: #bbd8f1;
+    border: 1px solid #3132a4;
+    padding: 8px 10px;
+}
+.table-list tbody tr td {
+    border: 1px solid #3132a4;
+    padding: 6px 8px;
+} 
+.table-list tbody tr:nth-child(odd) {
+    background: rgba(37, 38, 130, 0.3);
+}
+.table-list tbody tr:nth-child(even) {
+    background: rgba(37, 38, 130, 0.5);
+}
+.table-list tbody tr:hover {
+    background: rgba(49, 50, 164, 0.7);
+}
+</style>
 <link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 
 <div class="tableContent">
