@@ -37,6 +37,16 @@ $_result = $_fj_conn->query("SELECT COUNT(*) as cnt FROM v9_peixun_zhuanye_jilu"
 $_row = $_result->fetch_assoc();
 $zhuanye_count = intval($_row['cnt']);
 
+// 专业培训数量
+$_result = $_fj_conn->query("SELECT COUNT(*) as cnt FROM v9_peixun_hebei_jihua");
+$_row = $_result->fetch_assoc();
+$hebei = intval($_row['cnt']);
+
+// 专业培训人次
+$_result = $_fj_conn->query("SELECT COUNT(*) as cnt FROM v9_peixun_hebei_jilu");
+$_row = $_result->fetch_assoc();
+$hebei_count = intval($_row['cnt']);
+
 $_fj_conn->close();
 
 
@@ -62,6 +72,8 @@ $_fj_conn->close();
             ['fujing_count', <?php echo $fujing_count?>],  // 辅警培训人次
             ['zhuanye', <?php echo $zhuanye?>],  // 专业
             ['zhuanye_count', <?php echo $zhuanye_count?>],    // 专业培训人次
+            ['ganyuan', <?php echo $hebei?>],  // 专业
+            ['ganyuan_count', <?php echo $hebei_count?>],    // 专业培训人次
         ];
 
         //数字过渡效果
@@ -320,6 +332,16 @@ $_fj_conn->close();
                         <div class="DataItemNumber" id="zhuanye">0</div>
                     </div>
                 </div>
+                <div onclick="location.href='index.php?m=peixunnew&c=hebeiganyuan&a=init'" style="cursor:pointer;"  class="DataItem" data-scroll-reveal="enter right">
+                    <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
+                        <img src="statics/images/admin_img/2025/rs03.png">
+                        <div class="DataItemLight"></div>
+                    </div>
+                    <div class="DataItems" data-scroll-reveal="wait .4s enter right">
+                        <div class="DataItemName">河北干院数量</div>
+                        <div class="DataItemNumber" id="ganyuan">0</div>
+                    </div>
+                </div>
                 <!--数据组结束-->
 
             </div>
@@ -361,6 +383,15 @@ $_fj_conn->close();
                     <div class="DataItems" data-scroll-reveal="wait .4s enter right">
                         <div class="DataItemName">专业培训人次</div>
                         <div class="DataItemNumber" id="zhuanye_count">0</div>
+                    </div>
+                </div>                <!--微笑之星-->
+                <div  onclick="location.href='index.php?m=peixunnew&c=hebeiganyuan_jilu&a=init'" style="cursor:pointer;"   class="DataHonour" data-scroll-reveal="enter right">
+                    <div class="DataItemPic" data-scroll-reveal="wait .2s enter left">
+                        <img src="statics/images/admin_img/2025/bz01.png">
+                    </div>
+                    <div class="DataItems" data-scroll-reveal="wait .4s enter right">
+                        <div class="DataItemName">河北干院人次</div>
+                        <div class="DataItemNumber" id="ganyuan_count">0</div>
                     </div>
                 </div>
             </div>
