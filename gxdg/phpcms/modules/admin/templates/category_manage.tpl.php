@@ -56,7 +56,6 @@ html{_overflow-y:scroll}
             <th width="80"><?php echo L('category_type');?></th>
             <th width="80"><?php echo L('modelname');?></th>
             <th width="60"><?php echo L('items');?></th>
-            <th width="50"><?php echo L('vistor');?></th>
             <th width="100"><?php echo L('domain_help');?></th>
 			<th width="120"><?php echo L('operations_manage');?></th>
             </tr>

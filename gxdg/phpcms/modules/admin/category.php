@@ -25,8 +25,8 @@ class category extends admin {
 		$tree->icon = array('&nbsp;&nbsp;&nbsp;│ ','&nbsp;&nbsp;&nbsp;├─ ','&nbsp;&nbsp;&nbsp;└─ ');
 		$tree->nbsp = '&nbsp;&nbsp;&nbsp;';
 		$categorys = array();
-		//读取缓存
-		$result = getcache('category_content_'.$this->siteid,'commons');
+		//读取数据库，过滤掉 catid 1-8
+		$result = $this->db->select("siteid={$this->siteid} AND catid NOT IN (1,2,3,4,5,6,7,8)", '*', '', 'listorder ASC, catid ASC');
 		$show_detail = count($result) < 500 ? 1 : 0;
 		$parentid = $_GET['parentid'] ? intval($_GET['parentid']) : 0;
 		$html_root = pc_base::load_config('system','html_root');
@@ -42,7 +42,7 @@ class category extends admin {
 				}
 //				$r['str_manage'] .= '<a href="?m=admin&c=category&a=add&parentid='.$r['catid'].'&menuid='.$_GET['menuid'].'&s='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('add_sub_category').'</a> | ';
 				
-				$r['str_manage'] .= '<a href="?m=admin&c=category&a=edit&catid='.$r['catid'].'&menuid='.$_GET['menuid'].'&type='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('edit').'</a> | <a href="javascript:confirmurl(\'?m=admin&c=category&a=delete&catid='.$r['catid'].'&menuid='.$_GET['menuid'].'\',\''.L('confirm',array('message'=>addslashes($r['catname']))).'\')">'.L('delete').'</a> | <!-- <a href="?m=admin&c=category&a=remove&catid='.$r['catid'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('remove','','content').'</a>-->';
+				$r['str_manage'] .= '<a href="?m=admin&c=category&a=edit&catid='.$r['catid'].'&menuid='.$_GET['menuid'].'&type='.$r['type'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('edit').'</a> | <a href="javascript:confirmurl(\'?m=admin&c=category&a=delete&catid='.$r['catid'].'&menuid='.$_GET['menuid'].'\',\''.L('confirm',array('message'=>addslashes($r['catname']))).'\')">'.L('delete').'</a> <!-- |  <a href="?m=admin&c=category&a=remove&catid='.$r['catid'].'&pc_hash='.$_SESSION['pc_hash'].'">'.L('remove','','content').'</a>-->';
 				$r['typename'] = $types[$r['type']];
 				$r['display_icon'] = $r['ismenu'] ? '' : ' <img src ="'.IMG_PATH.'icon/gear_disable.png" title="'.L('not_display_in_menu').'">';
 				if($r['type'] || $r['child']) {
@@ -79,7 +79,6 @@ class category extends admin {
 					<td>\$typename</td>
 					<td>\$modelname</td>
 					<td align='center'>\$items</td>
-					<td align='center'>\$url</td>
 					<td align='center'>\$help</td>
 					<td align='center' >\$str_manage</td>
 				</tr>";

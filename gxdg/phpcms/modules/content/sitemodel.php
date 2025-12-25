@@ -18,7 +18,7 @@ class sitemodel extends admin {
     public function init() {
         $categorys = getcache('category_content_'.$this->siteid,'commons');
 
-        $datas = $this->db->listinfo(array('siteid'=>$this->siteid,'type'=>0),'',$_GET['page'],30);
+        $datas = $this->db->listinfo("siteid={$this->siteid} AND type=0 AND modelid NOT IN (1,2,3)",'',$_GET['page'],30);
         //模型文章数array('模型id'=>数量);
         $items = array();
         foreach ($datas as $k=>$r) {

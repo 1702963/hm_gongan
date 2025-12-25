@@ -1,7 +1,14 @@
 <?php
 defined('IN_ADMIN') or exit('No permission resources.');
-include $this->admin_tpl('header');?>
-<script type="text/javascript"> 
+include $this->admin_tpl('header_new','admin');
+?>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+parent.document.getElementById('display_center_id').style.display='none';
+//-->
+</SCRIPT>
+
+<script type="text/javascript">
 <!--
 	$(function(){
 		$.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){window.top.art.dialog({content:msg,lock:true,width:'200',height:'50'}, function(){this.close();$(obj).focus();})}});
@@ -10,7 +17,37 @@ include $this->admin_tpl('header');?>
 	})
 //-->
 </script>
+<style type="text/css">
+.table-list thead tr th,
+table.table-list thead th {
+    background: #252682 !important;
+    color: #bbd8f1 !important;
+    border: 1px solid #3132a4 !important;
+    padding: 8px 10px !important;
+}
+.table-list tbody tr td,
+table.table-list tbody td {
+    border: 1px solid #3132a4 !important;
+    padding: 6px 8px !important;
+    background: transparent;
+}
+.table-list tbody tr:nth-child(odd),
+table.table-list tbody tr:nth-child(odd) {
+    background: rgba(37, 38, 130, 0.3) !important;
+}
+.table-list tbody tr:nth-child(even),
+table.table-list tbody tr:nth-child(even) {
+    background: rgba(37, 38, 130, 0.5) !important;
+}
+.table-list tbody tr:hover,
+table.table-list tbody tr:hover {
+    background: rgba(49, 50, 164, 0.7) !important;
+}
+</style>
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 
+<div class="tableContent">
+<div class="pad-lr-10">
 <form name="myform" id="myform" action="?m=admin&c=category&a=edit" method="post">
 <div class="pad-10">
 <div class="col-tab">
@@ -183,6 +220,8 @@ include $this->admin_tpl('header');?>
 
 </div>
 <!--table_form_off-->
+</div>
+</div>
 </div>
 
 <script language="JavaScript">
