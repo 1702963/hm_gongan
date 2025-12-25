@@ -10,8 +10,8 @@ class sitemodel_field extends admin {
 	public $siteid;
 	function __construct() {
 		parent::__construct();
-		$this->db = pc_base::load_model('sitemodel_fujing_field_model');
-		$this->model_db = pc_base::load_model('sitemodel_fujing_model');
+		$this->db = pc_base::load_model('sitemodel_field_model');
+		$this->model_db = pc_base::load_model('sitemodel_model');
 		$this->siteid = $this->get_siteid();
 	}
 	
@@ -50,7 +50,7 @@ class sitemodel_field extends admin {
 			$_POST['info']['unsetroleids'] = isset($_POST['unsetroleids']) ? implode(',',$_POST['unsetroleids']) : '';
 			$this->db->insert($_POST['info']);
 			$this->cache_field($modelid);
-			showmessage(L('add_success'),'?m=content&c=sitemodel_field&a=init&modelid='.$modelid.'&menuid=59');
+			showmessage_org(L('add_success'),'?m=content&c=sitemodel_field&a=init&modelid='.$modelid.'&menuid=59');
 		} else {
 			$show_header = $show_validator = $show_dialog = '';
 			pc_base::load_sys_class('form','',0);
@@ -109,7 +109,7 @@ class sitemodel_field extends admin {
 			$_POST['info']['unsetroleids'] = isset($_POST['unsetroleids']) ? implode(',',$_POST['unsetroleids']) : '';
 			$this->db->update($_POST['info'],array('fieldid'=>$fieldid,'siteid'=>$this->siteid));
 			$this->cache_field($modelid);
-			showmessage(L('update_success'),'?m=content&c=sitemodel_field&a=init&modelid='.$modelid.'&menuid=59');
+			showmessage_org(L('update_success'),'?m=content&c=sitemodel_field&a=init&modelid='.$modelid.'&menuid=59');
 		} else {
 			$show_header = $show_validator = $show_dialog = '';
 			pc_base::load_sys_class('form','',0);
@@ -146,7 +146,7 @@ class sitemodel_field extends admin {
 		$this->db->update(array('disabled'=>$disabled),array('fieldid'=>$fieldid,'siteid'=>$this->siteid));
 		$modelid = $_GET['modelid'];
 		$this->cache_field($modelid);
-		showmessage(L('operation_success'),HTTP_REFERER);
+		showmessage_org(L('operation_success'),HTTP_REFERER);
 	}
 	public function delete() {
 		$fieldid = intval($_GET['fieldid']);
@@ -159,7 +159,7 @@ class sitemodel_field extends admin {
 		$model_table = $model_cache[$modelid]['tablename'];
 		$tablename = $r['issystem'] ? $model_table : $model_table.'_data';
 		$this->db->drop_field($tablename,$r['field']);
-		showmessage(L('operation_success'),HTTP_REFERER);
+		showmessage_org(L('operation_success'),HTTP_REFERER);
 	}
 	/**
 	 * 排序
@@ -169,9 +169,9 @@ class sitemodel_field extends admin {
 			foreach($_POST['listorders'] as $id => $listorder) {
 				$this->db->update(array('listorder'=>$listorder),array('fieldid'=>$id));
 			}
-			showmessage(L('operation_success'),HTTP_REFERER);
+			showmessage_org(L('operation_success'),HTTP_REFERER);
 		} else {
-			showmessage(L('operation_failure'));
+			showmessage_org(L('operation_failure'));
 		}
 	}
 	/**
