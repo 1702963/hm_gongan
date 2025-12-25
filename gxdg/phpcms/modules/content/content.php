@@ -488,6 +488,8 @@ class content extends admin {
 		$categorys = array();
 		if(!empty($this->categorys)) {
 			foreach($this->categorys as $r) {
+				// 过滤掉 catid 1-8
+				if(in_array($r['catid'], array(1,2,3,4,5,6,7,8))) continue;
 				if($r['siteid']!=$this->siteid ||  ($r['type']==2 && $r['child']==0)) continue;
 				if($from=='content' && $_SESSION['roleid'] != 1 && !in_array($r['catid'],$priv_catids)) {
 					$arrchildid = explode(',',$r['arrchildid']);

@@ -1,6 +1,186 @@
 <?php
 defined('IN_ADMIN') or exit('No permission resources.');$addbg=1;
 include $this->admin_tpl('header_new','admin');?>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+parent.document.getElementById('display_center_id').style.display='none';
+//-->
+</SCRIPT>
+<style type="text/css">
+body, html {
+    background: #1a2550 !important;
+    background-attachment: fixed !important;
+}
+
+/* 主容器 */
+.addContent {
+    background: transparent !important;
+    border: none;
+    border-radius: 0;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1400px;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.crumbs {
+    color: #bbd8f1;
+    font-size: 14px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(49, 50, 164, 0.5);
+}
+
+/* 左右列样式 */
+.col-right, .col-auto {
+    background: transparent !important;
+    border: none;
+    border-radius: 0;
+    padding: 15px 0;
+    margin-bottom: 15px;
+}
+
+.col-1 {
+    background: transparent !important;
+}
+
+.content {
+    background: transparent !important;
+    color: #fff;
+}
+
+.content h6 {
+    color: #bbd8f1;
+    font-size: 13px;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(49, 50, 164, 0.3);
+    font-weight: bold;
+}
+
+/* 表单样式 */
+.table_form {
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+}
+
+.table_form tr {
+    background: transparent !important;
+    border-bottom: 1px solid #3132a4 !important;
+}
+
+.table_form th {
+    background: transparent !important;
+    color: #bbd8f1;
+    border: none !important;
+    border-bottom: 1px solid #3132a4 !important;
+    text-align: right;
+    padding-right: 15px;
+    font-weight: bold;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.table_form td {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #3132a4 !important;
+    padding: 8px 0;
+    white-space: nowrap;
+}
+
+.table_form input[type=text],
+.table_form input[type=password],
+.table_form input[type=email],
+.table_form textarea,
+.table_form select {
+    background: rgba(10, 20, 50, 0.8) !important;
+    border: 1px solid #3132a4 !important;
+    color: #fff !important;
+    border-radius: 3px;
+    padding: 6px 8px;
+}
+
+.table_form input[type=text]:focus,
+.table_form textarea:focus,
+.table_form select:focus {
+    border-color: #bbd8f1 !important;
+    box-shadow: 0 0 8px rgba(187, 216, 241, 0.3) !important;
+}
+
+/* 按钮样式 */
+.fixed-bottom {
+    background: transparent !important;
+    border-top: none;
+    padding: 25px 0;
+    margin-top: 20px;
+    border-radius: 0;
+}
+
+.fixed-but {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.button {
+    display: inline-block;
+    padding: 0 !important;
+}
+
+.cu {
+    background: transparent !important;
+    color: #2d5db9 !important;
+    border: 1px solid #2d5db9 !important;
+    border-radius: 5px !important;
+    padding: 0 !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    min-width: 100px !important;
+    width: 130px !important;
+    text-align: center !important;
+}
+
+.cu:hover {
+    background: rgba(45, 93, 185, 0.1) !important;
+    border-color: #3d6dd9 !important;
+    color: #3d6dd9 !important;
+    box-shadow: 0 0 8px rgba(45, 93, 185, 0.3) !important;
+}
+
+/* 展开/关闭按钮 - 隐藏 */
+.r-close, .r-open, #RopenClose {
+    display: none !important;
+}
+
+/* 图片上传容器背景 */
+.box_shadow, .box_border {
+    background: rgba(20, 30, 80, 0.6) !important;
+    border: 1px solid #3132a4 !important;
+}
+
+/* 图片预览区域 */
+#picklist, .picklist {
+    background: rgba(15, 25, 60, 0.8) !important;
+    border: 1px solid #3132a4 !important;
+}
+
+/* 按钮组 */
+.button_group {
+    background: rgba(20, 30, 80, 0.6) !important;
+}
+
+</style>
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 <!--
 	var charset = '<?php echo CHARSET;?>';
@@ -36,7 +216,18 @@ if(is_array($forminfos['senior'])) {
 	}
  ?>
 	<h6><?php if($info['star']){ ?> <font color="red">*</font><?php } ?> <?php echo $info['name']?></h6>
-	 <?php echo $info['form']?><?php echo $info['tips']?> 
+	 <?php
+	 if($info['formtype']=='editor') {
+		 preg_match('/<textarea[^>]*>.*?<\/textarea>/s', $info['form'], $matches);
+		 if($matches[0]) {
+			 $textarea = preg_replace('/style="[^"]*"/', '', $matches[0]);
+			 $textarea = str_replace('<textarea', '<textarea style="width:100%;min-height:300px;background:rgba(10,20,50,0.8);border:1px solid #3132a4;color:#fff;padding:10px;border-radius:3px;font-size:14px;line-height:1.6;resize:vertical;"', $textarea);
+			 echo $textarea;
+		 }
+	 } else {
+		 echo $info['form'];
+	 }
+	 ?><?php echo $info['tips']?>
 <?php
 } }
 ?>
@@ -74,7 +265,19 @@ if(is_array($forminfos['base'])) {
 	<tr>
       <th width="80"><?php if($info['star']){ ?> <font color="red">*</font><?php } ?> <?php echo $info['name']?>
 	  </th>
-      <td><?php echo $info['form']?>  <?php echo $info['tips']?></td>
+      <td><?php
+	  if($info['formtype']=='editor') {
+		  // 只输出textarea，不要富文本编辑器
+		  preg_match('/<textarea[^>]*>.*?<\/textarea>/s', $info['form'], $matches);
+		  if($matches[0]) {
+			  $textarea = preg_replace('/style="[^"]*"/', '', $matches[0]);
+			  $textarea = str_replace('<textarea', '<textarea style="width:100%;min-height:300px;background:rgba(10,20,50,0.8);border:1px solid #3132a4;color:#fff;padding:10px;border-radius:3px;font-size:14px;line-height:1.6;resize:vertical;"', $textarea);
+			  echo $textarea;
+		  }
+	  } else {
+		  echo $info['form'];
+	  }
+	  ?>  <?php echo $info['tips']?></td>
     </tr>
 <?php
 } }

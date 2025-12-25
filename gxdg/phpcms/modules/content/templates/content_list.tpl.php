@@ -11,16 +11,36 @@ include $this->admin_tpl('header_new','admin');?>
 }
 //-->
 </SCRIPT>
+<style type="text/css">
+html{_overflow-y:scroll}
+.table-list thead tr th {
+    background: #252682;
+    color: #bbd8f1;
+    border: 1px solid #3132a4;
+    white-space: nowrap;
+    padding: 8px 4px;
+}
+.table-list tbody tr:nth-child(odd) {
+    background: rgba(37, 38, 130, 0.3);
+}
+.table-list tbody tr:nth-child(even) {
+    background: rgba(37, 38, 130, 0.5);
+}
+.table-list tbody tr:hover {
+    background: rgba(49, 50, 164, 0.7);
+}
+</style>
+<link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 <div class="pad-10">
 <div class="content-menu ib-a blue line-x">
 <a class="add fb" href="javascript:;" onclick=javascript:openwinx('?m=content&c=content&a=add&menuid=&catid=<?php echo $catid;?>&pc_hash=<?php echo $_SESSION['pc_hash'];?>','')><em><?php echo L('add_content');?></em></a>　
 <a href="?m=content&c=content&a=init&catid=<?php echo $catid;?>&pc_hash=<?php echo $pc_hash;?>" <?php if($steps==0 && !isset($_GET['reject'])) echo 'class=on';?>><em><?php echo L('check_passed');?></em></a><span>|</span>
-<?php echo $workflow_menu;?> <a href="javascript:;" onclick="javascript:$('#searchid').css('display','');"><em><?php echo L('search');?></em></a> 
+<?php echo $workflow_menu;?> <a href="javascript:;" onclick="javascript:$('#searchid').css('display','');"><em><?php echo L('search');?></em></a>
 <?php if($category['ishtml']) {?>
 <span>|</span><a href="?m=content&c=create_html&a=category&pagesize=30&dosubmit=1&modelid=0&catids[0]=<?php echo $catid;?>&pc_hash=<?php echo $pc_hash;?>&referer=<?php echo urlencode($_SERVER['QUERY_STRING']);?>"><em><?php echo L('update_htmls',array('catname'=>$category['catname']));?></em></a>
 <?php }?>
 </div>
-<div id="searchid" style="display:<?php if(!isset($_GET['search'])) echo 'none';?>">
+<div id="searchid" style="display:none">
 <form name="searchform" action="" method="get" >
 <input type="hidden" value="content" name="m">
 <input type="hidden" value="content" name="c">
@@ -34,21 +54,21 @@ include $this->admin_tpl('header_new','admin');?>
 		<tr>
 		<td>
 		<div class="explain-col">
- 
+
 				<?php echo L('addtime');?>：
 				<?php echo form::date('start_time',$_GET['start_time'],0,0,'false');?>- &nbsp;<?php echo form::date('end_time',$_GET['end_time'],0,0,'false');?>
-				
+
 				<select name="posids"><option value='' <?php if($_GET['posids']=='') echo 'selected';?>><?php echo L('all');?></option>
 				<option value="1" <?php if($_GET['posids']==1) echo 'selected';?>><?php echo L('elite');?></option>
 				<option value="2" <?php if($_GET['posids']==2) echo 'selected';?>><?php echo L('no_elite');?></option>
-				</select>				
+				</select>
 				<select name="searchtype">
 					<option value='0' <?php if($_GET['searchtype']==0) echo 'selected';?>><?php echo L('title');?></option>
 					<option value='1' <?php if($_GET['searchtype']==1) echo 'selected';?>><?php echo L('intro');?></option>
 					<option value='2' <?php if($_GET['searchtype']==2) echo 'selected';?>><?php echo L('username');?></option>
 					<option value='3' <?php if($_GET['searchtype']==3) echo 'selected';?>>ID</option>
 				</select>
-				
+
 				<input name="keyword" type="text" value="<?php if(isset($keyword)) echo $keyword;?>" class="input-text" />
 				<input type="submit" name="search" class="button" value="<?php echo L('search');?>" />
 	</div>
@@ -59,8 +79,9 @@ include $this->admin_tpl('header_new','admin');?>
 </form>
 </div>
 <form name="myform" id="myform" action="" method="post" >
+<div class="tableContent">
 <div class="table-list">
-    <table width="100%">
+    <table width="100%" class="kotable" style="margin-top:0;">
         <thead>
             <tr>
 			 <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
@@ -81,7 +102,7 @@ include $this->admin_tpl('header_new','admin');?>
 		$path_len = -strlen(WEB_PATH);
 		$release_siteurl = substr($release_siteurl,0,$path_len);
 		$this->hits_db = pc_base::load_model('hits_model');
-		
+
 		foreach ($datas as $r) {
 			$hits_r = $this->hits_db->get_one(array('hitsid'=>'c-'.$modelid.'-'.$r['id']));
 	?>
@@ -106,7 +127,7 @@ include $this->admin_tpl('header_new','admin');?>
 		<td align='center'>
 		<?php
 		if($r['sysadd']==0) {
-			echo "<a href='?m=member&c=member&a=memberinfo&username=".urlencode($r['username'])."&pc_hash=".$_SESSION['pc_hash']."' >".$r['username']."</a>"; 
+			echo "<a href='?m=member&c=member&a=memberinfo&username=".urlencode($r['username'])."&pc_hash=".$_SESSION['pc_hash']."' >".$r['username']."</a>";
 			echo '<img src="'.IMG_PATH.'icon/contribute.png" title="'.L('member_contribute').'">';
 		} else {
 			echo $r['username'];
@@ -143,10 +164,10 @@ include $this->admin_tpl('header_new','admin');?>
 	</div>
     <div id="pages"><?php echo $pages;?></div>
 </div>
-</form>
 </div>
+</form>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>cookie.js"></script>
-<script type="text/javascript"> 
+<script type="text/javascript">
 <!--
 function push() {
 	var str = 0;
@@ -190,7 +211,7 @@ function reject_check(type) {
 	} else {
 		$('#reject_content').css('display','');
 		return false;
-	}	
+	}
 }
 setcookie('refersh_time', 0);
 function refersh_window() {
@@ -200,6 +221,11 @@ function refersh_window() {
 	}
 }
 setInterval("refersh_window()", 3000);
+//-->
+</script>
+<script language="JavaScript">
+<!--
+	window.top.$('#display_center_id').css('display','none');
 //-->
 </script>
 </body>
