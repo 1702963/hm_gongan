@@ -282,6 +282,35 @@ if(is_array($forminfos['base'])) {
 <?php
 } }
 ?>
+	<!-- 审批人选择 -->
+	<tr>
+      <th width="80">一级审批人</th>
+      <td>
+        <input type="text" id="level1_search" value="" autocomplete="off"
+               style="width:200px;height:26px;background:rgba(10,20,50,0.8);color:#fff;border:1px solid #3132a4;padding:0 8px;"
+               placeholder="输入姓名搜索"/>
+        <div id="level1_list" style="position:absolute;z-index:999;background:#28348e;border:1px solid #3132a4;display:none;min-width:200px;max-height:200px;overflow-y:auto;">
+          <ul style="list-style:none;padding:0;margin:0;"></ul>
+        </div>
+        <span id="level1_selected" style="margin-left:10px;color:#bbd8f1;"></span>
+        <a href="javascript:void(0)" id="level1_clear" style="color:#ff6666;margin-left:5px;display:none;">×</a>
+        <input type="hidden" name="info[level1_user]" id="level1_user" value="0" />
+      </td>
+    </tr>
+    <tr>
+      <th width="80">二级审批人</th>
+      <td>
+        <input type="text" id="level2_search" value="" autocomplete="off"
+               style="width:200px;height:26px;background:rgba(10,20,50,0.8);color:#fff;border:1px solid #3132a4;padding:0 8px;"
+               placeholder="输入姓名搜索"/>
+        <div id="level2_list" style="position:absolute;z-index:999;background:#28348e;border:1px solid #3132a4;display:none;min-width:200px;max-height:200px;overflow-y:auto;">
+          <ul style="list-style:none;padding:0;margin:0;"></ul>
+        </div>
+        <span id="level2_selected" style="margin-left:10px;color:#bbd8f1;"></span>
+        <a href="javascript:void(0)" id="level2_clear" style="color:#ff6666;margin-left:5px;display:none;">×</a>
+        <input type="hidden" name="info[level2_user]" id="level2_user" value="0" />
+      </td>
+    </tr>
 
     </tbody></table>
                 </div>
@@ -352,5 +381,134 @@ openClose.click(
 		}
 	}
 )
+
+// 审批人搜索选择功能
+function initApprovalSearch(level) {
+    var searchInput = $('#level' + level + '_search');
+    var listDiv = $('#level' + level + '_list');
+    var selectedSpan = $('#level' + level + '_selected');
+    var clearBtn = $('#level' + level + '_clear');
+    var hiddenInput = $('#level' + level + '_user');
+
+    // 搜索
+    searchInput.bind('keyup click', function() {
+        var keyword = $(this).val().trim();
+        if (keyword == '') {
+            listDiv.hide();
+            return;
+        }
+
+        $.ajax({
+            url: '?m=content&c=content&a=search_admin&pc_hash=<?php echo $_SESSION['pc_hash'];?>',
+            type: 'POST',
+            data: {keyword: keyword},
+            dataType: 'json',
+            success: function(res) {
+                var html = '';
+                if (res.status == 1 && res.data && res.data.length > 0) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        var item = res.data[i];
+                        var name = item.realname ? item.realname : item.username;
+                        html += "<li data-id='" + item.userid + "' data-name='" + name + "' " +
+                                "style='line-height:30px;font-size:13px;padding:5px 10px;cursor:pointer;color:#fff;'>" +
+                                name + " [" + item.username + "]</li>";
+                    }
+                } else {
+                    html = "<li style='color:#999;padding:5px 10px;'>未找到匹配的用户</li>";
+                }
+                listDiv.find('ul').html(html);
+                listDiv.show();
+            }
+        });
+    });
+
+    // 选择
+    $(document).delegate('#level' + level + '_list ul li[data-id]', 'click', function() {
+        var id = $(this).attr('data-id');
+        var name = $(this).attr('data-name');
+        if (id) {
+            hiddenInput.val(id);
+            selectedSpan.text(name);
+            clearBtn.show();
+            searchInput.val('');
+            listDiv.hide();
+        }
+    });
+
+    // 清除
+    clearBtn.click(function() {
+        hiddenInput.val('0');
+        selectedSpan.text('');
+        $(this).hide();
+    });
+
+    // 鼠标悬停效果
+    $(document).delegate('#level' + level + '_list ul li', 'mouseover', function() {
+        $(this).css('background', '#3e4095');
+    }).delegate('#level' + level + '_list ul li', 'mouseout', function() {
+        $(this).css('background', 'transparent');
+    });
+}
+
+// 点击其他地方隐藏下拉列表
+$(document).click(function(e) {
+    if (!$(e.target).closest('#level1_search, #level1_list').length) {
+        $('#level1_list').hide();
+    }
+    if (!$(e.target).closest('#level2_search, #level2_list').length) {
+        $('#level2_list').hide();
+    }
+});
+
+// 初始化
+initApprovalSearch(1);
+initApprovalSearch(2);
+
+// 表单提交验证
+$('#myform').submit(function(e) {
+    // 标题不能为空
+    var title = $('input[name="info[title]"]').val();
+    if (!title || title.trim() == '') {
+        alert('标题不能为空！');
+        $('input[name="info[title]"]').focus();
+        e.preventDefault();
+        return false;
+    }
+
+    // 内容不能为空
+    var content = $('textarea[name="info[content]"]').val();
+    if (!content || content.trim() == '') {
+        alert('内容不能为空！');
+        $('textarea[name="info[content]"]').focus();
+        e.preventDefault();
+        return false;
+    }
+
+    // 一级审批人不能为空
+    var level1 = $('#level1_user').val();
+    if (!level1 || level1 == '0') {
+        alert('请选择一级审批人！');
+        $('#level1_search').focus();
+        e.preventDefault();
+        return false;
+    }
+
+    // 二级审批人不能为空
+    var level2 = $('#level2_user').val();
+    if (!level2 || level2 == '0') {
+        alert('请选择二级审批人！');
+        $('#level2_search').focus();
+        e.preventDefault();
+        return false;
+    }
+
+    // 一级和二级审批人不能相同
+    if (level1 == level2) {
+        alert('一级审批人和二级审批人不能是同一个人！');
+        e.preventDefault();
+        return false;
+    }
+    return true;
+});
 //-->
 </script>

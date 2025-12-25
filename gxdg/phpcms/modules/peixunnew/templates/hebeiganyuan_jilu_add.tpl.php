@@ -29,10 +29,10 @@ parent.document.getElementById('display_center_id').style.display='none';
 
 <div class="tableContent">
 
-<div class="tabcon">
-<div class="title" style="width:auto;">河北干院培训人次记录 <span style="color:#ffcc00;font-size:12px;margin-left:15px;">（只能添加民警）</span></div>
+<div class="tabcon" style="background:#252682;border:1px solid #3132a4;padding:50px 15px;">
+<div class="title" style="width:auto;margin-bottom:20px;">河北干院培训人次记录 <span style="color:#ffcc00;font-size:12px;margin-left:15px;">（只能添加民警）</span></div>
 
-<div class="section-title">基本信息</div>
+<div class="section-title" style="margin-top:0;">基本信息</div>
 
 <div class="form-row">
     <label><span style="color:red">*</span>培训计划：</label>

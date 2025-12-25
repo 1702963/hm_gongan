@@ -179,6 +179,21 @@ body, html {
     background: rgba(20, 30, 80, 0.6) !important;
 }
 
+<?php if(!$can_edit) { ?>
+/* 只读模式样式 */
+.table_form input[type=text],
+.table_form input[type=password],
+.table_form input[type=email],
+.table_form textarea,
+.table_form select {
+    pointer-events: none !important;
+    opacity: 0.7 !important;
+}
+.table_form input[type=checkbox],
+.table_form input[type=radio] {
+    pointer-events: none !important;
+}
+<?php } ?>
 </style>
 <link href="<?php echo CSS_PATH?>modelPatch.css?ver=<?php echo time() ?>" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
@@ -195,6 +210,11 @@ body, html {
 <form name="myform" id="myform" action="?m=content&c=content&a=edit" method="post" enctype="multipart/form-data">
 <div class="addContent">
 <div class="crumbs"><?php echo L('edit_content_position');?></div>
+<?php if(!$can_edit) { ?>
+<div style="background:#ff6b6b;color:#fff;padding:10px 15px;margin-bottom:15px;border-radius:3px;">
+    <strong>提示：</strong>当前为只读模式，无法编辑。
+</div>
+<?php } ?>
 <div class="col-right">
     	<div class="col-1">
         	<div class="content pad-6">
@@ -276,6 +296,65 @@ if(is_array($forminfos['base'])) {
 <?php
 } }
 ?>
+	<tr>
+      <th width="80">一级审批人</th>
+      <td>
+        <span style="color:#bbd8f1;font-size:14px;"><?php echo $level1_name ? $level1_name : '未设置';?></span>
+        <?php if($level1_status == 1) { ?>
+        <span style="color:#4CAF50;margin-left:10px;">【已通过】</span>
+        <?php } elseif($level1_status == 2) { ?>
+        <span style="color:#ff6b6b;margin-left:10px;">【已拒绝】</span>
+        <?php } else { ?>
+        <span style="color:#ff9800;margin-left:10px;">【待审批】</span>
+        <?php } ?>
+      </td>
+    </tr>
+	<tr>
+      <th width="80">二级审批人</th>
+      <td>
+        <span style="color:#bbd8f1;font-size:14px;"><?php echo $level2_name ? $level2_name : '未设置';?></span>
+        <?php if($level2_status == 1) { ?>
+        <span style="color:#4CAF50;margin-left:10px;">【已通过】</span>
+        <?php } elseif($level2_status == 2) { ?>
+        <span style="color:#ff6b6b;margin-left:10px;">【已拒绝】</span>
+        <?php } else { ?>
+        <span style="color:#ff9800;margin-left:10px;">【待审批】</span>
+        <?php } ?>
+      </td>
+    </tr>
+    <?php if($show_level1_approval) { ?>
+    <tr>
+      <th width="80">一级审批</th>
+      <td>
+        <label style="color:#fff;margin-right:20px;cursor:pointer;">
+          <input type="radio" name="approval_action" value="1" style="margin-right:5px;"> 通过
+        </label>
+        <label style="color:#fff;cursor:pointer;">
+          <input type="radio" name="approval_action" value="2" style="margin-right:5px;"> 拒绝
+        </label>
+        <input type="hidden" name="approval_level" value="1" />
+      </td>
+    </tr>
+    <?php } ?>
+    <?php if($is_level2_approver && $level1_status == 1 && $level2_status == 0) { ?>
+    <tr>
+      <th width="80">二级审批</th>
+      <td>
+        <label style="color:#fff;margin-right:20px;cursor:pointer;">
+          <input type="radio" name="approval_action" value="1" style="margin-right:5px;"> 通过
+        </label>
+        <label style="color:#fff;cursor:pointer;">
+          <input type="radio" name="approval_action" value="2" style="margin-right:5px;"> 拒绝
+        </label>
+        <input type="hidden" name="approval_level" value="2" />
+      </td>
+    </tr>
+    <?php } elseif($is_level2_approver && $level1_status != 1 && $level2_status == 0) { ?>
+    <tr>
+      <th width="80">二级审批</th>
+      <td><span style="color:#ff9800;font-size:14px;">待一级审批员审批</span></td>
+    </tr>
+    <?php } ?>
 
     </tbody></table>
                 </div>
@@ -286,10 +365,12 @@ if(is_array($forminfos['base'])) {
 </div>
 <div class="fixed-bottom">
 	<div class="fixed-but text-c">
-    <div class="button">
 	<input value="<?php if($r['upgrade']) echo $r['url'];?>" type="hidden" name="upgrade">
-	<input value="<?php echo $id;?>" type="hidden" name="id"><input value="<?php echo L('save_close');?>" type="submit" name="dosubmit" class="cu" onclick="refersh_window()"></div>
+	<input value="<?php echo $id;?>" type="hidden" name="id">
+	<?php if($can_edit) { ?>
+    <div class="button"><input value="<?php echo L('save_close');?>" type="submit" name="dosubmit" class="cu" onclick="refersh_window()"></div>
     <div class="button"><input value="<?php echo L('save_continue');?>" type="submit" name="dosubmit_continue" class="cu" onclick="refersh_window()"></div>
+    <?php } ?>
     <div class="button"><input value="<?php echo L('c_close');?>" type="button" name="close" onclick="refersh_window();close_window();" class="cu" title="Alt+X"></div>
       </div>
 </div>
