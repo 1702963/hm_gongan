@@ -328,7 +328,7 @@ table.table-list tbody tr:hover {
 </div>
  <div class="bk15"></div>
 	<input name="catid" type="hidden" value="<?php echo $catid;?>">
-    <input name="dosubmit" type="submit" value="<?php echo L('submit')?>" class="button">
+    <input name="dosubmit" style="padding: 10px 30px 26px 30px;" type="submit" value="<?php echo L('submit')?>" class="button">
 
 </form>
 </div>

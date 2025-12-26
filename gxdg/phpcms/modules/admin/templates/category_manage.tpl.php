@@ -67,7 +67,7 @@ html{_overflow-y:scroll}
 
     <div class="btn">
 	<input type="hidden" name="pc_hash" value="<?php echo $_SESSION['pc_hash'];?>" />
-	<input type="submit" class="button" name="dosubmit" value="<?php echo L('listorder')?>" /></div>  </div>
+	<input style="margin-top: 1em;" type="submit" class="button" name="dosubmit" value="<?php echo L('listorder')?>" /></div>  </div>
 </div>
 </div>
 </form>
