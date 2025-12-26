@@ -216,8 +216,8 @@ body, html {
 <div class="addContent">
 <div class="crumbs"><?php echo L('edit_content_position');?></div>
 <?php if(!$can_edit) { ?>
-<div style="background:#ff6b6b;color:#fff;padding:10px 15px;margin-bottom:15px;border-radius:3px;">
-    <strong>提示：</strong>当前为只读模式，无法编辑。
+<div style="background:#ff6b6b;color:#fff !important;padding:10px 15px;margin-bottom:15px;border-radius:3px;">
+    <strong style="color:#fff !important;">提示：</strong><span style="color:#fff !important;">当前为只读模式，无法编辑。</span>
 </div>
 <?php } ?>
 <div class="col-right">
