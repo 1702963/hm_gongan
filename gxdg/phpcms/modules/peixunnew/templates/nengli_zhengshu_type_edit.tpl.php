@@ -35,7 +35,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="120" align="right" class="infotitle"><span style="color:red">*</span>证书名称：</td>
     <td colspan="5">
       <input type="text" name="info[typename]" id="typename" value="<?php echo htmlspecialchars($info['typename'])?>" required
-             style="width:400px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:400px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入证书名称"/>
     </td>
   </tr>
@@ -44,7 +44,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">类别：</td>
     <td colspan="5">
       <select name="info[leibie]" id="leibie"
-              style="width:220px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:220px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="">请选择类别</option>
         <option value="职业资格" <?php echo $info['leibie'] == '职业资格' ? 'selected' : ''?>>职业资格</option>
         <option value="技能等级" <?php echo $info['leibie'] == '技能等级' ? 'selected' : ''?>>技能等级</option>
@@ -58,7 +58,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">发证机构：</td>
     <td colspan="5">
       <input type="text" name="info[jigou]" id="jigou" value="<?php echo htmlspecialchars($info['jigou'])?>"
-             style="width:400px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:400px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入发证机构"/>
     </td>
   </tr>
@@ -67,7 +67,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">有效期（月）：</td>
     <td colspan="5">
       <input type="text" name="info[youxiaoqi]" id="youxiaoqi" value="<?php echo htmlspecialchars($info['youxiaoqi'])?>"
-             style="width:150px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:150px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入有效期（月）"/>
     </td>
   </tr>
@@ -76,7 +76,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">状态：</td>
     <td colspan="5">
       <select name="info[status]" id="status"
-              style="width:200px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:200px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="1" <?php echo $info['status'] == 1 ? 'selected' : ''?>>启用</option>
         <option value="0" <?php echo $info['status'] == 0 ? 'selected' : ''?>>停用</option>
       </select>
@@ -87,7 +87,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">排序：</td>
     <td colspan="5">
       <input type="text" name="info[paixu]" id="paixu" value="<?php echo htmlspecialchars($info['paixu'])?>"
-             style="width:100px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:100px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="数字越大越靠前"/>
     </td>
   </tr>
@@ -96,7 +96,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">备注：</td>
     <td colspan="5">
       <textarea name="info[beizhu]" id="beizhu" rows="4"
-                style="width:600px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:600px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="备注信息"><?php echo htmlspecialchars($info['beizhu'])?></textarea>
     </td>
   </tr>

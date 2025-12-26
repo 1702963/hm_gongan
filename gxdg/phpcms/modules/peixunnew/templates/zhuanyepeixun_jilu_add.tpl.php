@@ -30,7 +30,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="120" align="right" class="infotitle"><span style="color:red">*</span>培训计划：</td>
     <td colspan="5">
       <select name="info[jihua_id]" id="jihua_id" required
-              style="width:400px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:400px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="">请选择培训计划</option>
         <?php foreach($this->jihua_list as $jh): ?>
         <option value="<?php echo $jh['id']?>" data-bmid="<?php echo $jh['bmid']?>" data-pxly="<?php echo $jh['pxly']?>"><?php echo $jh['title']?> [<?php echo $jh['pxly']?>]</option>
@@ -44,7 +44,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">所属单位：</td>
     <td colspan="5">
       <select name="info[bmid]" id="bmid"
-              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:300px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">请选择</option>
         <?php echo $this->select_bumen?>
       </select>
@@ -55,7 +55,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle"><span style="color:red">*</span>参训人员：</td>
     <td colspan="5">
       <input type="text" id="fujing_search" name="fujing_search" value=""
-             style="width:300px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+             style="width:300px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
              placeholder="请输入姓名或身份证搜索" autocomplete="off"/>
 
       <div id="fujing_inputlist" style="position:absolute;z-index:999;background-color:#28348e;border:1px solid #ccc;display:none;min-width:400px;max-height:300px;overflow-y:auto;">
@@ -76,7 +76,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">成绩：</td>
     <td colspan="5">
       <input type="text" name="info[chengji]" id="chengji" value=""
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入成绩"/>
     </td>
   </tr>
@@ -85,7 +85,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">是否通过：</td>
     <td colspan="5">
       <select name="info[guo]" id="guo"
-              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:150px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">未通过</option>
         <option value="1">通过</option>
       </select>
@@ -95,7 +95,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">是否出勤：</td>
     <td colspan="5">
       <select name="info[chuqin]" id="chuqin"
-              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:150px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">否</option>
         <option value="1" selected>是</option>
       </select>
@@ -106,7 +106,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">评价等级：</td>
     <td colspan="5">
       <select name="info[pingjia]" id="pingjia"
-              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:150px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="">请选择</option>
         <option value="优">优</option>
         <option value="良">良</option>
@@ -120,7 +120,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">评语：</td>
     <td colspan="5">
       <textarea name="info[pingyu]" id="pingyu" rows="3"
-                style="width:500px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:500px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入评语（评价为差时必填）"></textarea>
     </td>
   </tr>
@@ -129,7 +129,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">填报时间：</td>
     <td colspan="5">
       <input type="date" name="info[tianbao_time]" id="tianbao_time" value=""
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 
@@ -138,7 +138,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td colspan="5">
       <input type="hidden" name="info[files]" id="files" value="" />
       <input type="file" id="files_upload" accept="image/*" multiple
-             style="margin-left:5px;background:transparent;color:#fff"/>
+             style="margin-left:5px;background:#1a2a4a;color:#fff"/>
       <div id="files_preview" style="margin-top:10px;"></div>
       <span style="color:#999;font-size:12px;margin-left:10px">支持上传多张证书图片</span>
     </td>

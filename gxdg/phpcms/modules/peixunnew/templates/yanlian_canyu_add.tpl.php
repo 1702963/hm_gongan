@@ -29,7 +29,7 @@ var yanlianByType = <?php echo json_encode($this->yanlian_by_type);?>;
   <tr>
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>演练类型：</td>
     <td colspan="5">
-      <select name="info[yanlian_type]" id="yanlian_type" required style="width:300px;height:25px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+      <select name="info[yanlian_type]" id="yanlian_type" required style="width:300px;height:25px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="1">对抗训练</option>
         <option value="2">专项悬链</option>
       </select>
@@ -39,7 +39,7 @@ var yanlianByType = <?php echo json_encode($this->yanlian_by_type);?>;
   <tr>
     <td align="right" class="infotitle"><span style="color:red">*</span>演练记录：</td>
     <td colspan="5">
-      <select name="info[yanlian_id]" id="yanlian_id" required style="width:400px;height:25px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+      <select name="info[yanlian_id]" id="yanlian_id" required style="width:400px;height:25px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="">-- 请选择 --</option>
       </select>
     </td>
@@ -48,7 +48,7 @@ var yanlianByType = <?php echo json_encode($this->yanlian_by_type);?>;
   <tr>
     <td align="right" class="infotitle"><span style="color:red">*</span>分组：</td>
     <td colspan="5">
-      <select name="info[fengzu]" id="fengzu" required style="width:300px;height:25px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+      <select name="info[fengzu]" id="fengzu" required style="width:300px;height:25px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="">-- 请选择 --</option>
         <option value="1">红方</option>
         <option value="2">蓝方</option>
@@ -60,7 +60,7 @@ var yanlianByType = <?php echo json_encode($this->yanlian_by_type);?>;
     <td align="right" class="infotitle"><span style="color:red">*</span>参与人员：</td>
     <td colspan="5">
       <input type="text" id="fujing_search" name="fujing_search" value=""
-             style="width:300px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+             style="width:300px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
              placeholder="请输入姓名搜索辅警" autocomplete="off"/>
 
       <div id="fujing_inputlist" style="position:absolute;z-index:999;background-color:#28348e;border:1px solid #ccc;display:none;min-width:300px;">
@@ -78,7 +78,7 @@ var yanlianByType = <?php echo json_encode($this->yanlian_by_type);?>;
     <td align="right" class="infotitle">评分：</td>
     <td colspan="5">
       <input type="number" name="info[pingjia_score]" id="pingjia_score" value="0" step="0.01" min="0" max="100"
-             style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入评分（0-100）"/>
     </td>
   </tr>
@@ -87,7 +87,7 @@ var yanlianByType = <?php echo json_encode($this->yanlian_by_type);?>;
     <td align="right" class="infotitle">表现描述：</td>
     <td colspan="5">
       <textarea name="info[biaoxianbiao]" id="biaoxianbiao" rows="4"
-                style="width:500px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:500px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入表现描述"></textarea>
     </td>
   </tr>

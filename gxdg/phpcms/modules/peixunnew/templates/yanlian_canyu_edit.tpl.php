@@ -30,7 +30,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="100" align="right" class="infotitle">演练类型：</td>
     <td colspan="5">
       <input type="text" value="<?php echo $this->info['yanlian_type'] == 1 ? '对抗训练' : '专项悬链'?>" readonly
-             style="width:300px;height:20px;background:transparent;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:300px;height:20px;background:#1a2a4a;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 
@@ -38,7 +38,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">演练记录：</td>
     <td colspan="5">
       <input type="text" value="<?php echo $this->info['yanlian_title']?>" readonly
-             style="width:400px;height:20px;background:transparent;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:400px;height:20px;background:#1a2a4a;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 
@@ -46,14 +46,14 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">参与人员：</td>
     <td colspan="5">
       <input type="text" value="<?php echo $this->info['fjname']?>" readonly
-             style="width:400px;height:20px;background:transparent;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:400px;height:20px;background:#1a2a4a;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 
   <tr>
     <td align="right" class="infotitle"><span style="color:red">*</span>分组：</td>
     <td colspan="5">
-      <select name="info[fengzu]" id="fengzu" required style="width:300px;height:25px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+      <select name="info[fengzu]" id="fengzu" required style="width:300px;height:25px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="1" <?php echo $this->info['fengzu'] == 1 ? 'selected' : ''?>>红方</option>
         <option value="2" <?php echo $this->info['fengzu'] == 2 ? 'selected' : ''?>>蓝方</option>
       </select>
@@ -64,7 +64,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">评分：</td>
     <td colspan="5">
       <input type="number" name="info[pingjia_score]" id="pingjia_score" value="<?php echo $this->info['pingjia_score']?>" step="0.01" min="0" max="100"
-             style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入评分（0-100）"/>
     </td>
   </tr>
@@ -73,7 +73,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">表现描述：</td>
     <td colspan="5">
       <textarea name="info[biaoxianbiao]" id="biaoxianbiao" rows="4"
-                style="width:500px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:500px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入表现描述"><?php echo $this->info['biaoxianbiao']?></textarea>
     </td>
   </tr>
@@ -82,7 +82,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">创建时间：</td>
     <td colspan="5">
       <input type="text" value="<?php echo $this->info['inputtime_show']?>" readonly
-             style="width:300px;height:20px;background:transparent;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:300px;height:20px;background:#1a2a4a;color:#ccc;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 

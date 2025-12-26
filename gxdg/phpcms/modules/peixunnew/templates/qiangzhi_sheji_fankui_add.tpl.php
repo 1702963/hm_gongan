@@ -31,7 +31,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="120" align="right" class="infotitle"><span style="color:red">*</span>射击计划：</td>
     <td colspan="5">
       <select name="info[jihua_id]" id="jihua_id" required
-              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:300px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">请选择</option>
         <?php
         if(is_array($this->jihua_list)){
@@ -48,7 +48,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">所属部门：</td>
     <td colspan="5">
       <select name="info[bmid]" id="bmid"
-              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:300px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">请选择</option>
         <?php echo $this->select_bumen?>
       </select>
@@ -61,7 +61,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
       <div style="position:relative;width:100%;">
         <input type="hidden" name="info[fjid]" id="fjid" value="" />
         <input type="text" name="info[fjname]" id="fjname" value=""
-               style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;"
+               style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;"
                placeholder="输入辅警姓名或身份证号搜索" />
         <div id="search_result" style="position:absolute;top:100%;left:5px;width:300px;background:#1e1f5e;border:1px solid #ddd;z-index:10;display:none;max-height:300px;overflow-y:auto;">
         </div>
@@ -73,7 +73,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">成绩：</td>
     <td colspan="5">
       <input type="text" name="info[chengji]" id="chengji" value=""
-             style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;"
+             style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;"
              placeholder="请输入成绩"/>
     </td>
   </tr>
@@ -82,7 +82,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">是否合格：</td>
     <td colspan="5">
       <select name="info[guo]" id="guo"
-              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:150px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">不合格</option>
         <option value="1">合格</option>
       </select>
@@ -93,7 +93,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">提报时间：</td>
     <td colspan="5">
       <input type="date" name="info[tianbao_time]" id="tianbao_time" value=""
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;"/>
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;"/>
     </td>
   </tr>
 
@@ -102,7 +102,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td colspan="5">
       <input type="hidden" name="info[files]" id="files" value="" />
       <input type="file" id="files_upload" accept="image/*" multiple
-             style="margin-left:5px;background:transparent;color:#fff"/>
+             style="margin-left:5px;background:#1a2a4a;color:#fff"/>
       <div id="files_preview" style="margin-top:10px;"></div>
       <span style="color:#999;font-size:12px;margin-left:10px">支持上传多张证书图片</span>
     </td>

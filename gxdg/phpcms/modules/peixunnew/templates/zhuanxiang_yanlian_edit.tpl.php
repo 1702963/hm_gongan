@@ -35,7 +35,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>组织单位：</td>
     <td colspan="5">
       <select name="info[bmid]" id="bmid" required
-              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:300px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">请选择</option>
         <?php echo $this->select_bumen?>
       </select>
@@ -46,7 +46,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle"><span style="color:red">*</span>演练标题：</td>
     <td colspan="5">
       <input type="text" name="info[title]" id="title" value="<?php echo htmlspecialchars($this->info['title'])?>" required
-             style="width:500px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:500px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入专项悬链标题"/>
     </td>
   </tr>
@@ -55,7 +55,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">演练内容：</td>
     <td colspan="5">
       <textarea name="info[content]" id="content" rows="5"
-                style="width:600px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:600px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入专项悬链的具体内容（支持文字、图片、视频描述）"><?php echo htmlspecialchars($this->info['content'])?></textarea>
     </td>
   </tr>
@@ -64,7 +64,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">演练评价、总结：</td>
     <td colspan="5">
       <textarea name="info[pingjia]" id="pingjia" rows="5"
-                style="width:600px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:600px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入专项悬链的评价和总结"><?php echo htmlspecialchars($this->info['pingjia'])?></textarea>
     </td>
   </tr>
@@ -73,7 +73,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">演练状态：</td>
     <td colspan="5">
       <select name="info[status]" id="status"
-              style="width:200px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:200px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="1" <?php echo $this->info['status'] == 1 ? 'selected' : ''?>>进行中</option>
         <option value="2" <?php echo $this->info['status'] == 2 ? 'selected' : ''?>>已完成</option>
       </select>

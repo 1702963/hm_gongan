@@ -28,7 +28,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>选择人员：</td>
     <td colspan="5">
       <input type="text" id="fujing_search" name="fujing_search" value=""
-             style="width:300px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+             style="width:300px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
              placeholder="请输入姓名搜索辅警" autocomplete="off"/>
 
       <div id="fujing_inputlist" style="position:absolute;z-index:999;background-color:#28348e;border:1px solid #ccc;display:none;min-width:300px;">
@@ -47,7 +47,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle"><span style="color:red">*</span>身高(cm)：</td>
     <td colspan="5">
       <input type="number" name="info[shengao]" id="shengao" value="" step="0.01" min="100" max="250"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入身高"/>
     </td>
   </tr>
@@ -56,7 +56,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle"><span style="color:red">*</span>体重(kg)：</td>
     <td colspan="5">
       <input type="number" name="info[tizhong]" id="tizhong" value="" step="0.01" min="30" max="200"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入体重"/>
     </td>
   </tr>
@@ -74,7 +74,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">体脂率(%)：</td>
     <td colspan="5">
       <input type="number" name="info[tizhilv]" id="tizhilv" value="" step="0.01" min="0" max="100"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入体脂率"/>
     </td>
   </tr>
@@ -83,7 +83,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">腰围(cm)：</td>
     <td colspan="5">
       <input type="number" name="info[yaowei]" id="yaowei" value="" step="0.01" min="0" max="200"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入腰围"/>
     </td>
   </tr>
@@ -92,7 +92,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">臀围(cm)：</td>
     <td colspan="5">
       <input type="number" name="info[tunwei]" id="tunwei" value="" step="0.01" min="0" max="200"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入臀围"/>
     </td>
   </tr>
@@ -101,7 +101,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">备注：</td>
     <td colspan="5">
       <textarea name="info[beizhu]" id="beizhu" rows="3"
-                style="width:400px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:400px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入备注"></textarea>
     </td>
   </tr>
@@ -110,7 +110,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">测量月份：</td>
     <td colspan="5">
       <input type="month" name="info[ceyue]" id="ceyue" value=""
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
       <span style="color:#999;font-size:12px;margin-left:10px">选择年月</span>
     </td>
   </tr>
@@ -119,7 +119,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">性别：</td>
     <td colspan="5">
       <select name="info[xingbie]" id="xingbie"
-              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:150px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="">请选择</option>
         <option value="男">男</option>
         <option value="女">女</option>
@@ -131,7 +131,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">达标体重(kg)：</td>
     <td colspan="5">
       <input type="number" name="info[dabiao_tizhong]" id="dabiao_tizhong" value="" step="0.01" min="0" max="200"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入达标体重"/>
     </td>
   </tr>
@@ -140,7 +140,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">增重(kg)：</td>
     <td colspan="5">
       <input type="number" name="info[zengzhong]" id="zengzhong" value="" step="0.01" min="-100" max="100"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入增重数量（正数为增重，负数为减重）"/>
     </td>
   </tr>
@@ -149,7 +149,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">与达标差额(kg)：</td>
     <td colspan="5">
       <input type="number" name="info[yu_dabiao_chae]" id="yu_dabiao_chae" value="" step="0.01" min="-100" max="100"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入与达标差额（正数为超重，负数为偏轻）"/>
     </td>
   </tr>
@@ -158,7 +158,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">排名：</td>
     <td colspan="5">
       <input type="number" name="info[paiming]" id="paiming" value="" step="1" min="1"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入BMI排名"/>
     </td>
   </tr>

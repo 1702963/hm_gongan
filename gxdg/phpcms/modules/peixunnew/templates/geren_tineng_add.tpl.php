@@ -28,7 +28,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="120" align="right" class="infotitle"><span style="color:red">*</span>选择人员：</td>
     <td colspan="5">
       <input type="text" id="fujing_search" name="fujing_search" value=""
-             style="width:300px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+             style="width:300px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
              placeholder="请输入姓名搜索辅警" autocomplete="off"/>
 
       <div id="fujing_inputlist" style="position:absolute;z-index:999;background-color:#28348e;border:1px solid #ccc;display:none;min-width:300px;">
@@ -47,11 +47,11 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">1000米跑：</td>
     <td colspan="5">
       <input type="number" name="info[paoliang_min]" id="paoliang_min" value="" min="0" max="30"
-             style="width:80px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:80px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="分"/>
       <span style="color:#fff;">分</span>
       <input type="number" name="info[paoliang_sec]" id="paoliang_sec" value="" min="0" max="59"
-             style="width:80px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:80px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="秒"/>
       <span style="color:#fff;">秒</span>
       <span style="color:#999;font-size:12px;margin-left:10px">男子标准：4分35秒内优秀</span>
@@ -62,7 +62,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">俯卧撑(个)：</td>
     <td colspan="5">
       <input type="number" name="info[fuwocheng]" id="fuwocheng" value="" min="0" max="200"
-             style="width:150px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:150px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入个数"/>
       <span style="color:#999;font-size:12px;margin-left:10px">1分钟内完成数量</span>
     </td>
@@ -72,7 +72,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">仰卧起坐(个)：</td>
     <td colspan="5">
       <input type="number" name="info[yangwoqizuo]" id="yangwoqizuo" value="" min="0" max="200"
-             style="width:150px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:150px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入个数"/>
       <span style="color:#999;font-size:12px;margin-left:10px">1分钟内完成数量</span>
     </td>
@@ -82,7 +82,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">引体向上(个)：</td>
     <td colspan="5">
       <input type="number" name="info[yintixiangshang]" id="yintixiangshang" value="" min="0" max="100"
-             style="width:150px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:150px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入个数"/>
     </td>
   </tr>
@@ -91,7 +91,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">立定跳远(cm)：</td>
     <td colspan="5">
       <input type="number" name="info[lidingtiaoyan]" id="lidingtiaoyan" value="" min="0" max="400"
-             style="width:150px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:150px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入厘米"/>
       <span style="color:#999;font-size:12px;margin-left:10px">男子标准：248cm以上优秀</span>
     </td>
@@ -101,7 +101,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">综合评分：</td>
     <td colspan="5">
       <input type="number" name="info[zongfen]" id="zongfen" value="" step="0.1" min="0" max="100"
-             style="width:150px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:150px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入0-100分"/>
     </td>
   </tr>
@@ -110,7 +110,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">备注：</td>
     <td colspan="5">
       <textarea name="info[beizhu]" id="beizhu" rows="3"
-                style="width:400px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:400px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入备注"></textarea>
     </td>
   </tr>

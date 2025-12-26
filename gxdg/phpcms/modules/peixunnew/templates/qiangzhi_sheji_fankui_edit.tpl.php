@@ -32,7 +32,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="120" align="right" class="infotitle"><span style="color:red">*</span>射击计划：</td>
     <td colspan="5">
       <select name="info[jihua_id]" id="jihua_id" required
-              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:300px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">请选择</option>
         <?php
         if(is_array($this->jihua_list)){
@@ -50,7 +50,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">所属部门：</td>
     <td colspan="5">
       <select name="info[bmid]" id="bmid"
-              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:300px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">请选择</option>
         <?php echo $this->select_bumen?>
       </select>
@@ -61,7 +61,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">参射人员：</td>
     <td colspan="5">
       <input type="text" value="<?php echo htmlspecialchars($this->info['fjname'])?>"
-             style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px;"
+             style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px;"
              readonly />
       <input type="hidden" name="info[fjid]" value="<?php echo $this->info['fjid']?>" />
       <input type="hidden" name="info[fjname]" value="<?php echo htmlspecialchars($this->info['fjname'])?>" />
@@ -72,7 +72,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">成绩：</td>
     <td colspan="5">
       <input type="text" name="info[chengji]" id="chengji" value="<?php echo htmlspecialchars($this->info['chengji'])?>"
-             style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;"
+             style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;"
              placeholder="请输入成绩"/>
     </td>
   </tr>
@@ -81,7 +81,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">是否合格：</td>
     <td colspan="5">
       <select name="info[guo]" id="guo"
-              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:150px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0" <?php echo $this->info['guo'] == 0 ? 'selected' : ''?>>不合格</option>
         <option value="1" <?php echo $this->info['guo'] == 1 ? 'selected' : ''?>>合格</option>
       </select>
@@ -92,7 +92,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">提报时间：</td>
     <td colspan="5">
       <input type="date" name="info[tianbao_time]" id="tianbao_time" value="<?php echo $this->info['tianbao_time_show']?>"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;"/>
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;"/>
     </td>
   </tr>
 
@@ -101,7 +101,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td colspan="5">
       <input type="hidden" name="info[files]" id="files" value='<?php echo htmlspecialchars($this->info['files'])?>' />
       <input type="file" id="files_upload" accept="image/*" multiple
-             style="margin-left:5px;background:transparent;color:#fff"/>
+             style="margin-left:5px;background:#1a2a4a;color:#fff"/>
       <div id="files_preview" style="margin-top:10px;"></div>
       <span style="color:#999;font-size:12px;margin-left:10px">支持上传多张证书图片</span>
     </td>

@@ -31,7 +31,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="120" align="right" class="infotitle">所属业务警种：</td>
     <td colspan="5">
       <select name="info[bmid]" id="bmid"
-              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:300px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0">请选择</option>
         <?php echo $this->select_bumen?>
       </select>
@@ -42,7 +42,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">培训来源：</td>
     <td colspan="5">
       <select name="info[pxly]" id="pxly"
-              style="width:300px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:300px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="教育训练系统" <?php echo $this->info['pxly'] == '教育训练系统' ? 'selected' : ''?>>教育训练系统</option>
       </select>
       <span style="color:#999;font-size:12px;margin-left:10px;">固定为"教育训练系统"</span>
@@ -53,7 +53,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle"><span style="color:red">*</span>培训标题：</td>
     <td colspan="5">
       <input type="text" name="info[title]" id="title" value="<?php echo htmlspecialchars($this->info['title'])?>" required
-             style="width:500px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:500px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入培训标题"/>
     </td>
   </tr>
@@ -62,7 +62,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">来源内标题：</td>
     <td colspan="5">
       <input type="text" name="info[ly_title]" id="ly_title" value="<?php echo htmlspecialchars($this->info['ly_title'])?>"
-             style="width:500px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:500px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="培训来源内的标题"/>
     </td>
   </tr>
@@ -71,7 +71,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">培训要求/条件：</td>
     <td colspan="5">
       <textarea name="info[yaoqiu]" id="yaoqiu" rows="4"
-                style="width:500px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:500px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入培训要求、条件"><?php echo htmlspecialchars($this->info['yaoqiu'])?></textarea>
     </td>
   </tr>
@@ -80,7 +80,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">培训开始时间：</td>
     <td colspan="5">
       <input type="date" name="info[btime]" id="btime" value="<?php echo $this->info['btime_show']?>"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 
@@ -88,7 +88,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">培训结束时间：</td>
     <td colspan="5">
       <input type="date" name="info[etime]" id="etime" value="<?php echo $this->info['etime_show']?>"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 
@@ -96,7 +96,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">是否必须参加：</td>
     <td colspan="5">
       <select name="info[bixu]" id="bixu"
-              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:150px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="0" <?php echo $this->info['bixu'] == 0 ? 'selected' : ''?>>否</option>
         <option value="1" <?php echo $this->info['bixu'] == 1 ? 'selected' : ''?>>是</option>
       </select>
@@ -107,7 +107,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">状态：</td>
     <td colspan="5">
       <select name="info[status]" id="status"
-              style="width:150px;height:28px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;">
+              style="width:150px;height:28px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;">
         <option value="1" <?php echo $this->info['status'] == 1 ? 'selected' : ''?>>进行中</option>
         <option value="2" <?php echo $this->info['status'] == 2 ? 'selected' : ''?>>已完成</option>
       </select>

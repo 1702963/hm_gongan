@@ -44,7 +44,7 @@ html{_overflow-y:scroll}
                     echo $matches[1] . '-' . str_pad($matches[2], 2, '0', STR_PAD_LEFT);
                 }
             }
-        ?>" style="width:150px;background:transparent;color:#fff;border:1px solid #ddd;padding:5px 10px;margin-right:10px;">
+        ?>" style="width:150px;background:#1a2a4a;color:#fff;border:1px solid #ddd;padding:5px 10px;margin-right:10px;">
 
         <input type="submit" value="搜索" class="doLock" style="margin-left:10px;">
         <a href="index.php?m=peixunnew&c=geren_bmi&a=init"><input type="button" value="重置" class="doLock"></a>
