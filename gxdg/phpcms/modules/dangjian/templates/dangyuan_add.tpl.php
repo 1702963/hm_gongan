@@ -169,6 +169,27 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   </tr>
 
   <tr>
+    <td align="right" class="infotitle">党内职务：</td>
+    <td>
+      <select name="info[dangneizhiwu]" id="dangneizhiwu" class="infoselect" style="background:#1a2a4a;color:#fff">
+        <option value="">请选择</option>
+        <?php if(isset($this->dangneizhiwu) && !empty($this->dangneizhiwu)){foreach($this->dangneizhiwu as $k=>$v){?>
+        <option value="<?php echo $k?>"><?php echo $v?></option>
+        <?php }}?>
+      </select>
+    </td>
+    <td align="right" class="infotitle">所在党组织：</td>
+    <td colspan="3">
+      <select name="info[dangzuzhi]" id="dangzuzhi" class="infoselect" style="background:#1a2a4a;color:#fff">
+        <option value="">请选择</option>
+        <?php if(isset($this->dangzuzhi) && !empty($this->dangzuzhi)){foreach($this->dangzuzhi as $k=>$v){?>
+        <option value="<?php echo $k?>"><?php echo $v?></option>
+        <?php }}?>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
     <td align="right" class="infotitle">入党时间：</td>
     <td>
       <input type="text" name="rdzztime" id="rdzztime" class="infoinput" value="" style="width:200px;background:#1a2a4a;color:#fff" />
@@ -295,6 +316,8 @@ function loadFujingData(fjid) {
         $('#gangwei').val('');
         $('#zhiwu').val('');
         $('#cengji').val('');
+        $('#dangneizhiwu').val('');
+        $('#dangzuzhi').val('');
         $('#rdzztime').val('');
         $('#scgztime').val('');
         $('#rongy').val('');
@@ -344,6 +367,8 @@ function loadFujingData(fjid) {
                 $('#gangwei').val(data.gangwei || '');  // 行政职务←fujing.zhiwu
                 $('#zhiwu').val(data.zhiwu || '');      // 警务职务←fujing.zhiwu2
                 $('#cengji').val(data.cengji || '');
+                $('#dangneizhiwu').val(data.dangneizhiwu || '');
+                $('#dangzuzhi').val(data.dangzuzhi || '');
 
                 // 时间信息
                 $('#rdzztime').val(data.rdzztime || '');

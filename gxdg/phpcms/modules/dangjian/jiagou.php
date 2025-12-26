@@ -134,6 +134,22 @@ class jiagou extends admin
             $cengji[$v['id']] = $v['cjname'];
         }
 
+        // 加载党内职务数据(来源: v9_zhiwu_mj表)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $dnzwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $dangneizhiwu = array();
+        foreach ($dnzwlist as $v) {
+            $dangneizhiwu[$v['id']] = $v['zwname'];
+        }
+
+        // 加载党组织架构数据(来源: v9_bumen_dz表, 组织名称取sname字段)
+        $this->db->table_name = 'v9_bumen_dz';
+        $dzzlist = $this->db->select("", 'id,name,sname', '', 'id asc');
+        $dangzuzhi = array();
+        foreach ($dzzlist as $v) {
+            $dangzuzhi[$v['id']] = $v['sname'] ? $v['sname'] : $v['name'];
+        }
+
         // 绑定组织树
         $tree = pc_base::load_sys_class('tree');
         $this->db = pc_base::load_model('bumen_model');
@@ -152,6 +168,8 @@ class jiagou extends admin
         $this->gangwei = $gangwei;
         $this->zhiwu = $zhiwu;
         $this->cengji = $cengji;
+        $this->dangneizhiwu = $dangneizhiwu;
+        $this->dangzuzhi = $dangzuzhi;
         $this->select_categorys = $select_categorys;
 
         include $this->admin_tpl('dangyuan_add');
@@ -290,6 +308,8 @@ class jiagou extends admin
                 'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
                 'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
                 'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'dangneizhiwu' => isset($info['dangneizhiwu']) ? intval($info['dangneizhiwu']) : 0,
+                'dangzuzhi' => isset($info['dangzuzhi']) ? intval($info['dangzuzhi']) : 0,
                 'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
                 'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
             );
@@ -402,6 +422,22 @@ class jiagou extends admin
             $cengji[$v['id']] = $v['cjname'];
         }
 
+        // 加载党内职务数据(来源: v9_zhiwu_mj表)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $dnzwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $dangneizhiwu = array();
+        foreach ($dnzwlist as $v) {
+            $dangneizhiwu[$v['id']] = $v['zwname'];
+        }
+
+        // 加载党组织架构数据(来源: v9_bumen_dz表, 组织名称取sname字段)
+        $this->db->table_name = 'v9_bumen_dz';
+        $dzzlist = $this->db->select("", 'id,name,sname', '', 'id asc');
+        $dangzuzhi = array();
+        foreach ($dzzlist as $v) {
+            $dangzuzhi[$v['id']] = $v['sname'] ? $v['sname'] : $v['name'];
+        }
+
         // 绑定组织树
         $tree = pc_base::load_sys_class('tree');
         $this->db = pc_base::load_model('bumen_model');
@@ -421,6 +457,8 @@ class jiagou extends admin
         $this->gangwei = $gangwei;
         $this->zhiwu = $zhiwu;
         $this->cengji = $cengji;
+        $this->dangneizhiwu = $dangneizhiwu;
+        $this->dangzuzhi = $dangzuzhi;
         $this->select_categorys = $select_categorys;
 
         include $this->admin_tpl('dangyuan_edit');
@@ -459,6 +497,8 @@ class jiagou extends admin
                 'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
                 'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
                 'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'dangneizhiwu' => isset($info['dangneizhiwu']) ? intval($info['dangneizhiwu']) : 0,
+                'dangzuzhi' => isset($info['dangzuzhi']) ? intval($info['dangzuzhi']) : 0,
                 'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
                 'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
             );
@@ -598,6 +638,22 @@ class jiagou extends admin
             $cengji[$v['id']] = $v['cjname'];
         }
 
+        // 加载党内职务数据(来源: v9_zhiwu_mj表)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $dnzwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $dangneizhiwu = array();
+        foreach ($dnzwlist as $v) {
+            $dangneizhiwu[$v['id']] = $v['zwname'];
+        }
+
+        // 加载党组织架构数据(来源: v9_bumen_dz表, 组织名称取sname字段)
+        $this->db->table_name = 'v9_bumen_dz';
+        $dzzlist = $this->db->select("", 'id,name,sname', '', 'id asc');
+        $dangzuzhi = array();
+        foreach ($dzzlist as $v) {
+            $dangzuzhi[$v['id']] = $v['sname'] ? $v['sname'] : $v['name'];
+        }
+
         // 绑定组织树
         $tree = pc_base::load_sys_class('tree');
         $this->db = pc_base::load_model('bumen_model');
@@ -660,6 +716,8 @@ class jiagou extends admin
                 'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
                 'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
                 'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'dangneizhiwu' => isset($info['dangneizhiwu']) ? intval($info['dangneizhiwu']) : 0,
+                'dangzuzhi' => isset($info['dangzuzhi']) ? intval($info['dangzuzhi']) : 0,
                 'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
                 'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
             );
@@ -937,6 +995,22 @@ class jiagou extends admin
             $cengji[$v['id']] = $v['cjname'];
         }
 
+        // 加载党内职务数据(来源: v9_zhiwu_mj表)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $dnzwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $dangneizhiwu = array();
+        foreach ($dnzwlist as $v) {
+            $dangneizhiwu[$v['id']] = $v['zwname'];
+        }
+
+        // 加载党组织架构数据(来源: v9_bumen_dz表, 组织名称取sname字段)
+        $this->db->table_name = 'v9_bumen_dz';
+        $dzzlist = $this->db->select("", 'id,name,sname', '', 'id asc');
+        $dangzuzhi = array();
+        foreach ($dzzlist as $v) {
+            $dangzuzhi[$v['id']] = $v['sname'] ? $v['sname'] : $v['name'];
+        }
+
         // 绑定组织树
         $tree = pc_base::load_sys_class('tree');
         $this->db = pc_base::load_model('bumen_model');
@@ -999,6 +1073,8 @@ class jiagou extends admin
                 'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
                 'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
                 'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'dangneizhiwu' => isset($info['dangneizhiwu']) ? intval($info['dangneizhiwu']) : 0,
+                'dangzuzhi' => isset($info['dangzuzhi']) ? intval($info['dangzuzhi']) : 0,
                 'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
                 'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
             );
@@ -1272,6 +1348,22 @@ class jiagou extends admin
             $cengji[$v['id']] = $v['cjname'];
         }
 
+        // 加载党内职务数据(来源: v9_zhiwu_mj表)
+        $this->db->table_name = 'v9_zhiwu_mj';
+        $dnzwlist = $this->db->select("", 'id,zwname', '', 'id asc');
+        $dangneizhiwu = array();
+        foreach ($dnzwlist as $v) {
+            $dangneizhiwu[$v['id']] = $v['zwname'];
+        }
+
+        // 加载党组织架构数据(来源: v9_bumen_dz表, 组织名称取sname字段)
+        $this->db->table_name = 'v9_bumen_dz';
+        $dzzlist = $this->db->select("", 'id,name,sname', '', 'id asc');
+        $dangzuzhi = array();
+        foreach ($dzzlist as $v) {
+            $dangzuzhi[$v['id']] = $v['sname'] ? $v['sname'] : $v['name'];
+        }
+
         // 绑定组织树
         $tree = pc_base::load_sys_class('tree');
         $this->db = pc_base::load_model('bumen_model');
@@ -1334,6 +1426,8 @@ class jiagou extends admin
                 'zhiwu' => isset($info['zhiwu']) ? intval($info['zhiwu']) : 0,
                 'cengji' => isset($info['cengji']) ? intval($info['cengji']) : 0,
                 'zzmm' => isset($info['zzmm']) ? intval($info['zzmm']) : 0,
+                'dangneizhiwu' => isset($info['dangneizhiwu']) ? intval($info['dangneizhiwu']) : 0,
+                'dangzuzhi' => isset($info['dangzuzhi']) ? intval($info['dangzuzhi']) : 0,
                 'shengri' => isset($_POST['shengri']) ? trim($_POST['shengri']) : '',
                 'beizhu' => isset($info['beizhu']) ? trim($info['beizhu']) : ''
             );

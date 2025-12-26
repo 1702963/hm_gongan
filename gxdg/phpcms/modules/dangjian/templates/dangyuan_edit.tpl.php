@@ -123,6 +123,27 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   </tr>
 
   <tr>
+    <td align="right" class="infotitle">党内职务：</td>
+    <td>
+      <select name="info[dangneizhiwu]" id="dangneizhiwu" class="infoselect" style="background:#1a2a4a;color:#fff">
+        <option value="">请选择</option>
+        <?php if(isset($this->dangneizhiwu) && !empty($this->dangneizhiwu)){foreach($this->dangneizhiwu as $k=>$v){?>
+        <option value="<?php echo $k?>" <?php if(isset($info['dangneizhiwu']) && $info['dangneizhiwu']==$k) echo 'selected'?>><?php echo $v?></option>
+        <?php }}?>
+      </select>
+    </td>
+    <td align="right" class="infotitle">所在党组织：</td>
+    <td colspan="3">
+      <select name="info[dangzuzhi]" id="dangzuzhi" class="infoselect" style="background:#1a2a4a;color:#fff">
+        <option value="">请选择</option>
+        <?php if(isset($this->dangzuzhi) && !empty($this->dangzuzhi)){foreach($this->dangzuzhi as $k=>$v){?>
+        <option value="<?php echo $k?>" <?php if(isset($info['dangzuzhi']) && $info['dangzuzhi']==$k) echo 'selected'?>><?php echo $v?></option>
+        <?php }}?>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
     <td align="right" class="infotitle">入党时间：</td>
     <td>
       <input type="text" name="rdzztime" id="rdzztime" class="infoinput" value="<?php echo $info['rdzztime']>0?date('Y-m-d',$info['rdzztime']):''?>" style="width:200px;background:#1a2a4a;color:#fff" />
