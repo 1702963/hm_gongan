@@ -35,7 +35,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>主题：</td>
     <td colspan="5">
       <input type="text" name="info[theme]" id="theme" value="<?php echo $this->info['theme']?>" required
-             style="width:500px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:500px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入主题"/>
     </td>
   </tr>
@@ -44,7 +44,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">时间：</td>
     <td colspan="5">
       <input type="date" name="info[content_time]" id="content_time" value="<?php echo $this->info['content_time_show']?>"
-             style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 
@@ -52,7 +52,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">正文：</td>
     <td colspan="5">
       <textarea name="info[content]" id="content"
-                style="width:500px;height:150px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:500px;height:150px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入正文内容"><?php echo $this->info['content']?></textarea>
     </td>
   </tr>
@@ -62,7 +62,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td colspan="5">
       <input type="hidden" name="info[fujian]" id="fujian" value='<?php echo htmlspecialchars($this->info['fujian'])?>' />
       <input type="file" id="fujian_upload" accept="image/*" multiple
-             style="margin-left:5px;background:transparent;color:#fff"/>
+             style="margin-left:5px;background:#1a2a4a;color:#fff"/>
       <div id="fujian_preview" style="margin-top:10px;"></div>
       <span style="color:#999;font-size:12px;margin-left:10px">支持上传多张图片</span>
     </td>

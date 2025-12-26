@@ -34,7 +34,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="100" align="right" class="infotitle">党课内容：</td>
     <td colspan="5">
       <textarea name="info[neirong]" id="neirong"
-                style="width:600px;height:250px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:600px;height:250px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入党课内容"><?php echo isset($this->info['neirong']) ? $this->info['neirong'] : ''?></textarea>
     </td>
   </tr>
@@ -44,7 +44,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td colspan="5">
       <input type="hidden" name="info[fujian]" id="fujian" value='<?php echo isset($this->info['fujian']) ? htmlspecialchars($this->info['fujian']) : ''?>' />
       <input type="file" id="fujian_upload" accept="image/*" multiple
-             style="margin-left:5px;background:transparent;color:#fff"/>
+             style="margin-left:5px;background:#1a2a4a;color:#fff"/>
       <div id="fujian_preview" style="margin-top:10px;"></div>
       <span style="color:#999;font-size:12px;margin-left:10px">支持上传多张图片</span>
     </td>

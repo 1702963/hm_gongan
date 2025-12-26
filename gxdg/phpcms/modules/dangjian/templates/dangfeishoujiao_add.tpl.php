@@ -34,7 +34,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>主题：</td>
     <td colspan="5">
       <input type="text" name="info[theme]" id="theme" value="" required
-             style="width:500px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:500px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入主题"/>
     </td>
   </tr>
@@ -43,7 +43,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">时间：</td>
     <td colspan="5">
       <input type="date" name="info[meeting_time]" id="meeting_time" value=""
-             style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+             style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
 
@@ -51,7 +51,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">征收情况：</td>
     <td colspan="5">
       <textarea name="info[zhengshou_qingkuang]" id="zhengshou_qingkuang"
-                style="width:600px;height:150px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:600px;height:150px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入征收情况"></textarea>
     </td>
   </tr>
@@ -60,7 +60,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">缴纳金额：</td>
     <td colspan="5">
       <input type="number" name="info[jiaona_jine]" id="jiaona_jine" value="" step="0.01" min="0"
-             style="width:200px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:200px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              placeholder="请输入金额"/>
       <span style="color:#999;font-size:12px;margin-left:10px">单位：元</span>
     </td>
@@ -71,7 +71,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td colspan="5">
       <input type="hidden" name="info[fujian_tupian]" id="fujian_tupian" value="" />
       <input type="file" id="photo_upload" accept="image/*" multiple
-             style="margin-left:5px;background:transparent;color:#fff"/>
+             style="margin-left:5px;background:#1a2a4a;color:#fff"/>
       <div id="photo_preview" style="margin-top:10px;"></div>
       <span style="color:#999;font-size:12px;margin-left:10px">支持上传多张图片</span>
     </td>
@@ -81,7 +81,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">参与人员：</td>
     <td colspan="5">
       <input type="text" id="canyu_search" name="canyu_search" value=""
-             style="width:300px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+             style="width:300px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
              placeholder="请输入姓名搜索辅警" autocomplete="off"/>
 
       <div id="canyu_inputlist" style="position:absolute;z-index:999;background-color:#28348e;border:1px solid #ccc;display:none;min-width:300px;">

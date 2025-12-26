@@ -30,7 +30,7 @@ html{_overflow-y:scroll}
 <a href="index.php?m=dangjian&c=chengyuan&a=sczz_add"><input type="button" value="添加记录" style="margin-left:10px; width:80px" class="doLock" name="dook"></a>
 &nbsp;&nbsp;&nbsp;
 会议类型:
-<select id="huiyi_type_filter" onchange="filterByConditions()" style="margin-left:5px;padding:5px;background:transparent;color:#fff;border:1px solid #ddd;">
+<select id="huiyi_type_filter" onchange="filterByConditions()" style="margin-left:5px;padding:5px;background:#1a2a4a;color:#fff;border:1px solid #ddd;">
   <option value="">全部</option>
   <option value="分局党委会" <?php echo $this->huiyi_type == '分局党委会' ? 'selected' : ''?>>分局党委会</option>
   <option value="理论中心组学习会" <?php echo $this->huiyi_type == '理论中心组学习会' ? 'selected' : ''?>>理论中心组学习会</option>
@@ -45,7 +45,7 @@ html{_overflow-y:scroll}
 参会人员:
 <span style="position:relative;display:inline-block;">
   <input type="text" id="canhui_search" value="<?php echo htmlspecialchars($this->canhui_renyuan)?>"
-         style="width:200px;padding:5px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;"
+         style="width:200px;padding:5px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;"
          placeholder="输入姓名搜索" autocomplete="off"/>
   <input type="hidden" id="canhui_renyuan_filter" value="<?php echo htmlspecialchars($this->canhui_renyuan)?>"/>
   <div id="canhui_inputlist" style="position:absolute;z-index:999;background-color:#28348e;border:1px solid #ccc;display:none;min-width:300px;left:5px;top:30px;">

@@ -17,25 +17,25 @@ include $this->admin_tpl('header_new','admin');
   <tr>
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>主题：</td>
     <td colspan="5">
-      <input type="text" name="info[theme]" id="theme" value="<?php echo $this->info['theme']?>" required style="width:500px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px" placeholder="请输入主题"/>
+      <input type="text" name="info[theme]" id="theme" value="<?php echo $this->info['theme']?>" required style="width:500px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px" placeholder="请输入主题"/>
     </td>
   </tr>
   <tr>
     <td align="right" class="infotitle">时间：</td>
     <td colspan="5">
-      <input type="date" name="info[content_time]" id="content_time" value="<?php echo $this->info['content_time_show']?>" style="width:300px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
+      <input type="date" name="info[content_time]" id="content_time" value="<?php echo $this->info['content_time_show']?>" style="width:300px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"/>
     </td>
   </tr>
   <tr>
     <td align="right" class="infotitle">正文：</td>
     <td colspan="5">
-      <textarea name="info[neirong]" id="neirong" style="width:600px;height:200px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px" placeholder="请输入正文内容"><?php echo $this->info['neirong']?></textarea>
+      <textarea name="info[neirong]" id="neirong" style="width:600px;height:200px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px" placeholder="请输入正文内容"><?php echo $this->info['neirong']?></textarea>
     </td>
   </tr>
   <tr>
     <td align="right" class="infotitle">参会人员：</td>
     <td colspan="5">
-      <input type="text" id="canhui_search" value="" style="width:300px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px" placeholder="请输入姓名搜索辅警" autocomplete="off"/>
+      <input type="text" id="canhui_search" value="" style="width:300px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px" placeholder="请输入姓名搜索辅警" autocomplete="off"/>
       <div id="canhui_inputlist" style="position:absolute;z-index:999;background-color:#28348e;border:1px solid #ccc;display:none;min-width:300px;"><ul style="list-style:none;padding:0;margin:0;"></ul></div>
       <div id="selected_people" style="margin-top:10px;margin-left:5px;"></div>
       <input type="hidden" name="info[canhui_renyuan]" id="canhui_renyuan" value="<?php echo $this->info['canhui_renyuan']?>" />
@@ -46,7 +46,7 @@ include $this->admin_tpl('header_new','admin');
     <td align="right" class="infotitle">附件图片：</td>
     <td colspan="5">
       <input type="hidden" name="info[fujian]" id="fujian" value='<?php echo htmlspecialchars($this->info['fujian'])?>' />
-      <input type="file" id="fujian_upload" accept="image/*" multiple style="margin-left:5px;background:transparent;color:#fff"/>
+      <input type="file" id="fujian_upload" accept="image/*" multiple style="margin-left:5px;background:#1a2a4a;color:#fff"/>
       <div id="fujian_preview" style="margin-top:10px;"></div>
       <span style="color:#999;font-size:12px;margin-left:10px">支持上传多张图片</span>
     </td>

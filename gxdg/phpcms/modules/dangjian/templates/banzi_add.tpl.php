@@ -69,7 +69,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td width="100" align="right" class="infotitle"><span style="color:red">*</span>选择辅警：</td>
     <td colspan="5">
       <input type="text" id="basexm" name="xingming_search" value="" class="infoinput"
-             style="width:300px;background:transparent;color:#fff"
+             style="width:300px;background:#1a2a4a;color:#fff"
              placeholder="请输入姓名搜索辅警" autocomplete="off"/>
       <div id="inputlist">
         <ul></ul>
@@ -80,7 +80,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   <tr>
     <td width="100" align="right" class="infotitle"><span>*</span>姓名：</td>
     <td width="263">
-      <input type="text" name="info[xingming]" id="xingming" value="" class="infoinput" required readonly style="background:transparent;color:#fff" />
+      <input type="text" name="info[xingming]" id="xingming" value="" class="infoinput" required readonly style="background:#1a2a4a;color:#fff" />
     </td>
     <td width="100" align="right" class="infotitle"><span>*</span>性别：</td>
     <td width="263">
@@ -89,30 +89,30 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     </td>
     <td width="100" align="right" class="infotitle">身份证号：</td>
     <td class="rb">
-      <input type="text" name="info[sfz]" id="sfz" class="infoinput" value="" readonly style="background:transparent;color:#fff"/>
+      <input type="text" name="info[sfz]" id="sfz" class="infoinput" value="" readonly style="background:#1a2a4a;color:#fff"/>
     </td>
   </tr>
 
   <tr>
     <td align="right" class="infotitle">出生年月日：</td>
     <td>
-      <input type="text" name="shengri" id="shengri" class="infoinput" value="" readonly style="width:200px;background:transparent;color:#fff" />
+      <input type="text" name="shengri" id="shengri" class="infoinput" value="" readonly style="width:200px;background:#1a2a4a;color:#fff" />
     </td>
     <td align="right" class="infotitle">年龄：</td>
     <td>
-      <input type="text" name="info[age]" id="age" class="infoinput" value="" readonly style="background:transparent;color:#fff"/>
+      <input type="text" name="info[age]" id="age" class="infoinput" value="" readonly style="background:#1a2a4a;color:#fff"/>
       <span style="color:#999;font-size:12px">(自动计算)</span>
     </td>
     <td align="right" class="infotitle">电话：</td>
     <td class="rb">
-      <input type="text" name="info[tel]" id="tel" class="infoinput" value="" readonly style="background:transparent;color:#fff"/>
+      <input type="text" name="info[tel]" id="tel" class="infoinput" value="" readonly style="background:#1a2a4a;color:#fff"/>
     </td>
   </tr>
 
   <tr>
     <td align="right" class="infotitle">学历：</td>
     <td>
-      <select name="info[xueli]" id="xueli" class="infoselect" disabled style="background:transparent;color:#fff">
+      <select name="info[xueli]" id="xueli" class="infoselect" disabled style="background:#1a2a4a;color:#fff">
         <option value="">请选择</option>
         <?php foreach($xueli as $k=>$v){?>
         <option value="<?php echo $k?>"><?php echo $v?></option>
@@ -121,18 +121,18 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     </td>
     <td align="right" class="infotitle">专业：</td>
     <td>
-      <input type="text" name="info[zhuanye]" id="zhuanye" class="infoinput" value="" readonly style="background:transparent;color:#fff"/>
+      <input type="text" name="info[zhuanye]" id="zhuanye" class="infoinput" value="" readonly style="background:#1a2a4a;color:#fff"/>
     </td>
     <td align="right" class="infotitle">毕业学校：</td>
     <td class="rb">
-      <input type="text" name="info[xuexiao]" id="xuexiao" class="infoinput" value="" readonly style="background:transparent;color:#fff"/>
+      <input type="text" name="info[xuexiao]" id="xuexiao" class="infoinput" value="" readonly style="background:#1a2a4a;color:#fff"/>
     </td>
   </tr>
 
   <tr>
     <td align="right" class="infotitle">所属单位：</td>
     <td colspan="5">
-      <select name="info[dwid]" id="dwid" disabled style="background:transparent;color:#fff">
+      <select name="info[dwid]" id="dwid" disabled style="background:#1a2a4a;color:#fff">
         <?php echo $select_categorys?>
       </select>
     </td>
@@ -141,7 +141,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   <tr>
     <td align="right" class="infotitle">行政职务：</td>
     <td>
-      <select name="info[gangwei]" id="gangwei" class="infoselect" disabled style="background:transparent;color:#fff">
+      <select name="info[gangwei]" id="gangwei" class="infoselect" disabled style="background:#1a2a4a;color:#fff">
         <option value="">请选择</option>
         <?php foreach($gangwei as $k=>$v){?>
         <option value="<?php echo $k?>"><?php echo $v?></option>
@@ -150,7 +150,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     </td>
     <td align="right" class="infotitle">警务职务：</td>
     <td>
-      <select name="info[zhiwu]" id="zhiwu" class="infoselect" disabled style="background:transparent;color:#fff">
+      <select name="info[zhiwu]" id="zhiwu" class="infoselect" disabled style="background:#1a2a4a;color:#fff">
         <option value="">请选择</option>
         <?php foreach($zhiwu as $k=>$v){?>
         <option value="<?php echo $k?>"><?php echo $v?></option>
@@ -159,7 +159,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     </td>
     <td align="right" class="infotitle">职级（层级）：</td>
     <td class="rb">
-      <select name="info[cengji]" id="cengji" class="infoselect" disabled style="background:transparent;color:#fff">
+      <select name="info[cengji]" id="cengji" class="infoselect" disabled style="background:#1a2a4a;color:#fff">
         <option value="">请选择</option>
         <?php foreach($cengji as $k=>$v){?>
         <option value="<?php echo $k?>"><?php echo $v?></option>
@@ -171,11 +171,11 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
   <tr>
     <td align="right" class="infotitle">入党时间：</td>
     <td>
-      <input type="text" name="rdzztime" id="rdzztime" class="infoinput" value="" readonly style="width:200px;background:transparent;color:#fff" />
+      <input type="text" name="rdzztime" id="rdzztime" class="infoinput" value="" readonly style="width:200px;background:#1a2a4a;color:#fff" />
     </td>
     <td align="right" class="infotitle">参加工作时间：</td>
     <td colspan="3">
-      <input type="text" name="scgztime" id="scgztime" class="infoinput" value="" readonly style="width:200px;background:transparent;color:#fff" />
+      <input type="text" name="scgztime" id="scgztime" class="infoinput" value="" readonly style="width:200px;background:#1a2a4a;color:#fff" />
     </td>
   </tr>
 
@@ -183,7 +183,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle"><span style="color:red">*</span>党关系所在支部：</td>
     <td colspan="5">
       <input type="text" name="info[ddanwei]" id="ddanwei"
-             style="width:500px;height:20px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
+             style="width:500px;height:20px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;text-indent:1px"
              value="" placeholder="请输入党关系所在支部"/>
     </td>
   </tr>
@@ -192,7 +192,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">所获荣誉：</td>
     <td colspan="5">
       <textarea name="info[rongy]" id="rongy" readonly
-                style="width:500px;height:60px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:500px;height:60px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="将从表彰记录中自动获取"></textarea>
       <br/>
       <span style="color:#999;font-size:12px;margin-left:10px">*此字段从表彰管理中自动获取</span>
@@ -211,7 +211,7 @@ var uploadurl = '<?php echo pc_base::load_config('system','upload_url')?>';
     <td align="right" class="infotitle">备注：</td>
     <td colspan="5">
       <textarea name="info[beizhu]" id="beizhu"
-                style="width:500px;height:80px;background:transparent;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
+                style="width:500px;height:80px;background:#1a2a4a;color:#fff;border:1px solid #ddd;margin-left:5px;padding:5px"
                 placeholder="请输入备注信息"></textarea>
     </td>
   </tr>
