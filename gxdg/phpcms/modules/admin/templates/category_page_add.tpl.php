@@ -185,7 +185,7 @@ table.table-list tbody tr:hover {
 				?>
 		  		<tr>
 				  <td><?php echo $rolrname?></td>
-				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="init,<?php echo $roleid;?>" ></td>
+				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="init,<?php echo $roleid;?>" checked></td>
 			  </tr>
 			  <?php }?>
 	
@@ -214,7 +214,7 @@ table.table-list tbody tr:hover {
 			?>
 		  		<tr>
 				  <td><?php echo $_value['name'];?></td>
-				  <td align="center"><input type="checkbox" name="priv_groupid[]" value="visit,<?php echo $_value['groupid'];?>" ></td>
+				  <td align="center"><input type="checkbox" name="priv_groupid[]" value="visit,<?php echo $_value['groupid'];?>" checked></td>
 			  </tr>
 			<?php }?>
 			 </tbody>

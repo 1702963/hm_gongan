@@ -413,6 +413,7 @@ PHPCMS可自动生成网站的<<互联网新闻开放协议>>，但是您还需�
 
 //category
 
+$LANG['catid'] = '栏目ID';
 $LANG['catname'] = '栏目名称';
 $LANG['please_select_parent_category'] = '≡ 作为一级栏目 ≡';
 $LANG['parent_category'] = '上级栏目';

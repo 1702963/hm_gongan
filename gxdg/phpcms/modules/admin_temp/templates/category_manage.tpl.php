@@ -12,7 +12,7 @@ include $this->admin_tpl('header');?>
         <thead>
             <tr>
             <th width="38"><?php echo L('listorder');?></th>
-            <th width="30">catid</th>
+            <th width="30"><?php echo L('catid');?></th>
             <th ><?php echo L('catname');?></th>
             <th align='left' width='50'><?php echo L('category_type');?></th>
             <th align='left' width="50"><?php echo L('modelname');?></th>

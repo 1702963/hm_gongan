@@ -51,7 +51,7 @@ html{_overflow-y:scroll}
         <thead>
             <tr>
             <th width="50"><?php echo L('listorder');?></th>
-            <th width="50">catid</th>
+            <th width="50"><?php echo L('catid');?></th>
             <th><?php echo L('catname');?></th>
             <th width="80"><?php echo L('category_type');?></th>
             <th width="80"><?php echo L('modelname');?></th>

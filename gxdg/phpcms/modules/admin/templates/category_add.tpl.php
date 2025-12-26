@@ -263,13 +263,13 @@ table.table-list tbody tr:hover {
 				?>
 		  		<tr>
 				  <td><?php echo $rolrname?></td>
-				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="init,<?php echo $roleid;?>" ></td>
-				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="add,<?php echo $roleid;?>" ></td>
-				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="edit,<?php echo $roleid;?>" ></td>
-				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="delete,<?php echo $roleid;?>" ></td>
-				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="listorder,<?php echo $roleid;?>" ></td>
-				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="push,<?php echo $roleid;?>" ></td>
-				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="move,<?php echo $roleid;?>" ></td>
+				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="init,<?php echo $roleid;?>" checked></td>
+				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="add,<?php echo $roleid;?>" checked></td>
+				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="edit,<?php echo $roleid;?>" checked></td>
+				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="delete,<?php echo $roleid;?>" checked></td>
+				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="listorder,<?php echo $roleid;?>" checked></td>
+				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="push,<?php echo $roleid;?>" checked></td>
+				  <td align="center"><input type="checkbox" name="priv_roleid[]" <?php echo $disabled;?> value="move,<?php echo $roleid;?>" checked></td>
 			  </tr>
 			  <?php }?>
 	
@@ -298,8 +298,8 @@ table.table-list tbody tr:hover {
 			?>
 		  		<tr>
 				  <td><?php echo $_value['name'];?></td>
-				  <td align="center"><input type="checkbox" name="priv_groupid[]" value="visit,<?php echo $_value['groupid'];?>" ></td>
-				  <td align="center"><input type="checkbox" name="priv_groupid[]" value="add,<?php echo $_value['groupid'];?>" ></td>
+				  <td align="center"><input type="checkbox" name="priv_groupid[]" value="visit,<?php echo $_value['groupid'];?>" checked></td>
+				  <td align="center"><input type="checkbox" name="priv_groupid[]" value="add,<?php echo $_value['groupid'];?>" checked></td>
 			  </tr>
 			<?php }?>
 			 </tbody>
