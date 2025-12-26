@@ -420,7 +420,9 @@ $(function(){
 	jQuery(document).bind('keydown', 'Alt+x', function (){close_window();});
 })
 document.title='<?php echo L('edit_content').addslashes($data['title']);?>';
-self.moveTo(0, 0);
+var left = (screen.width - window.outerWidth) / 2;
+var top = (screen.height - window.outerHeight) / 2;
+self.moveTo(left, top);
 function refersh_window() {
 	setcookie('refersh_time', 1);
 }
