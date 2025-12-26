@@ -208,6 +208,14 @@ body, html {
 //-->
 </script>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>content_addtop.js"></script>
+<?php if(!$can_edit) { ?>
+<script type="text/javascript">
+function close_window() {
+	window.close();
+	return false;
+}
+</script>
+<?php } ?>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>colorpicker.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>hotkeys.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo JS_PATH?>cookie.js"></script>
