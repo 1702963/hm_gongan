@@ -184,6 +184,22 @@ body, html {
     background: rgba(20, 30, 80, 0.6) !important;
 }
 
+/* 隐藏截取内容选项行 */
+input[name="add_introduce"],
+input[name="introcude_length"],
+input[name="auto_thumb"],
+input[name="auto_thumb_no"] {
+    display: none !important;
+}
+input[name="add_introduce"] + *,
+input[name="auto_thumb"] + * {
+    display: none !important;
+}
+label:has(input[name="add_introduce"]),
+label:has(input[name="auto_thumb"]) {
+    display: none !important;
+}
+
 <?php if(!$can_edit) { ?>
 /* 只读模式样式 */
 .table_form input[type=text],
@@ -398,6 +414,11 @@ if(is_array($forminfos['base'])) {
 //只能放到最下面
 var openClose = $("#RopenClose"), rh = $(".addContent .col-auto").height(),colRight = $(".addContent .col-right"),valClose = getcookie('openClose');
 $(function(){
+	// 隐藏截取内容选项行
+	$('input[name="add_introduce"]').closest('div').hide();
+	$('input[name="add_introduce"]').parent().hide();
+	$('input[name="auto_thumb"]').parent().hide();
+
 	if(valClose==1){
 		colRight.hide();
 		openClose.addClass("r-open");
