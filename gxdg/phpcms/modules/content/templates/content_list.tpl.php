@@ -19,6 +19,7 @@ html{_overflow-y:scroll}
     border: 1px solid #3132a4;
     white-space: nowrap;
     padding: 8px 4px;
+    text-align: center;
 }
 .table-list tbody tr:nth-child(odd) {
     background: rgba(37, 38, 130, 0.3);
@@ -84,14 +85,14 @@ html{_overflow-y:scroll}
     <table width="100%" class="kotable" style="margin-top:0;">
         <thead>
             <tr>
-			 <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
-            <th width="37"><?php echo L('listorder');?></th>
+			 <th width="30"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="40"><?php echo L('listorder');?></th>
             <th width="40">ID</th>
 			<th><?php echo L('title');?></th>
-            <th width="40"><?php echo L('hits');?></th>
-            <th width="70"><?php echo L('publish_user');?></th>
-            <th width="118"><?php echo L('updatetime');?></th>
-			<th width="72"><?php echo L('operations_manage');?></th>
+            <th width="100"><?php echo L('hits');?></th>
+            <th width="120"><?php echo L('publish_user');?></th>
+            <th width="160"><?php echo L('updatetime');?></th>
+			<th width="150"><?php echo L('operations_manage');?></th>
             </tr>
         </thead>
 <tbody>
