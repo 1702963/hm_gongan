@@ -229,12 +229,20 @@ $_fj_conn->close();
     }
 
     .DataItem {
-        width: 20%;
+        flex: 1;
         height: calc(100vh - 90vh);
         min-height: 100px;
         background: rgba(10, 80, 180, 0.2);
         border: 1px solid rgba(10, 60, 160, 0.5);
-        margin: 30px 30px 30px 0;
+        margin: 30px 15px 30px 15px;
+    }
+
+    .DataItem:first-child {
+        margin-left: 0;
+    }
+
+    .DataItem:last-child {
+        margin-right: 30px;
     }
 
     .DataHonour {

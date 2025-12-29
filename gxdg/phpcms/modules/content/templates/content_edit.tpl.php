@@ -326,6 +326,12 @@ if(is_array($forminfos['base'])) {
 } }
 ?>
 	<tr>
+      <th width="80">提交人</th>
+      <td>
+        <span style="color:#bbd8f1;font-size:14px;"><?php echo $data['username'] ? $data['username'] : '未知';?></span>
+      </td>
+    </tr>
+	<tr>
       <th width="80">一级审批人</th>
       <td>
         <span style="color:#bbd8f1;font-size:14px;"><?php echo $level1_name ? $level1_name : '未设置';?></span>
