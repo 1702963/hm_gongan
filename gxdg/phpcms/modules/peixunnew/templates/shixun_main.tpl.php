@@ -233,6 +233,14 @@ $_fj_conn->close();
         margin: 30px 15px 30px 15px;
     }
 
+    .DataItem:first-child {
+        margin-left: 0;
+    }
+
+    .DataItem:last-child {
+        margin-right: 30px;
+    }
+
     .DataHonour {
         flex: 1;
         height: calc(100vh - 90vh);
@@ -240,6 +248,14 @@ $_fj_conn->close();
         background: rgba(10, 150, 180, 0.2);
         border: 1px solid rgba(10, 160, 160, 0.5);
         margin: 0 15px 30px 15px;
+    }
+
+    .DataHonour:first-child {
+        margin-left: 0;
+    }
+
+    .DataHonour:last-child {
+        margin-right: 30px;
     }
 
     .DataReport {
